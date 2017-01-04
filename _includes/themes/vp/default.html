@@ -56,24 +56,8 @@
     <div id="wrap">
       <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
       	<div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
-	            <span class="sr-only">Toggle navigation</span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="{{ HOME_PATH }}">
-		        <img src="{{ BASE_PATH }}/images/avatar.png", style="width:110px;height:110px;">
-	          </a>
-	          <a class="navbar-brand" href="{{ HOME_PATH }}">
-				        <h1>Ven Popov</h1>
-				        PhD student, Cognitive neuroscience,</br>
-						Carnegie Mellon University</br>
-						Center for the Neural Basis of Cognition            
-	          </a>
-	        </div>
-
+      		<div class="col-lg-4">
+      		</div>
 	        <div class="collapse navbar-collapse navbar-header" id="jb-navbar-collapse">
 	          <ul class="nav navbar-nav">
 	          	<li><a href="{{ BASE_PATH }}/blog.html">Blog</a></li>
@@ -94,10 +78,36 @@
          <div class="row">
             <!-- Side Widget Well -->
             <div class="col-lg-4">
-	            <div class="well">
-	                <h4>Side Widget Well</h4>
-	                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
-	            </div>
+
+	          <a class="navbar-brand" href="{{ HOME_PATH }}">
+		        <img src="{{ BASE_PATH }}/images/avatar.png", style="width:115px;height:115px;">
+	          </a>
+	          <div class="well">
+				        <h1>Ven Popov</h1>
+				        PhD student</br>
+				        Cognitive neuroscience</br>
+						Carnegie Mellon University</br>
+	          </div>          
+	          <div class="well">
+	                <h4>Latest posts</h4>
+	                <ul>
+		   				{% for post in site.posts limit:10 %}
+		      				<li>&raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+		    			{% endfor %}
+		  			</ul>
+	                <h4>Recent comments</h4>
+	                <ul>
+		   				{% for comment in site.comments limit:10 %}
+		      				<li>&raquo; <a href="{{ comment.url }}">{{ comment.title }}</a></li>
+		    			{% endfor %}
+		  			</ul>
+	                <h4>Categories</h4>
+	                <ul>
+  						{% assign categories_list = site.categories %}
+  						{% include JB/categories_list %}
+  					</ul>
+	          </div>          
+
 	        </div>
             <!-- Blog Post Content Column -->
             <div class="col-md-8">
@@ -127,5 +137,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="{{ ASSET_PATH }}/js/bootstrap.min.js"></script>
+    <script id="dsq-count-scr" src="//venpopov.disqus.com/count.js" async></script>
   </body>
 </html>

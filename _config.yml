@@ -95,6 +95,12 @@ JB :
       colorscheme: light
     duoshuo :
       short_name : jekyllbootstrap
+
+  disqus_commments:
+    api_key:      etuw0oSHbH7Ogi72NUxzECW8ZPf7nAJUi4caVjktirYPwlvhyJnpDHzwM12FRVBE
+    api_secret:   0tGV4L4xgnMxYZeWgMLXd0FpM1osLR1yNjNTdKxcEJa5fTWSNa5lKNPfNzMjFgD8
+    forum_name:   venpopov.com
+    limit:        10
    
   # Settings for analytics helper
   # Set 'provider' to the analytics provider you want to use.
