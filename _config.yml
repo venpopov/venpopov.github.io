@@ -8,14 +8,13 @@ highlighter: rouge
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Jekyll Bootstrap
-tagline: Site Tagline
+title : Ven Popov
+tagline: Personal website
 author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username
-  feedburner : feedname
+  name : Vencislav Popov
+  email : vencislav Popov
+  github : venpopov
+  twitter : venpopov
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 
@@ -84,7 +83,7 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : jekyllbootstrap
+      short_name : venpopov
     livefyre :
       site_id : 123
     intensedebate :
@@ -106,7 +105,7 @@ JB :
     gauges :
         site_id : 'SITE ID'
     google : 
-        tracking_id : 'UA-123-12'
+        tracking_id : 'UA-88745494-1'
     getclicky :
       site_id : 
     mixpanel :
