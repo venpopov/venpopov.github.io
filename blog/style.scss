@@ -1,289 +1,255 @@
----
----
-
-//
-// IMPORTS
-//
-
-@import "reset";
-@import "variables";
-// Syntax highlighting @import is at the bottom of this file
-
-/**************/
-/* BASE RULES */
-/**************/
-
-html {
-  font-size: 100%;
-}
+@import url(https://fonts.googleapis.com/css?family=Lato:400italic,700italic,300,700);
 
 body {
-	background: $white;
-  font: 18px/1.4 $helvetica;
-  color: $darkGray;
-}
-
-.container {
-  margin: 0 auto;
-  max-width: 740px;
-  padding: 0 10px;
-  width: 100%;
+  padding:50px;
+  font: 14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color:#444;
+  font-weight:300;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $helveticaNeue;
-  color: $darkerGray;
-  font-weight: bold;
+  color:#222;
+  margin:0 0 20px;
+}
 
-  line-height: 1.7;
-  margin: 1em 0 15px;
-  padding: 0;
+p, ul, ol, table, pre, dl {
+  margin:0 0 20px;
+}
 
-  @include mobile {
-    line-height: 1.4;
-  }
+h1, h2, h3 {
+  line-height:1.1;
 }
 
 h1 {
-  font-size: 30px;
-  a {
-    color: inherit;
-  }
+  font-size:28px;
 }
 
 h2 {
-  font-size: 24px;
+  color:#393939;
 }
 
-h3 {
-  font-size: 20px;
-}
-
-h4 {
-  font-size: 18px;
-  color: $gray;
-}
-
-p {
-  margin: 15px 0;
+h3, h4, h5, h6 {
+  color:#494949;
 }
 
 a {
-  color: $blue;
-  text-decoration: none;
-	cursor: pointer;
-  &:hover, &:active {
-    color: $blue;
-  }
+  color:#39c;
+  font-weight:400;
+  text-decoration:none;
 }
 
-ul, ol {
-  margin: 15px 0;
-  padding-left: 30px;
+a small {
+  font-size:11px;
+  color:#777;
+  margin-top:-0.6em;
+  display:block;
 }
 
-ul {
-  list-style-type: disc;
+.wrapper {
+  width:860px;
+  margin:0 auto;
 }
 
-ol {
-  list-style-type: decimal;
+blockquote {
+  border-left:1px solid #e5e5e5;
+  margin:0;
+  padding:0 0 0 20px;
+  font-style:italic;
 }
 
-ol ul, ul ol, ul ul, ol ol {
-  margin: 0;
+code, pre {
+  font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  color:#333;
+  font-size:12px;
 }
 
-ul ul, ol ul {
-  list-style-type: circle;
+pre {
+  padding:8px 15px;
+  background: #f8f8f8;
+  border-radius:5px;
+  border:1px solid #e5e5e5;
+  overflow-x: auto;
 }
 
-em, i {
-  font-style: italic;
+table {
+  width:100%;
+  border-collapse:collapse;
 }
 
-strong, b {
-  font-weight: bold;
+th, td {
+  text-align:left;
+  padding:5px 10px;
+  border-bottom:1px solid #e5e5e5;
+}
+
+dt {
+  color:#444;
+  font-weight:700;
+}
+
+th {
+  color:#444;
 }
 
 img {
-  max-width: 100%;
+  max-width:100%;
 }
 
-// Fixes images in popup boxes from Google Translate
-.gmnoprint img {
-  max-width: none;
+header {
+  width:270px;
+  float:left;
+  position:fixed;
 }
 
-.date {
-  font-style: italic;
-  color: $gray;
+header ul {
+  list-style:none;
+  height:40px;
+
+  padding:0;
+
+  background: #eee;
+  background: -moz-linear-gradient(top, #f8f8f8 0%, #dddddd 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f8f8f8), color-stop(100%,#dddddd));
+  background: -webkit-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  background: -o-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  background: -ms-linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+  background: linear-gradient(top, #f8f8f8 0%,#dddddd 100%);
+
+  border-radius:5px;
+  border:1px solid #d2d2d2;
+  box-shadow:inset #fff 0 1px 0, inset rgba(0,0,0,0.03) 0 -1px 0;
+  width:270px;
 }
 
-// Specify the color of the selection
-::-moz-selection {
-  color: $black;
-  background: $lightGray;
-}
-::selection {
-  color: $black;
-  background: $lightGray;
+header li {
+  width:89px;
+  float:left;
+  border-right:1px solid #d2d2d2;
+  height:40px;
 }
 
-// Nicolas Gallagher's micro clearfix hack
-// http://nicolasgallagher.com/micro-clearfix-hack/
-.clearfix:before,
-.clearfix:after {
-    content: " ";
-    display: table;
+header ul a {
+  line-height:1;
+  font-size:11px;
+  color:#999;
+  display:block;
+  text-align:center;
+  padding-top:6px;
+  height:40px;
 }
 
-.clearfix:after {
-    clear: both;
+strong {
+  color:#222;
+  font-weight:700;
 }
 
-/*********************/
-/* LAYOUT / SECTIONS */
-/*********************/
-
-//
-// .masthead
-//
-
-.wrapper-masthead {
-  margin-bottom: 50px;
+header ul li + li {
+  width:88px;
+  border-left:1px solid #fff;
 }
 
-.masthead {
-  padding: 20px 0;
-  border-bottom: 1px solid $lightGray;
-
-  @include mobile {
-    text-align: center;
-  }
+header ul li + li + li {
+  border-right:none;
+  width:89px;
 }
 
-.site-avatar {
-  float: left;
-  width: 70px;
-  height: 70px;
-  margin-right: 15px;
-
-  @include mobile {
-    float: none;
-    display: block;
-    margin: 0 auto;
-  }
-
-  img {
-    border-radius: 5px;
-  }
+header ul a strong {
+  font-size:14px;
+  display:block;
+  color:#222;
 }
 
-.site-info {
-  float: left;
-
-  @include mobile {
-    float: none;
-    display: block;
-    margin: 0 auto;
-  }
+section {
+  width:500px;
+  float:right;
+  padding-bottom:50px;
 }
 
-.site-name {
-  margin: 0;
-  color: $darkGray;
-  cursor: pointer;
-  font-family: $helveticaNeue;
-  font-weight: 300;
-  font-size: 28px;
-  letter-spacing: 1px;
+small {
+  font-size:11px;
 }
 
-.site-description {
-  margin: -5px 0 0 0;
-  color: $gray;
-  font-size: 16px;
-
-  @include mobile {
-    margin: 3px 0;
-  }
-}
-
-nav {
-  float: right;
-  margin-top: 23px; // @TODO: Vertically middle align
-  font-family: $helveticaNeue;
-  font-size: 18px;
-
-  @include mobile {
-    float: none;
-    margin-top: 9px;
-    display: block;
-    font-size: 16px;
-  }
-
-  a {
-    margin-left: 20px;
-    color: $darkGray;
-    text-align: right;
-    font-weight: 300;
-    letter-spacing: 1px;
-
-    @include mobile {
-      margin: 0 10px;
-      color: $blue;
-    }
-  }
-}
-
-//
-// .main
-//
-
-.posts > .post {
-  padding-bottom: 2em;
-  border-bottom: 1px solid $lightGray;
-}
-
-.posts > .post:last-child {
-  padding-bottom: 1em;
-  border-bottom: none;
-}
-
-.post {
-  blockquote {
-    margin: 1.8em .8em;
-    border-left: 2px solid $gray;
-    padding: 0.1em 1em;
-    color: $gray;
-    font-size: 22px;
-    font-style: italic;
-  }
-
-  .comments {
-    margin-top: 10px;
-  }
-
-  .read-more {
-    text-transform: uppercase;
-    font-size: 15px;
-  }
-}
-
-.wrapper-footer {
-  margin-top: 50px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  background-color: $lightGray;
+hr {
+  border:0;
+  background:#e5e5e5;
+  height:1px;
+  margin:0 0 20px;
 }
 
 footer {
-  padding: 20px 0;
-  text-align: center;
+  width:270px;
+  float:left;
+  position:fixed;
+  bottom:50px;
 }
 
-// Settled on moving the import of syntax highlighting to the bottom of the CSS
-// ... Otherwise it really bloats up the top of the CSS file and makes it difficult to find the start
-@import "highlights";
-@import "svg-icons";
+@media print, screen and (max-width: 960px) {
+
+  div.wrapper {
+    width:auto;
+    margin:0;
+  }
+
+  header, section, footer {
+    float:none;
+    position:static;
+    width:auto;
+  }
+
+  header {
+    padding-right:320px;
+  }
+
+  section {
+    border:1px solid #e5e5e5;
+    border-width:1px 0;
+    padding:20px 0;
+    margin:0 0 20px;
+  }
+
+  header a small {
+    display:inline;
+  }
+
+  header ul {
+    position:absolute;
+    right:50px;
+    top:52px;
+  }
+}
+
+@media print, screen and (max-width: 720px) {
+  body {
+    word-wrap:break-word;
+  }
+
+  header {
+    padding:0;
+  }
+
+  header ul, header p.view {
+    position:static;
+  }
+
+  pre, code {
+    word-wrap:normal;
+  }
+}
+
+@media print, screen and (max-width: 480px) {
+  body {
+    padding:15px;
+  }
+
+  header ul {
+    display:none;
+  }
+}
+
+@media print {
+  body {
+    padding:0.4in;
+    font-size:12pt;
+    color:#444;
+  }
+}
