@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-	<!-- Google Tag Manager -->
-	<script>
-		(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-		})(window,document,'script','dataLayer','GTM-5V9VFSP');
-	</script>
-	<!-- End Google Tag Manager -->   
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<head>
+  <!-- Google Tag Manager -->
+  <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5V9VFSP');
+</script>
+<!-- End Google Tag Manager -->   
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{{ page.title }}</title>
-    {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
-    <meta name="author" content="{{ site.author.name }}">
-    <meta name="keywords" content="Vencislav Popov, Vencislav, Popov">
+<title>{{ page.title }}</title>
+{% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
+<meta name="author" content="{{ site.author.name }}">
+<meta name="keywords" content="Vencislav Popov, Vencislav, Popov">
 
-    <!-- Enable responsive viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Enable responsive viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap styles -->
-    <link href="{{ ASSET_PATH }}/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Optional theme -->
-    <link href="{{ ASSET_PATH }}/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Sticky Footer -->
-    <link href="{{ ASSET_PATH }}/css/bs-sticky-footer.css" rel="stylesheet">
-    
-    <!-- Custom styles -->
-    <link href="{{ ASSET_PATH }}/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+<!-- Bootstrap styles -->
+<link href="{{ ASSET_PATH }}/css/bootstrap.min.css" rel="stylesheet">
+<!-- Optional theme -->
+<link href="{{ ASSET_PATH }}/css/bootstrap-theme.min.css" rel="stylesheet">
+<!-- Sticky Footer -->
+<link href="{{ ASSET_PATH }}/css/bs-sticky-footer.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!-- Custom styles -->
+<link href="{{ ASSET_PATH }}/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
+      <![endif]-->
 
-    <!-- Fav and touch icons -->
+      <!-- Fav and touch icons -->
     <!-- Update these with your own images
       <link rel="shortcut icon" href="images/favicon.ico">
       <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
@@ -55,88 +55,104 @@
   <body>
     <div id="wrap">
       <nav class="navbar navbar-fixed-top navbar-default" role="navigation">
-      	<div class="container">
-      		<div class="col-lg-4">
-      		</div>
-	        <div class="collapse navbar-collapse navbar-header" id="jb-navbar-collapse">
-	          <ul class="nav navbar-nav">
-	          	<li><a href="{{ BASE_PATH }}/blog.html">Blog</a></li>
-	          	<li><a href="{{ BASE_PATH }}/research.html">Research</a></li>
-	          	<li><a href="{{ BASE_PATH }}/publications.html">Publications</a></li>
-	          	<li><a href="{{ BASE_PATH }}/conferences.html">Presentations</a></li>
-	          	<li><a href="{{ BASE_PATH }}/education.html">Educations</a></li>
-	          	<li><a href="{{ BASE_PATH }}/cv.pdf">CV</a></li>
-	          	<li><a href="{{ BASE_PATH }}/about.html">About me</a></li>
-	          </ul>
-	      	</div>
-	    </div>
+        <div class="container nav">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#jb-navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div class="collapse navbar-collapse" id="jb-navbar-collapse">
+            <div class="col-lg-4 nav">
+              <ul class='contact navbar-header nav'>
+                <li><a target="_blank" href="mailto:vencislav.popov@gmail.com"><img src="{{ BASE_PATH }}/images/email.png" class="contact"></a></li>
+                <li><a target="_blank" href="https://www.facebook.com/venpopov1"><img src="{{ BASE_PATH }}/images/facebook.png", class="contact"></a></li>
+                <li><a target="_blank" href="https://twitter.com/venpopov"><img src="{{ BASE_PATH }}/images/twitter.jpg", class="contact"></a></li>
+                <li><a target="_blank" href="https://scholar.google.com/citations?user=p5z5UPgAAAAJ"><img src="{{ BASE_PATH }}/images/googlescholar.png", class="contact"></a></li>
+                <li><a target="_blank" href="https://www.researchgate.net/profile/Vencislav_Popov"><img src="{{ BASE_PATH }}/images/rg.jpg", class="contact"></a></li>
+              </ul>
+            </div>
+            <div class="col-lg-8 nav">
+              <ul class="nav navbar-nav">
+                <li><a href="{{ BASE_PATH }}/blog.html">Blog</a></li>
+                <li><a href="{{ BASE_PATH }}/research.html">Research</a></li>
+                <li><a href="{{ BASE_PATH }}/publications.html">Publications</a></li>
+                <li><a href="{{ BASE_PATH }}/conferences.html">Presentations</a></li>
+                <li><a href="{{ BASE_PATH }}/education.html">Education</a></li>
+                <li><a href="{{ BASE_PATH }}/cv.pdf">CV</a></li>
+                <li><a href="{{ BASE_PATH }}/about.html">About me</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </nav>
 
 
-<!-- Page Content -->
-    <div class="container">
-         <div class="row">
-            <!-- Side Widget Well -->
-            <div class="col-lg-4">
-
-	          <a class="navbar-brand" href="{{ HOME_PATH }}">
-		        <img src="{{ BASE_PATH }}/images/avatar.png", style="width:115px;height:115px;">
-	          </a>
-	          <div class="well">
-				        <h1>Ven Popov</h1>
-				        PhD student</br>
-				        Cognitive neuroscience</br>
-						Carnegie Mellon University</br>
-	          </div>          
-	          <div class="well">
-	                <h4>Latest posts</h4>
-	                <ul>
-		   				{% for post in site.posts limit:10 %}
-		      				<li>&raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-		    			{% endfor %}
-		  			</ul>
-	                <h4>Recent comments</h4>
-	                <ul>
-		   				{% for comment in site.comments limit:10 %}
-		      				<li>&raquo; <a href="{{ comment.url }}">{{ comment.title }}</a></li>
-		    			{% endfor %}
-		  			</ul>
-	                <h4>Categories</h4>
-	                <ul>
-  						{% assign categories_list = site.categories %}
-  						{% include JB/categories_list %}
-  					</ul>
-	          </div>          
-
-	        </div>
-            <!-- Blog Post Content Column -->
-            <div class="col-md-8">
-            {{ content }}
-            </div>
+      <!-- Page Content -->
+      <div class="container">
+       <div class="row">
+        <!-- Side Widget Well -->
+        <div class="col-lg-4">
+          <a class="navbar-brand" href="{{ HOME_PATH }}">
+            <img src="{{ BASE_PATH }}/images/avatar.png", style="width:115px;height:115px;">
+          </a>
+          <div class="well">
+            <h1>Ven Popov</h1>
+            PhD student</br>
+            Cognitive neuroscience</br>
+            Carnegie Mellon University</br>
+          </div>       
+          <div class="well">
+            <h4>Latest posts</h4>
+            <ul>
+              {% for post in site.posts limit:10 %}
+              <li>&raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
+              {% endfor %}
+            </ul>
+            <h4>Recent comments</h4>
+            <ul>
+              {% for comment in site.comments limit:10 %}
+              <li>&raquo; <a href="{{ comment.url }}">{{ comment.title }}</a></li>
+              {% endfor %}
+            </ul>
+            <h4>Categories</h4>
+            <ul>
+              {% assign categories_list = site.categories %}
+              {% include JB/categories_list %}
+            </ul>
+          </div>          
         </div>
-        <!-- /.row -->
+        <!-- Blog Post Content Column -->
+        <div class="col-md-8">
+          {{ content }}
+        </div>
+      </div>
+      <!-- /.row -->
 
-        <hr>
+      <hr>
 
-        <!-- Footer -->
+      <!-- Footer -->
 <!--         <footer>
             <div class="row">
                 <div class="col-lg-12">
                     <p>&copy; {{ site.time | date: '%Y' }} {{ site.author.name }}</p>
                 </div>
             </div>
-        </footer> -->
+          </footer> -->
 
-    </div>
-    <!-- /.container -->
+        </div>
+      </div>
+      <!-- /.container -->
 
-    {% include JB/analytics %}
+      {% include JB/analytics %}
 
 
-    <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ ASSET_PATH }}/js/bootstrap.min.js"></script>
-    <script id="dsq-count-scr" src="//venpopov.disqus.com/count.js" async></script>
-  </body>
-</html>
+      <!-- Latest compiled and minified JavaScript, requires jQuery 1.x (2.x not supported in IE8) -->
+      <!-- Placed at the end of the document so the pages load faster -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+      <script src="{{ ASSET_PATH }}/js/bootstrap.min.js"></script>
+      <script id="dsq-count-scr" src="//venpopov.disqus.com/count.js" async></script>
+    </body>
+    </html>
