@@ -1,0 +1,180 @@
+---
+title: Working with multiple versions of an R package
+subtitle: After being dissatisfied with existing solutions, I wrote a package to do that
+categories: [R]
+image: juggling.png # source https://www.pexels.com/photo/a-woman-doing-juggling-8895421/
+date: "2024-03-03"
+---
+
+## The Problem
+
+Have you ever wanted to test whether your code works with multiple versions of an R package? Or compare how the behavior of certain functions has changed? There are several ways to do that, each involving a lot of setup.
+
+### Base R
+
+The way to work with different package versions in base R requires you to manually specify a folder in which to install each version. Let's assume your current version of the package `stringr` is 1.4.0, and you want to install separately the latest version (as of the time of this writing, 1.5.1). The following will install `stringr` in a folder `stringr-new` in your user home folder:
+
+``` r
+dir.create('~/stringr-new')
+install.packages('stringr', lib = "~/stringr-new")
+```
+
+Afterwards, you can load the default package with
+
+``` r
+library(stringr)
+```
+
+and the new version with
+
+``` r
+library(stringr, lib.loc = "~/stringr-new")
+```
+
+A few issues with this approach:
+
+-   You have to manually specify the folder for each version. And remember what it was when you want to use it again.
+-   You have to remember to specify the `lib.loc` argument every time you want to use the new version.
+-   You have to remember to detach the old version before loading the new one.
+-   You cannot install a specific version of a package from CRAN. You have to download the tarball from CRAN, extract it, and install it from the extracted folder.
+-   You have to do this one by one for each package you want to test.
+
+### remotes::install_version
+
+We can augment the base R approach with the `remotes` package, which provides the `install_version` function. This function allows you to install a specific version of a package from CRAN. The following will install `stringr` version 1.5.1 in a folder `stringr-new` in your user home folder:
+
+``` r
+dir.create('~/stringr-new')
+remotes::install_version('stringr', version = '1.5.1', lib = "~/stringr-new")
+```
+
+Loading the packages is the same as before. This approach solves the issue of having to download and install a specific version of a package from CRAN. However, it does not solve the other issues.
+
+### renv
+
+The `renv` package is a package manager for R. It allows you to create a project-specific library, and to specify the versions of packages you want to use in a `renv.lock` file. It allows for a completely reproducible environment, and is the best solution for that purpose. However, it can be an overkill if you just want to test a few versions of a package. For an introduction to `renv`, see [this blog post](https://rstudio.github.io/renv/articles/renv.html).
+
+## Introducing `Vmisc`: pkg_vload()
+
+I was dissatisfied with the existing solutions, so I wrote a package to do that. The `Vmisc` package provides the `pkg_vload` function, which allows you to load a specific version of a package, or to install it if it is not already installed. You can start by installing and loading the package:
+
+``` r
+install.packages('Vmisc', repos = c('https://popov-lab.r-universe.dev'))
+library(Vmisc)
+```
+
+The function `pkg_vload` combines the functionality of library(), remotes::install_version(), and dir.create(), and it also allows you to list as many packages as you want. The simplest option, for everyday use, is to specify just the package names, as you would with library():
+
+``` r
+pkg_vload(stringr, dplyr, ggplot2)
+```
+
+If you already have the package installed, it will load the default version. If you don't, it will install the latest version from CRAN in the default library. This use case is identical to `xfun::pkg_load()`, but there is some added functionality for handling different versions of a package.
+
+To load a specific version, you can specify the version argument:
+
+``` r
+pkg_vload(stringr('1.5.1'), dplyr, ggplot2)
+```
+
+The function expects a call to the package name, followed by the version in parentheses. It will also recognize if the version you specified is already installed. For example, if you already have `stringr` version 1.5.1 installed the good old way, it will load it from the default library. And you will see the following output:
+
+``` r
+#> Loading required package: stringr
+#> Loading required package: dplyr
+#> Attaching package: ‘dplyr’
+#> Attaching package: ‘ggplot2’
+```
+
+But let's say we want to install version 1.0.0 of stringr. We can do that with the following:
+
+``` r
+pkg_vload(stringr('1.0.0'))
+```
+
+which results in
+
+``` r
+#> Downloading package from url: https://cran.rstudio.com//src/contrib/Archive/stringr/stringr_1.0.0.tar.gz
+#> * installing *source* package 'stringr' ...
+#> ** package 'stringr' successfully unpacked and MD5 sums checked
+#> ** using staged installation
+#> ** ## output omitted ##
+#> * DONE (stringr)
+#> Loading required package: stringr
+```
+
+pkg_vload has created a folder `stringr-1.0.0` in the default library path, installed the package there, and loaded it from there. The following two folders now coexist:
+
+``` r
+dirs = list.dirs(.libPaths(), recursive = FALSE)
+dirs[grepl('stringr', dirs)]
+#> [1] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr"
+#> [2] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr-1.0.0"
+```
+
+`pkg_vload(stringr('1.0.0'))` not only installed the package but also loaded it. If you restart your session, you can load either versions by simply using `pkg_vload(stringr)` or `pkg_vload(stringr('1.0.0'))`.
+
+``` r
+pkg_vload(stringr('1.0.0')) # for version 1.0.0
+pkg_vload(stringr) # for the default version
+```
+
+Benefits of using `pkg_vload`:
+
+-   vectorized: you can load multiple packages at once
+-   if a package exists, it will be loaded, otherwise it will be installed and loaded
+-   you can specify the version of the package you want to load/install, without having to specify the library path (although you can)
+-   you can install as many versions of a package as you want, and they will coexist in the same library path
+-   you can switch which version will be the default with another function from the package, `pkg_switch_default`
+
+## Switching the default version of a package
+
+The `Vmisc` package also provides a function to switch the default version of a package. For example, if you have versions 1.0.0 and 1.5.1 of `stringr` installed, and you want to make 1.0.0 the default, you can do that with the following:
+
+``` r
+pkg_switch_default('stringr', '1.0.0')
+#> The default version of stringr has been switched to 1.0.0. The previous default version has been renamed to stringr-1.5.1
+#> Please restart R to complete the process.
+```
+
+What this will do is rename the folder `stringr` to `stringr-1.5.1` and `stringr-1.0.0` to `stringr`. After you restart your session, `pkg_vload(stringr)` or even just `library(stringr)` will load version 1.0.0. You can also switch back to the default version with:
+
+``` r
+pkg_switch_default('stringr', '1.5.1')
+#> The default version of stringr has been switched to 1.5.1. The previous default version has been renamed to stringr-1.0.0
+#> Please restart R to complete the process.
+```
+
+## Conclusion
+
+Although not a replacement for `renv` for reproducible environments, `Vmisc` provides a simple way to work with multiple versions of an R package. It is especially useful for testing and comparing different versions of a package. The package is available on my [R-universe](https://popov-lab.r-universe.dev) and on [GitHub](https://github.com/venpopov/Vmisc). It was inspired by the `xfun` package, and contains other functions that I found useful in my everyday work. I hope you find it useful too.
+
+## Bonus: finding all global options used by a package
+
+The `Vmisc` package also provides a function to find all global options used by a package. These are options you can set via `options()`, but they are rarely well documented in the package documentation. The function `packageOptions` will list all global options used by a package, and their default values. For example, to find all global options used by the `brms` package, you can use the following:
+
+``` r
+packageOptions('brms')
+
+#> Package brms current options:
+#> 
+#> brms.save_pars       :  NULL 
+#> mc.cores             :  1 
+#> brms.threads         :  NULL 
+#> brms.opencl          :  NULL 
+#> brms.normalize       :  TRUE 
+#> brms.algorithm       :  "sampling" 
+#> brms.backend         :  "rstan" 
+#> future               :  FALSE 
+#> brms.file_refit      :  "never" 
+#> wiener_backend       :  "Rwiener" 
+#> brms.verbose         :  FALSE 
+#> shinystan.rstudio    :  FALSE 
+#> brms.plot_points     :  FALSE 
+#> brms.plot_rug        :  FALSE 
+#> brms.short_summary   :  FALSE 
+#> .brmsfit_version     :  NULL 
+```
+
+The function is experimental - it scrapes the source code of the package to find mentions of getOption('something', default = something). It also does not provide documentation. But I found it useful for reminding myself of the options I can set for a package, and their default values.

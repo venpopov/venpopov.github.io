@@ -1,0 +1,149 @@
+---
+title: "Publications"
+subtitle: "A list of my academic publications with links to papers, data and code"
+title-block-banner: true
+---
+
+## Works in progress
+
+[**Popov, V.**]{.underline} & Oberauer, K. (submitted). How to build an observatory for the mind
+
+Trueblood, J. S., Allison, D., Field, S. M., Fishbach, A., Gaillard, S. D. M., Gigerenzer, G., … **Popov, V.**,... Teodorescu, A. (submitted). The Misalignment of Incentives in Academic Publishing and Implications for Journal Reform. Preprint available at [OSF](https://doi.org/10.31234/osf.io/jrczf)
+
+Binz, M., Alaniz, S., Roskies, A., Aczel, B., Bergstrom, C. T., Allen, C., … **Popov, V.** … Schulz, E. (submitted). How should the advent of large language models affect the practice of science?. Preprint available at [OSF](https://doi.org/10.31219/osf.io/yr9xb)
+
+[**Popov, V.**]{.underline} (under review). Cognitive resources can be intentionally released when processed information becomes irrelevant: Insights from the primacy effect in working memory. Preprint available at [PsyArXiv](https://psyarxiv.com/gct58)
+
+[**Popov, V.**]{.underline} (under revision). If God Handed Us the Ground-Truth Theory of Memory, How Would We Recognize It? Preprint available at [OSF](https://osf.io/preprints/psyarxiv/ay5cm)
+
+Ma, S., [**Popov, V.**]{.underline} , & Zhang, Q. (under revision). A Neural Index Reflecting the Amount of Cognitive Resources Available during Memory Encoding: A Model-based Approach. Preprint available at [biorxiv](https://www.biorxiv.org/content/10.1101/2022.08.16.504058v1)
+
+Frischkorn, G.\* & [**Popov, V.\***]{.underline} (co-first authors) (under revision). A tutorial for estimating mix- ture models for visual working memory tasks in brms: Introducing the Bayesian Measurement Modeling (bmm) package for R. Preprint available at [psyarxiv](https://psyarxiv.com/umt57)
+
+## Journal publications
+
+::: {layout="[[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9]]"}
+2024
+
+Dames, H., Musfeld, P., [**Popov, V.,**]{.underline} Oberauer, K., & Frischkorn, G. (in press). Responsible Research Assessment Should Prioritize Theory Development and Testing Over Ticking Open Science Boxes. *Meta-psychology.* Preprint available at https://psyarxiv.com/ad74m/
+
+2023
+
+Dames, H. & **Popov, V.** (2023). When does intenet matter for memory? Bridging perspectives with Craik. *Journal of Experimental Psychology: General. 152*(11), 3300–3309
+
+\
+
+**Popov, V.** & Dames, H. (2023). Intent Matters: Resolving the Intentional vs Incidental Learning Paradox in Episodic Long-term Memory. *Journal of Experimental Psychology: General.* \[[Preprint](https://psyarxiv.com/jf2en)\] \[[Data & Code](https://github.com/venpopov/intentional-incidental-ltm-paradox)\]
+
+2022
+
+Norton, C. M., Ibinson, J. W., Pcola, S. J., **Popov, V.**, Tremel, J. J., Reder, L. M., ... & Vogt, K. M. (2022). Neutral auditory words immediately followed by painful electric shock may show reduced next-day recollection. *Experimental Brain Research, 1-13.*
+
+2021
+
+**Popov, V.,** So, M. & Reder, L. (2021). Memory resources recover gradually over time: The effects of word-frequency, presentation rate and list-composition on binding errors and mnemonic precision in source memory. *Journal of Experimental Psychology: Learning, Memory & Cognition*. [\[PDF\]](http://venpopov.com/papers/popov-so-reder-freq-rate-interaction-jeplmc2021.pdf)[\[Data & Code\]](https://github.com/venpopov/frequency-rate-interaction)
+
+\
+
+Vogt, K., Ibinson, J., Smith, C., Citro, A., Norton, C., Karim, H., **Popov, V.**, Mahajan, A., Aizenstein, H., Reder, L. & Fiez, J. (2021). Midazolam and ketamine produce distinct neural changes in memory, pain, and fear networks during pain. *Anesthesiology 135* (1), 69-82
+
+2020
+
+**Popov, V.** & Reder, L. (2020). Greater discrimination difficulty during perceptual learning leads to stronger and more distinct representations. *Psychonomic Bulletin & Review.* Advance Online Publication. [\[PDF\]](http://venpopov.com/papers/popov_reder_similarity_pbr2020.pdf) [\[Data & Code\]](https://github.com/venpopov/similarity-discrimination-learning)
+
+\
+
+[**Popov, V.**]{.underline} & Reder, L. (2020). Frequency Effects on Memory: A Resource-Limited Theory. *Psychological Review. 127*(1), 1–46.  [\[PDF\]](http://venpopov.com/papers/popov_reder_psychreview2020.pdf) [\[Preprint\]](http://doi.org/10.17605/OSF.IO/DSX6Y) [\[Data & Code\]](https://github.com/venpopov/prior-item-effects)
+
+\
+
+Vassileva, J., Psedarska, E., Yankov, G., Bozgunov, K., **Popov, V**. & Vasilev, G. (2020). Validation of the Levenson Self-Report Psychopathy Scale in Bulgarian Substance Dependent Individuals. *Frontiers in Psychology*
+
+2019
+
+[**Popov, V.**]{.underline}, Marevic, I., Rummel, J. & Reder, L. (2019). Forgetting is a Feature, not a Bug: Intentionally Forgetting Some Things Helps Us Remember Others by Freeing up Working Memory Resources. *Psychological Science.* *30*(9), 1303-1317. [\[PDF\]](http://venpopov.com/papers/popov-df-psci2019.pdf) [\[Preregistration\]](https://osf.io/nz6cq/) \[\[Data, Stimuli & Code\]\]
+
+\
+
+[**Popov, V.**]{.underline}, Zhang, Q., Koch, G., Halloway, R. & Coutanche, M. (2019). Semantic knowledge influences whether novel episodic associations are represented symmetrically or asymmetrically. *Memory & Cognition.* Advanced Online Publication [\[Preregistration\]](https://osf.io/rdsw5/) [\[Preprint\] ](https://psyarxiv.com/6pgjn/)[\[Stimuli, data & code\]](https://osf.io/72amw/)
+
+2018
+
+[**Popov, V.\***]{.underline}, Ostarek, M.\*, & Tenison, C. (2018). Practices and Pitfalls in Inferring Neural Representations. *NeuroImage, 174,* 340-351. [\[PDF\]](http://venpopov.com/papers/popov-ostarek-tenison-decoding-nimg2017.pdf) [\[Preprint\]](https://www.biorxiv.org/content/early/2017/10/16/141283) [\[Code\]](https://github.com/venpopov/inferential_pitfalls)
+
+\
+
+Shen, Z.\*, [**Popov, V.\* (co-first authors)**]{.underline}, Delahay, A., & Reder, L. (2018). Item Strength Affects Working Memory Capacity. *Memory & Cognition, 46*(2), 204-215. [\[PDF\]](http://venpopov.com/papers/shen-et-al-mc2018.pdf)
+
+2017
+
+[**Popov, V.**]{.underline}, Hristova, P., & Anders, R. (2017). The Relational Luring Effect: Retrieval of relational information during associative recognition. *Journal of Experimental Psychology: General, 146*(5), 722-745 [\[PDF\]](http://venpopov.com/papers/popov-hristova-anders-jepg2017.pdf)
+
+\
+
+Manelis, A.\*, [**Popov, V.\* (co-first authors)**]{.underline}, Paynter, C., Walsh, M., Wheeler, M., Vogt, K., & Reder, L. (2017). Cortical Networks Involved in Memory for Temporal Order. *Journal of Cognitive Neuroscience, 29*(7), 1253-1266. [\[PDF\]](http://venpopov.com/papers/manelis-popov-temporal-order-jocn2017.pdf)
+
+2016
+
+Reder, L. M., Liu, X. L., Keinath, A., & **Popov, V.** (2016). Building knowledge requires bricks, not sand: The critical role of familiar constituents in learning. *Psychonomic Bulletin & Review, 23*(1), 271-277. [\[PDF\]](http://venpopov.com/papers/reder-et-al-pbr2015.pdf)[\[Data\]](https://static-content.springer.com/esm/art%3A10.3758%2Fs13423-015-0889-1/MediaObjects/13423_2015_889_MOESM1_ESM.zip)
+
+2015
+
+**Popov, V.** & Hristova, P. (2015). Unintentional and efficient relational priming. *Memory & Cognition, 46*(6), 866-878. [\[PDF\]](popov_hristova_relational_priming_published_2015.pdf)
+:::
+
+## Refereed full conference papers
+
+::: {layout="[[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9]]"}
+2018
+
+Zhang, Q.\*, **Popov, V.\*** (co-first authors), Koch, G., Halloway, R. & Coutanche, M. (2018). Fast Memory Integration Facillitated by Schema Consistency. In C. Kalish, M. Rau, J. Zhu, T. Rogers (Eds.), *Proceedings of the 40th Annual Conference of the Cognitive Science Society.* Austin, TX: Cognitive Science Society.
+
+2017
+
+[**Popov, V.**]{.underline} , Ostarek, M., & Tenison, C. (2017). Inferential Pitfalls in Decoding Neural representations. In G. Gunzelmann, A. Howes, T. Tenbrink, & E. Davelaar (Eds.), *Proceedings of the 39th Annual Conference of the Cognitive Science Society* (pp. 961-966). Austin, TX: Cognitive Science Society. 
+
+\
+
+[**Popov, V.**]{.underline} , & Reder, L. (2017). Target-to-distractor similarity can help visual search performance. In G. Gunzelmann, A. Howes, T. Tenbrink, & E. Davelaar (Eds.), *Proceedings of the 39th Annual Conference of the Cognitive Science Society* (pp. 968–973). Austin, TX: Cognitive Science Society. [[**PDF**]{.underline}](http://venpopov.com/papers/popov-reder-similarity-cogsci2017.pdf)
+
+\
+
+[**Popov, V.**]{.underline} , & Reder, L. (2017). Repetition improves memory by strengthening existing traces: Evidence from paired-associate learning under midazolam. In G. Gunzelmann, A. Howes, T. Tenbrink, & E. Davelaar (Eds.), *Proceedings of the 39th Annual Conference of the Cognitive Science Society [[**PDF**]{.underline}](http://venpopov.com/papers/popov-reder-midazolam-cogsci2017.pdf)* (pp. 2913-2918). Austin, TX: Cognitive Science Society.
+
+2014
+
+[**Popov, V.**]{.underline} & Hristova, P. (2014). Automatic analogical reasoning underlies structural priming in comprehension of ambiguous sentences. In P. Bello, M. Guarini, M. McShane, & B. Scassellati (Eds.), *Proceedings of the 36th Annual Conference of the Cognitive Science Society* (pp. 1192-1197). Austin, TX: Cognitive Science Society. [[**PDF**]{.underline}](http://venpopov.com/papers/popov-structural-priming-cogsci2014.pdf?pdf=popov-strpriming-cogsci2014)
+
+\
+
+[**Popov, V.**]{.underline} & Petkov, G. (2014). The level of processing affects the magnitude of induced retrograde amnesia. In P. Bello, M. Guarini, M. McShane, & B. Scassellati (Eds.), *Proceedings of the 36th Annual Conference of the Cognitive Science Society* (pp. 2787-2792). Austin, TX: Cognitive Science Society. 
+:::
+
+## Publications in Bulgarian
+
+::: {layout="[[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9],[1,9]]"}
+2016
+
+[**Popov, V.**]{.underline}, Nedelchev, D., Peneva, E., Psederska, E., Georgieva, V., Vasilev, G., Vassileva, J. (2016). Psychometric Characteristics of the Bulgarian Version of the Buss-Warren Aggression Questionnaire (BWAQ). *Clinical and Consulting Psychology, 4*(30), 37-53.
+
+\
+
+[**Popov, V.**]{.underline}, Psederska, E., Peneva, E., Bozgunov, K., Vasilev, G., Nedelchev, D., & Vassileva, J. (2016). Psychometric Characteristics of the Bulgarian Version of the Toronto Alexithymia Scale (TAS-20). *Psychological Research, 19*(2), 25-42 (in Bulgarian) [[**PDF**]{.underline}](http://venpopov.com/papers/popov-tas-bai-pr2016.pdf?pdf=popov-tas-2016)
+
+\
+
+Nedelchev, D., [**Popov, V.**]{.underline}, Psedarska, E., Bozgunov, K., Vasilev, G., Peneva, E., & Vassileva, J. (2016). Psychometric Characteristics of the Bulgarian Version of the Wender Utah Rating Scale (WURS-25) for ADHD. *Clinical and Consulting Psychology, 8*(2), 3-17 (in Bulgarian)
+
+2015
+
+**Popov, V.**, Bozgunov, K., Vasilev, G., & Vassileva, J. (2015). Psychometric Characteristics of the Bulgarian Version of Levenson’s Self-report Psychopathy Scale. *Bulgarian Journal of Psychology, 1-4*, 253-278 (in Bulgarian) [[**PDF**]{.underline}](http://venpopov.com/papers/popov-lsrp-bai-bjp2016.pdf?pdf=popov-lsrp-2016)
+:::
+
+## Book chapters
+
+**Popov, V.** & Reder, M. (in press). Frequency effects in recognition and recall. To appear In M. Kahana & A. Wagner (Eds.), *Handbook on Human Memory.* Oxford University Press [\[PDF\]](http://venpopov.com/papers/popov-reder-freq-chapter.pdf)
+
+## Unpublished manuscripts
+
+**Popov, V.,** Pavlova, M. & Hristova, P. (2020). The Internal Structure of Semantic Relations: Effects of Relational Similarity and Typicality. *PsyArxiv.* [\[Preprint\]](https://psyarxiv.com/fqd4b/)

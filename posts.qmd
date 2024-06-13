@@ -1,0 +1,15 @@
+---
+title: "Computational thinking"
+subtitle: "Thoughts on computational modeling, metascience, reproducibility, R, bayesian methods and more"
+listing:
+  feed: true
+  contents: posts
+  sort: "date desc"
+  type: grid
+  grid-columns: 3
+  image-height: 250px
+  page-size: 100
+  categories: true
+page-layout: full
+title-block-banner: true
+---

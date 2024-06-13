@@ -1,0 +1,28 @@
+# options specified here will apply to all posts in this folder
+
+# Freeze computed outputs
+freeze: true
+
+# Enable banner style title blocks
+title-block-banner: "#eeeeee"
+
+# Enable CC licence appendix
+license: "CC BY"
+
+# Default for table of contents
+toc: true
+toc-title: Table of contents
+toc-location: left
+
+# Default knitr options
+execute:
+  echo: true
+  message: true
+  warning: true
+
+# Default fields for citation
+citation: true
+author:
+  - name: Vencislav Popov
+    url: https://venpopov.com
+    orcid: 0000-0002-8073-4199

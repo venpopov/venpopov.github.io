@@ -1,0 +1,43 @@
+project:
+  type: website
+  resources:
+    - "papers/*.pdf"
+
+website:
+  title: "Ven Popov"
+  description: "Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich."
+  site-url: https://venpopov.com
+  image: images/venpopov.png
+  navbar:
+    logo: images/popov-lab-logo-transparent.png
+    pinned: true
+    left:
+      - href: index.qmd
+        text: About
+      - href: publications.qmd
+        text: Publications
+      - href: CV/index.qmd
+        text: CV
+      - text: R Packages
+        menu:
+          - href: https://venpopov.github.io/bmm/index.html
+            text: bmm (Bayesian Measurement Modeling
+          - href: https://venpopov.github.io/chkptstanr/index.html
+            text: chkptstanr (Checkpointing for Stan)
+          - href: https://venpopov.github.io/Vmisc/index.html
+            text: Vmisc (Miscellaneous R Functions)
+      - href: posts.qmd
+        text: Blog
+  draft-mode: unlinked
+
+format:
+  html:
+    theme: cosmo
+    css: styles.scss
+    toc: true
+
+editor: visual
+
+execute: 
+  freeze: auto
+  cache: true
