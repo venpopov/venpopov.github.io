@@ -7,3 +7,5 @@
 _site
 .vscode
 *.html
+
+/.quarto/
