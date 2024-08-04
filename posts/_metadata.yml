@@ -1,4 +1,11 @@
 # options specified here will apply to all posts in this folder
+comments:
+    giscus:
+      repo: venpopov/venpopov.com
+      category: Blog discussions
+      mapping: pathname
+      reactions-enabled: true
+      input-position: top
 
 # Freeze computed outputs
 freeze: true
