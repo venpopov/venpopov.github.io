@@ -1,0 +1,25 @@
+---
+title: "Taking a stand on open peer review"
+subtitle: "I will no longer review for journals that do not publish reviews alongside the work"
+categories: [Academic Publishing, Peer Review, Open Science]
+date: "2024-08-04"
+---
+
+I have spent the last few months thinking about academic publishing and the peer review system. The whole thing is rotten and no sane person would design the system we have today. Now that I find myself in a professional position where I don’t have to worry about my future, I realize I can take actions to help dismantle this system. In other words, I can finally afford to act on my principles (as absurd as that sounds).
+
+I am not yet ready to share the full extent of what this entails, and I plan a longer post about the future of academic publishing. But last week was the first time I took action consistent with these principles, specifically my belief that all peer review should be open, published alongside the work it reviews. I received a standard review request from a respected APA journal, and this was my response:
+
+> Dear XXX,  
+>   
+> Thank you for inviting me to review this submission. I would be glad to review the manuscript if my review and the subsequent author responses are published alongside the paper, should it be accepted.  
+>   
+> I understand this is not the current practice at XXX, but I firmly believe that open review is the future of academic publishing. It is a responsibility we owe to the public that funds our research. This is not about receiving credit for my review work but about promoting transparency and accountability in the peer review process. Many modern publishing platforms already support this practice.  
+>   
+> I appreciate that finding reviewers is challenging and that this request might make your job as an editor more difficult.  
+>   
+> Best regards,  
+> Ven
+
+Will this have any effect? I doubt it. The system is too rigid. I expect that the editor would ask me to reconsider, and move on to other reviewers. Which is unfortunate, because I really don't want to add more burden to a difficult job. But change has to start from somewhere.
+
+Update: As I suspected, the Editor sent me a polite email saying that the journal currently does not allow this, but that they will keep reviewing their policies as practices in the field change.
