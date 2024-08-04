@@ -5,7 +5,7 @@ listing:
   feed: true
   contents: posts
   sort: "date desc"
-  type: grid
+  type: table
   grid-columns: 3
   image-height: 250px
   page-size: 100

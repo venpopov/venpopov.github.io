@@ -1,5 +1,5 @@
 ---
-title: "Ignoring git files only locally"
+title: "Locally Ignoring Git Files Without Affecting Others’ .gitignore"
 subtitle: "How to exclude files from version control without affecting other developers' .gitignore configuration"
 categories: [ git ]
 image: dontshare.png
