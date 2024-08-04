@@ -11,12 +11,12 @@
 
 /* reduce the column width fo the metadata field for the blog listing */
 div.quarto-post .metadata {
-  flex-basis: 10%;
+  flex-basis: 10% !important;
 }
 
 /* remove line between listing items */
 div.quarto-post {
-  border-bottom: none;
+  border-bottom: none !important;
 }
 
 
