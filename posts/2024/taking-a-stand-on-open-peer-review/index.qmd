@@ -1,7 +1,7 @@
 ---
 title: "Taking a stand on open peer review"
 subtitle: "I will no longer review for journals that do not publish reviews alongside the work"
-categories: [Academic Publishing, Peer Review, Open Science]
+categories: [Academic Publishing, Peer Review, Open Science, 2024]
 date: "2024-08-04"
 ---
 

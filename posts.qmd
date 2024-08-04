@@ -5,11 +5,12 @@ listing:
   feed: true
   contents: posts
   sort: "date desc"
-  type: table
-  grid-columns: 3
-  image-height: 250px
+  type: default
+  grid-columns: 1
   page-size: 100
   categories: true
+  fields: [date, title, description, reading-time, categories]
+  max-description-length: 300
 page-layout: full
 title-block-banner: true
 ---

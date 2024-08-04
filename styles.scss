@@ -9,6 +9,18 @@
   padding-bottom: 10px;
 }
 
+/* reduce the column width fo the metadata field for the blog listing */
+div.quarto-post .metadata {
+  flex-basis: 10%;
+}
+
+/* remove line between listing items */
+div.quarto-post {
+  border-bottom: none;
+}
+
+
+
 @media(min-width: 992px) {
     body.fullcontent:not(.floating):not(.docked) .page-columns {
         display: grid;
