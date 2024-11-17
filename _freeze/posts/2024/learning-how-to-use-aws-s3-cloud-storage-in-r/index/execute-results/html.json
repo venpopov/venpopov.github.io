@@ -1,0 +1,15 @@
+{
+  "hash": "b9c2f2c140607dde8c18d38c4ce9c110",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Learning how to use AWS S3 cloud storage in R\"\nsubtitle: \"\"\ncategories: [Reproducibility,  R,  Cloud Storage,  Workflow,  2024]\ndate: \"2024-11-17\"\ndraft: true\n---\n\n\n\nOk, it’s time I learn this. I hope it can simplify my reproducible research workflows, particularly when using targets and versioning data objects. I’m going to start with the basics and then see how I can integrate it into my workflow.\n\n## An overview of necessary steps:\n\n-   [x] Install a useful R package called [aws.s3](https://github.com/cloudyr/aws.s3)\n-   [x] Set up an [AWS account](https://aws.amazon.com/s3/)\n-   [x] Create a new user in the AWS Identity and Access Management (IAM) console\n-   [x] Generate keypair in the IAM management console\n-   [x] Specify a set of environment variables in .Renviron\n\n## Setup\n\n### Install `aws.s3`\n\n``` r\ninstall.packages('aws.s3')\n```\n\n### Setup AWS account\n\nGo to <https://aws.amazon.com/s3/> and follow the process\n\n### Create a new user in the AWS Identity and Access Management (IAM) console\n\nCreate a new user that only has access to S3. Go to the [IAM console](https://us-east-1.console.aws.amazon.com/iam/home?region=eu-north-1#/users) and create a new user. What should the username be? My root user is `venpopov`, but is that the user name, or is it `root`? I'll try to make `venpopov_s3` as the new user.\n\n![](images/paste-1.png)\n\nI get a prompt to add the user to a group. Should I make a group for S3 access only? Let's try that. It might make it easier down the line if I have other users to add\n\n![](images/paste-4.png)\n\n![](images/paste-5.png)\n\n### Create access key\n\nGo to **Users \\> Username \\> Create access key**\n\nThe key will not be saved anywhere on AWS, so better save it somewhere safe (in my case, an encrypted note)\n\n### Specify a set of environment variables in .Renviron\n\n``` bash\nAWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY\nAWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY\nAWS_DEFAULT_REGION=REGION\n```\n\n## Working with `aws.s3`\n\nLoad the package and check available buckets on the account. Initial results are of course 0:\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(\"aws.s3\")\nbucketlist()\n```\n\n::: {.cell-output .cell-output-stdout}\n\n```\ndata frame with 0 columns and 0 rows\n```\n\n\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

@@ -1,0 +1,98 @@
+---
+title: "Learning how to use AWS S3 cloud storage in R"
+subtitle: ""
+categories: [Reproducibility,  R,  Cloud Storage,  Workflow,  2024]
+date: "2024-11-17"
+draft: true
+---
+
+Ok, it’s time I learn this. I hope it can simplify my reproducible research workflows, particularly when using targets and versioning data objects. I’m going to start with the basics and then see how I can integrate it into my workflow.
+
+## An overview of necessary steps:
+
+-   [x] Install a useful R package called [aws.s3](https://github.com/cloudyr/aws.s3)
+-   [x] Set up an [AWS account](https://aws.amazon.com/s3/)
+-   [x] Create a new user in the AWS Identity and Access Management (IAM) console
+-   [x] Generate keypair in the IAM management console
+-   [x] Specify a set of environment variables in .Renviron
+
+## Setup
+
+### Install `aws.s3`
+
+``` r
+install.packages('aws.s3')
+```
+
+### Setup AWS account
+
+Go to <https://aws.amazon.com/s3/> and follow the process
+
+### Create a new user in the AWS Identity and Access Management (IAM) console
+
+Create a new user that only has access to S3. Go to the [IAM console](https://us-east-1.console.aws.amazon.com/iam/home?region=eu-north-1#/users) and create a new user. What should the username be? My root user is `venpopov`, but is that the user name, or is it `root`? I'll try to make `venpopov_s3` as the new user.
+
+![](images/paste-1.png)
+
+I get a prompt to add the user to a group. Should I make a group for S3 access only? Let's try that. It might make it easier down the line if I have other users to add
+
+![](images/paste-4.png)
+
+![](images/paste-5.png)
+
+### Create access key
+
+Go to **Users \> Username \> Create access key**
+
+The key will not be saved anywhere on AWS, so better save it somewhere safe (in my case, an encrypted note)
+
+### Specify a set of environment variables in .Renviron
+
+``` bash
+AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
+AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
+AWS_DEFAULT_REGION=REGION
+```
+
+## Working with `aws.s3`
+
+Load the package and check available buckets on the account. Initial results are of course 0:
+
+```{r}
+library("aws.s3")
+bucketlist()
+```
+
+Let's create a new bucket first:
+
+```{r}
+put_bucket("learning-aws")
+```
+
+Interesting, the bucket names are not unique to users - this one is already taken. Well, let's use this opportunity to try reading from a bucket instead. I wonder what this one holds:
+
+```{r}
+get_bucket("learning-aws")
+```
+
+Error. Hmm, some [googling](https://stackoverflow.com/questions/25027462/aws-s3-the-bucket-you-are-attempting-to-access-must-be-addressed-using-the-spec) reveals that this is somehow related to the region, which I set by default in my case to "eu-central-1". How to resolve this? Turns out I should specify the region manually when using `get_bucket`
+
+```{r}
+get_bucket("learning-aws", region = "us-east-1")
+```
+
+Alright, this isn't a public bucket... Let's try it with a dataset I [found online](https://aws.amazon.com/marketplace/pp/prodview-qh4qqd6ebnqio?sr=0-100&applicationId=AWSMPContessa#resources), which is an archive of Full-text journal articles from PubMed. I also switch to the `get_bucket_df()` function so that I get a data.frame for easier use:
+
+```{r}
+pmc_bucket <- get_bucket_df(
+  bucket = 'pmc-oa-opendata', 
+  region = "us-east-1",
+  max = 10000)
+head(pmc_bucket)
+```
+
+We see a list of articles available as .txt files. Let's download one of them:
+
+...
+
+At this point I notice that the package [hasn't received any updates since 2018](https://github.com/cloudyr/aws.s3/issues/433), so I'll ignore this method
