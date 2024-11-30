@@ -21,7 +21,11 @@ about:
 ---
 
 ::: {#hero-heading}
-<h2 style="margin-top: 0;">About me</h2>
+<h2 style="margin-top: 0;">
+
+About me
+
+</h2>
 
 I am a tenured [Senior Scientist in Computational Modeling of Behavior](https://www.psychology.uzh.ch/en/areas/nec/compmod/popov.html) at the Department of Psychology, University of Zürich. I completed my PhD in Cognitive Psychology from Carnegie Mellon University under Prof. Lynne Reder in 2020, and until 2023 I was a postdoctoral researcher with Prof. Klaus Oberauer at the University of Zürich. My research has been awarded with the [2025 Bertelson Early Career Award](https://www.escop.eu/awards-en-funding/past-award-recipients/bertelson-award) from the European Society for Cognitive Psychology and the [2021 Glushko Dissertation Prize](https://cognitivesciencesociety.org/glushko-dissertation-prize/) from the Cognitive Science Society. I am also a consulting editor at the [Memory & Cognition](https://link.springer.com/journal/13421/editors).
 
