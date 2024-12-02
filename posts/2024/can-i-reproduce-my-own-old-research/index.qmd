@@ -1,0 +1,73 @@
+---
+title: "Can I reproduce my own old research?"
+subtitle: ""
+categories: [R,  reproducibility,  Project management,  Open Science,  GitHub,  git,  2024]
+date: "2024-12-02"
+draft: true
+---
+
+I recently \[bemoaned my descent into madness\](../reproducibility-is-hard/index.qmd) trying to achieve perfect computational reproducibility. I occasionally have issues reproducing back-burner projects, but I have surmised that my failing there is usually the excitement of finding this out overruling the good coding practices I *know* I should follow.
+
+But what about published project - projects for which I have shared the final code and data publicly. If anyone were in the best position to reproduce them, that would be me. Conversely... well, you know.
+
+It is by now well documented that while papers who share their analysis code publicly are much more likely to be reproducible \[REFERENCE\].
+
+As I noted in my previous post....
+
+I made an 1h video recording. Edit it an post it.
+
+First step: Clone the repository
+
+Done.
+
+We notice the R version. 3.4.3. Will it work? Well Rig could help us but let's try it like it is now
+
+r\$\> vhsv \<- t(rgb2hsv(t(select(vrgb, -color)), maxColorValue = 1)) Error in select(vrgb, -color) : unused argument (-color)
+
+hmm?
+
+did this not happen last time?
+
+two solutions:
+
+-   explicit call
+
+-   conflicted package (haven't used it before)
+
+plot_ly(vrgb, x=\~r, y=\~g, z=\~b, color=\~id, type="scatt er3d", mode="markers", marker=list(color=vrgb\$color, size=20)) Error in unique.default(x) : unique() applies only to vectors
+
+let's try to get an older version of the plotly package
+
+Can you get a renv.lock file from a session.info() output????
+
+there is a bug in Vmisc::pkg_vload - if installation did not go through, it gives an error "package doesnt exist or sth like it
+
+Error in `vec_assign()`: ! Can't convert `replace$col` <double> to match type of `data$col` <character>. Run `rlang::last_trace()` to see where the error occurred.
+
+When I google this error I get this funny result, perfect for a lecture or a blog post
+
+![](images/paste-1.png)
+
+Can't reproduce simulation 2 numbers:
+
+-   mean(unlist(prank)) \[1\] 0.781033
+
+possible causes
+
+-   different R
+
+-   I messed up with copy paste
+
+-   different operating system different random seed, etc.
+
+-   difference in one of the underlying packages
+
+![](images/paste-2.png)
+
+Before the class with the students tomorrow:
+
+-   restore plotly to old version
+
+-   delete some of the packages I was missing
+
+Point out bad practice with RData
