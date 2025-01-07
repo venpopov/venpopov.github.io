@@ -1,0 +1,1737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Ven Popov</title>
+<link>https://venpopov.com/posts.html</link>
+<atom:link href="https://venpopov.com/posts.xml" rel="self" type="application/rss+xml"/>
+<description>Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.</description>
+<image>
+<url>https://venpopov.com/images/venpopov.png</url>
+<title>Ven Popov</title>
+<link>https://venpopov.com/posts.html</link>
+<height>144</height>
+<width>144</width>
+</image>
+<generator>quarto-1.6.40</generator>
+<lastBuildDate>Sat, 16 Nov 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Reduce friction for creating Quarto blog posts</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>My relationship with blogging is complicated. I made my first blog about 15 years ago, fresh out of high school. WordPress was the dominant platform at the time, and my blog wasn’t anything particularly interesting - I shared some vapid attempts at poetry and short story writing, some travel logs, and a mish-mash of other topics<sup>1</sup>.</p>
+<p>I have never liked WordPress, for mostly the same reasons that I don’t like most software - I found every action incredibly cumbersome. Shortly thereafter I joined Facebook and Twitter, two platforms I no longer use, and most of my writing took on the “micro-blogging” nature that social media lends itself to so easily. I’ve always suspected that one of the reasons social media blew up was that it made it so easy to write, share, and follow content. At some point during my PhD (circa 2017), I created another WordPress blog, out of a desire to write longer pieces on more technical topics. That blog was again short-lived and the reason was simple - I wanted to write about programming, data analysis, and R, to share computational insights, but WordPress was a poor medium for it. At the time I was just starting to get enamored with literate programming (Jupyter notebooks were hot off the press), and the ease with which I could create computational writing contrasted starkly with the difficulty of sharing such writing on the internet.</p>
+<p>Last year I discovered Quarto and I immediately became excited by the possibilities. I rebuilt my personal website with it and set up this blog to go with it. I expected to post a lot more often than I have done in reality. There are many reasons for this - from starting a new tenured position, to being a typical overworked, overextended, and overcommitted academic.</p>
+<p>While I can’t do anything about that, I realized that one mental barrier arose every time I considered making a new post. Despite how easy Quarto makes it to publish technical material, there are a number of steps, at least in the way I have currently set up my system, that are just busywork, which I have to do any time I want to create a new post:</p>
+<ul>
+<li>navigate to my website directory on my computer</li>
+<li>make a new sub-folder in the <code>posts</code> directory to hold the files for the blog post</li>
+<li>create an <code>index.qmd</code> file in the new folder with a specific front matter boilerplate</li>
+<li>write the post</li>
+<li>execute <code>quarto render</code> to view it</li>
+<li>commit and push my changes to update the website</li>
+</ul>
+<p>For some reason, the first three steps, as small as they appear, were a mental barrier that stopped me from even beginning new posts. Ideally, I want this to be as simple as possible. So I decided to write a bash script that automates it.</p>
+<section id="a-bash-script-for-automating-post-creation" class="level2">
+<h2 class="anchored" data-anchor-id="a-bash-script-for-automating-post-creation">A bash script for automating post creation</h2>
+<p>The problem was that aside from some basic commands, my bash knowledge is quite limited. So I figured this was an opportunity to put Github Copilot to the test. I use Visual Studio Code as my IDE, and have setup my website repository as a workspace. I already had a markdown document that describes in plain language the steps I need to do when creating new blog posts<sup>2</sup>. So could the built-in Copilot in VSCode write me a bash script just by being told to implement the steps I’ve described in my little instruction manual?</p>
+<p>It worked flawlessly, and this code was the result after a few iterations:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#!/bin/bash</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Prompt for post details</span></span>
+<span id="cb1-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">read</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Enter post title: "</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">title</span></span>
+<span id="cb1-5"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">read</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Enter post subtitle: "</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">subtitle</span></span>
+<span id="cb1-6"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">read</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Enter post categories (comma-separated): "</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">categories</span></span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert title to a slug for the folder name</span></span>
+<span id="cb1-9"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">slug</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$title</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tr</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'[:upper:]'</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'[:lower:]'</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tr</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-cd</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'[:alnum:] '</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tr</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">' '</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'-'</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the new post directory</span></span>
+<span id="cb1-12"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">year</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">date</span> +%Y<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-13"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">post_dir</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$HOME</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/venpopov.com/posts/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$year</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$slug</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Check if the directory already exists</span></span>
+<span id="cb1-16"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">[</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">]</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">then</span></span>
+<span id="cb1-17">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Error: The directory </span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;"> already exists."</span></span>
+<span id="cb1-18">  <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">exit</span> 1</span>
+<span id="cb1-19"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">fi</span></span>
+<span id="cb1-20"></span>
+<span id="cb1-21"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mkdir</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get today's date</span></span>
+<span id="cb1-24"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">date</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">date</span> +%Y-%m-%d<span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-25"></span>
+<span id="cb1-26"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Append the current year to the categories list</span></span>
+<span id="cb1-27"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">categories</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$categories</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">, </span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$year</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-28"></span>
+<span id="cb1-29"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the .qmd file with the provided metadata</span></span>
+<span id="cb1-30"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cat</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;&lt;EOF</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/index.qmd"</span></span>
+<span id="cb1-31"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb1-32"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">title: "</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$title</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-33"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">subtitle: "</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$subtitle</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-34"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">categories: [</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$categories</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sed</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'s/,/, /g'</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb1-35"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">date: "</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$date</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span></span>
+<span id="cb1-36"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">---</span></span>
+<span id="cb1-37"><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">EOF</span></span>
+<span id="cb1-38"></span>
+<span id="cb1-39"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"New post created at </span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/index.qmd"</span></span>
+<span id="cb1-40"></span>
+<span id="cb1-41"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Open the new post in the default editor</span></span>
+<span id="cb1-42"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">code</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/index.qmd"</span></span></code></pre></div>
+<p>I saved this code in a file <code>new_blog_post</code> and Copilot instructed me that I can make it executable from the command line by first setting file permission via:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">chmod</span> +x new_blog_post</span></code></pre></div>
+<p>I saved this file in a directory on my path, so now when I want to create a new blog post, I simply open a terminal and type</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">new_blog_post</span></span></code></pre></div>
+<p>This prompts me to enter a title for the post, a subtitle and some tags, then creates all the necessary boilerplate and opens the file in VSCode for editing. In fact, I used it to make this very post, and for example, here is the terminal output from it</p>
+<p><img src="https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/images/paste-1.png" class="img-fluid"></p>
+<p>Neat. Will this help me post more often? Time will tell.</p>
+</section>
+<section id="postscript-ai-and-learning-to-code" class="level2">
+<h2 class="anchored" data-anchor-id="postscript-ai-and-learning-to-code">Postscript: AI and learning to code</h2>
+<p>I tell my students that they can use AI tools when working on projects, but I urge them that it is still important to learn how to code for many reasons. They need to understand what the code is doing, at the very least, and know how to fix it. Did I follow my own advice here? Ugh, maybe not, depending on the perspective. I still have no idea about the core bash syntax and how to write a script from scratch. But I do have a “lifetime” of experience with programming, and I could understand what the script was doing, and I could modify it to suit my needs. I think that’s the important part. I don’t need to know everything about bash scripting, but I need to know enough to be able to use it effectively. In any case, I have a tendency to fall into rabbit holes when learning new things, and this is the last thing I want to do right now while trying to optimize my workflow! So, I have a working script, I asked Copilot to add some reasonable checks that occurred to me, and I know what each line does, even if I don’t know how to write it from scratch. I think that’s good enough for now.</p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>To my huge surprise, the <a href="https://addic7ed2life.wordpress.com/">blog</a> still exists! The last entry is from 2013, and I hadn’t looked at it probably since then. I only rediscovered it now while writing this post.↩︎</p></li>
+<li id="fn2"><p>I write these types of “Notes to self” instruction manuals for many things, because my memory is very poor for procedural operations↩︎</p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+  author = {Popov, Vencislav},
+  title = {Reduce Friction for Creating {Quarto} Blog Posts},
+  date = {2024-11-17},
+  url = {https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2024. <span>“Reduce Friction for Creating Quarto Blog
+Posts.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/">https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</a>.
+</div></div></section></div> ]]></description>
+  <category>workflow</category>
+  <category>shell</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</guid>
+  <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Rethinking my approach to computational projects and reproducibility</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/reproducibility-is-hard/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I have to finally admit it to myself - my research workflows have been breaking down and it’s time to get serious about change. I’ve been trying to incorporate better coding practices, modern reporting pipelines, and reproducible workflows into my research projects, but it’s been a struggle. The complexity of the tools, the sheer number of moving parts, and the interactions between them have been overwhelming. I’ve spent more time debugging my workflow than actually doing research. There has to be a better way.</p>
+<section id="the-comfort-of-old-habits" class="level2">
+<h2 class="anchored" data-anchor-id="the-comfort-of-old-habits">The Comfort of Old Habits</h2>
+<p>For many years I had relatively stable workflows for project organization and version control of my research projects. They were never perfect, and given the state of reproducibility in academic psychology, likely much better than the status quo. <a href="https://github.com/venpopov/109-relational-lures">Since 2014</a>, I’ve been using systematic project template folders, project-based organization, programmatic data wrangling, version control with Git and GitHub, and I’ve dabbled in literate programming tools such as Jupyter Notebooks and R Markdown. <a href="https://github.com/venpopov/DataSciencePsychUZH">I’ve taugth these tools in graduate courses</a>. I knew my way around a command line, and on the rare occasions I needed it, I could run demanding analyses on the Carnegie Mellon computing cluster. I was able to get things done efficiently while maintaining a somewhat decent level of reproducibility.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2024/reproducibility-is-hard/folder-structure.png" class="img-fluid figure-img"></p>
+<figcaption>I’ve been using the same project structure for 10+ years</figcaption>
+</figure>
+</div>
+</section>
+<section id="learning-to-dance" class="level2">
+<h2 class="anchored" data-anchor-id="learning-to-dance">Learning to Dance</h2>
+<p>This comfortable dance started changing last year, gradually at first, as I started working on my <a href="../introducing-bmm/">first R package</a>. What began as a side project quickly evolved into something that preoccupied me for months. This was partly because I had <a href="https://www.gfrischkorn.org/">a fantastic collaborator</a>, working with whom was an exhilarating, idea-bootstrapping experience. But collaborating also meant I had to up my game — I couldn’t rely on the shortcuts and hacks I’d developed over the years. For the first time, I had to learn about proper documentation, testing, and collaborative workflows.</p>
+<p>When you’re working on a package, you’re not just writing code for yourself—you’re writing code for others to use. This means writing clear and concise documentation, creating tests to ensure your code works as expected, and developing code that is modular and easy to understand. And you have to do it in a way that makes collaboration less painful.</p>
+</section>
+<section id="the-pitfalls-of-self-taught-coding" class="level2">
+<h2 class="anchored" data-anchor-id="the-pitfalls-of-self-taught-coding">The Pitfalls of Self-Taught Coding</h2>
+<p>The painful truth is that proper computational skills are rarely taught in academic programs (at least in psychology). Many of us are self-taught, each with our own quirky ways of doing things. Tools and processes that are standard fare in software development are often foreign to us. So, we muddle through, doing the best we can with what we have. My use of GitHub was a glorified Dropbox, and my coding practices, if you could call them that, were a mishmash of concepts I picked up from various tutorials and blog posts. It mostly worked, but even now I am barely able to reproduce my own work from a few years ago. Broken package dependencies, uncertain code order, and the utter lack of systematic documentation have made my old projects a nightmare to revisit.</p>
+<p><img src="https://venpopov.com/posts/2024/reproducibility-is-hard/gandalf.png" class="img-fluid"></p>
+<p>Maybe I’m exaggerating a bit, but the reality is that as my career has progressed, my projects have grown in number and complexity, and it’s become more and more frustrating to keep track of everything. My existing workflow sat squarely in the middle of <a href="https://raps-with-r.dev/part2_intro.html#the-reproducibility-iceberg">“the reproducibility iceberg”</a> - better than most, but I was starting to feel cold.</p>
+<p>Thankfully, while formal education in this area still lags behind, the online landscape is now rich with <a href="https://github.com/venpopov/reproducible-research">resources</a>. <a href="https://venpopov.github.io/ltmTimeBenefit/">Over the last year</a>, I’ve been trying to incorporate <a href="https://adv-r.hadley.nz/fp.html">better coding practices</a>, <a href="https://quarto.org/">Quarto</a> websites reporting for projects, and <a href="https://rstudio.github.io/renv/">renv</a> for package management. It’s been an uphill battle, consuming a lot of time and energy.</p>
+</section>
+<section id="the-tension-between-efficiency-and-reproducibility" class="level2">
+<h2 class="anchored" data-anchor-id="the-tension-between-efficiency-and-reproducibility">The Tension Between Efficiency and Reproducibility</h2>
+<p>The hardest part is not learning new tools but unlearning old habits and deconstructing my mental models of code, data, and reporting. One of the reasons I love coding in R is the incredibly quick iteration cycle and feedback loop. The ability to have an idea and, within minutes, simulate, visualize, and analyze it often feels like a superpower.</p>
+<p>The problem is that this same superpower also makes it so easy to be sloppy. Who has time and patience for carefully curating a reproducible workflow when that puts a delay between your idea and its realization?</p>
+<p>The thing is, I am no longer a grad student chasing down any odd idea that comes my way. As fun as the wild west of coding can be, it’s not sustainable for a long-term research program, especially when other people depend on you. And let’s be honest, I also need to be kinder to my future self.</p>
+</section>
+<section id="what-a-mess" class="level2">
+<h2 class="anchored" data-anchor-id="what-a-mess">What a Mess</h2>
+<p>Case in point: I just resumed work on a simulation project that I last touched in April. Despite all my best intentions, I was shocked to find that I couldn’t reproduce a set of figures I had sent to my collaborator at the time. Even worse, it took me a full day to even figure out what I was doing back then.</p>
+<p>Why did this happen? There are many culprits, but part of it is that while I coded all the simulation scripts locally, I ran the simulations on a cluster because they were very computationally demanding. At the time, I had no established workflow for sharing intermediate data objects between my remote and local codebases. My attempts to reconstruct what had happened have driven me to the brink of madness. Trust me when I say that I’ve spent more time trying to figure out what I did than it would have taken me to redo everything from scratch.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2024/reproducibility-is-hard/what-a-mess.png" class="img-fluid figure-img"></p>
+<figcaption>What a mess…</figcaption>
+</figure>
+</div>
+<p>To avoid scenarios exactly like this, in the last six months I’ve been experimenting with <a href="https://books.ropensci.org/targets/">the targets package</a>. Targets is a pipeline toolkit for R that helps you manage the dependencies between your scripts and data objects. It’s a bit like <a href="https://en.wikipedia.org/wiki/Make_(software)">make</a> for R, but with a lot of bells and whistles. I even implemented it for <a href="https://github.com/venpopov/ltmTimeBenefit">a couple of other projects</a>.</p>
+<p>When combined with <code>renv</code> for package management, and <code>Quarto</code> for reporting, it comes close to what I imagine as a nearly ideal scenario: A self-contained research website, with all the code, data, and results in one place, and a clear, reproducible workflow that can be run on any machine. A modern reporting pipeline that is both transparent and efficient.</p>
+</section>
+<section id="the-complexity-conundrum" class="level2">
+<h2 class="anchored" data-anchor-id="the-complexity-conundrum">The Complexity Conundrum</h2>
+<p><em>When it works.</em> Sigh.</p>
+<p>Maybe I’m just getting old, but putting together all these pieces has proven to be a lot more challenging than I anticipated. The learning curve is steep. These are all <em>fantastic</em> tools, with good documentation, and in some respects I feel lucky to be working in a time when such tools are becoming widely available, and there are so many people voluntarily developing them. The open source community is truly a marvel. But the sheer number of moving parts, and the complexity of the interactions between them, is overwhelming.</p>
+<p>Git + Github + renv + Quarto + targets + crew + deployment + credential management + testing + documentation + collaboration + teaching + writing + thinking + living. It’s a lot.</p>
+<p>Ok, I got carried away with the list, but even when just considering the computational parts, each of them comes with lengthy manuals, quirks, and a dizzying amount of options and configurations, and they don’t always play nice with each other. I feel like I’m constantly fighting fires, and my self-help tutorials are getting longer and longer. These past 6 months, I’ve spent more time debugging my workflow than actually doing research.</p>
+<p>I’m not giving up, though. This <em>is</em> a path worth walking. I just can’t help but feel there must be a better way. I’ve been trying to code up a personal library of tools to automate some of that complexity, but other things keep getting in the way. I just can’t help but compare this state of affairs to the relatively much smoother package development workflows, largely thanks to <code>devtools</code> and <code>usethis</code> packages, as well as <a href="https://r-pkgs.org/">the consistent framework around it</a>. Package development is not any less complex in scope, but the community has managed to converge on an integrated consistent workflow that just works.</p>
+<p>Part of this is the nature of the beast - research projects are by definition more diverse and less predictable than package development. Every project is a new adventure, with its own unique challenges and requirements, and formats vary so widely between disciplines or even subfields. Part of it is also that these tools are still <em>relatively</em> new.</p>
+</section>
+<section id="the-signal-to-noise-ratio" class="level2">
+<h2 class="anchored" data-anchor-id="the-signal-to-noise-ratio">The Signal-to-Noise Ratio</h2>
+<p>But even if all the quirks were ironed out, and the process streamlined, another issue, that I rarely see discussed, is just how much more “irrelevant” artefacts are produced in the codebase. When I look <a href="https://github.com/venpopov/ltmTimeBenefit">at my best attempts to implement the full workflow</a>, I am a bit paralized by the sheer amount of files and code in my repositories that is not directly related to the substance of the research. There are layers upon layers of abstraction, scaffolding, configuration files, and helper functions that are just necessary for the workflow to function.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2024/reproducibility-is-hard/its-a-lot.png" class="img-fluid figure-img"></p>
+<figcaption>It’s a lot…</figcaption>
+</figure>
+</div>
+<p>Targets itself, for all its truly wonderful functionality, suffers (or at least I do!) from 1) an incredible level of syntax verbosity and 2) too many ways to do the same thing, both of which make it hard to read and understand the code. Flexibility is a double-edged sword.</p>
+<p>Even in an ideal world in which I finally learn all the ins and outs of these packages, I can’t help but wonder: does the improved reproducibility and transparency pay off if barely anyone else can understand what’s going on? If I share the code with expert colleagues, I doubt many of them would be able to make sense of it given the signal-to-noise ratio in the codebase. It might as well be written in a different programming language given the layers of abstraction. This perhaps is a temporary problem, as the tools mature and the community converges on best practices, but it’s a real one.</p>
+<p>This is not a critique of the tools themselves, but rather a reflection on the complexity of the research process. The tools are a reflection of the complexity of the problem they are trying to solve. But there has to be a better way.</p>
+<p><em>PS: This post took an unexpected direction. I was planning to write a short introduction to my frustrations, and a detailed guide to targets as I figured out a how to apply it to a new project. I learn best by writing and teaching, and I was hoping that by writing a tutorial I would solidify my understanding of the package. As often happens in writing though, our thoughts, especially those bottled up frustrations, tend to take a life of their own. I guess I might still write the more technical post I was imagining later</em></p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+  author = {Popov, Vencislav},
+  title = {Rethinking My Approach to Computational Projects and
+    Reproducibility},
+  date = {2024-11-17},
+  url = {https://venpopov.com/posts/2024/reproducibility-is-hard/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2024. <span>“Rethinking My Approach to Computational
+Projects and Reproducibility.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/reproducibility-is-hard/">https://venpopov.com/posts/2024/reproducibility-is-hard/</a>.
+</div></div></section></div> ]]></description>
+  <category>Workflow</category>
+  <category>Reproducibility</category>
+  <category>R</category>
+  <category>targets</category>
+  <category>Project management</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/reproducibility-is-hard/</guid>
+  <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Taking a stand on open peer review</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I have spent the last few months thinking about academic publishing and the peer review system. The whole thing is rotten and no sane person would design the system we have today. Now that I find myself in a professional position where I don’t have to worry about my future, I realize I can take actions to help dismantle this system. In other words, I can finally afford to act on my principles (as absurd as that sounds).</p>
+<p>I am not yet ready to share the full extent of what this entails, and I plan a longer post about the future of academic publishing. But last week was the first time I took action consistent with these principles, specifically my belief that all peer review should be open, published alongside the work it reviews. I received a standard review request from a respected APA journal, and this was my response:</p>
+<blockquote class="blockquote">
+<p>Dear XXX,</p>
+<p>Thank you for inviting me to review this submission. I would be glad to review the manuscript if my review and the subsequent author responses are published alongside the paper, should it be accepted.</p>
+<p>I understand this is not the current practice at XXX, but I firmly believe that open review is the future of academic publishing. It is a responsibility we owe to the public that funds our research. This is not about receiving credit for my review work but about promoting transparency and accountability in the peer review process. Many modern publishing platforms already support this practice.</p>
+<p>I appreciate that finding reviewers is challenging and that this request might make your job as an editor more difficult.</p>
+<p>Best regards,<br>
+Ven</p>
+</blockquote>
+<p>Will this have any effect? I doubt it. The system is too rigid. I expect that the editor would ask me to reconsider, and move on to other reviewers. Which is unfortunate, because I really don’t want to add more burden to a difficult job. But change has to start from somewhere.</p>
+<p>Update: As I suspected, the Editor sent me a polite email saying that the journal currently does not allow this, but that they will keep reviewing their policies as practices in the field change.</p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+  author = {Popov, Vencislav},
+  title = {Taking a Stand on Open Peer Review},
+  date = {2024-08-04},
+  url = {https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2024. <span>“Taking a Stand on Open Peer
+Review.”</span> August 4, 2024. <a href="https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/">https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</a>.
+</div></div></section></div> ]]></description>
+  <category>Academic Publishing</category>
+  <category>Peer Review</category>
+  <category>Open Science</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</guid>
+  <pubDate>Sat, 03 Aug 2024 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Introducing the Bayesian Measurement Modeling R Package (bmm)</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/introducing-bmm/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I am excited to announce the first official release of the <a href="https://cran.r-project.org/web/packages/bmm/index.html">Bayesian Measurement Modeling R package</a>! <code>bmm</code> makes Bayesian measurement modeling in psychology accessible to all. Over the past two years, <a href="https://www.gfrischkorn.org">Gidon Frischkorn</a> and I worked closely together on this package and we are thrilled to finally share it with the world.</p>
+<p>Aside from the final result, this collaboration was the most fun I’ve had doing research in a long time. I stopped counting how many days we started a random unplanned coffee chat and to suddenly realize that it’s been three hours of intense problem-solving, only because one of us was actually late for a real meeting. <code>bmm</code> is truly both of our baby (only slightly older that Gidon’s soon-to-be second flesh-and-blood daughter!) and we hope it will make fitting Bayesian measurement models easier, more reliable, and more efficient for everyone.</p>
+<p>You can find detailed documentation, tutorials and examples on the <a href="https://venpopov.github.io/bmm/index.html">package website</a>. You can install <code>bmm</code> from CRAN as follows:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bmm"</span>)</span></code></pre></div>
+<section id="what-is-bmm-for" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-bmm-for">What is bmm for?</h2>
+<p><code>bmm</code> provides a simple and intuitive interface for fitting measurement models in psychology using Bayesian methods. It is designed to be accessible to researchers with little to no experience with Bayesian statistics or cognitive modeling. If you know how to fit a mixed-effects regression model in R, you already know nearly everything you need to fit a measurement model with <code>bmm</code>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2024/introducing-bmm/bmmLogic.jpg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>But first things first: <em>what are measurement models and why do we need them?</em></p>
+<p>If you are a meteorologist, you can measure atmospheric temperature with a thermometer. And while thermometers are <em>technically</em> indirect measures, the relationship between the volume of a liquid and its temperature is so strong and so well understood that we take it for granted.</p>
+<p>If you are a psychologist, things get a bit more complicated.</p>
+<p>Behavioral and psychological data are messy and only rough proxies for what they are supposed to measure. We rarely care about how much time it takes someone to press a button after a flashing light, how precisely they can remember a specific shade of blue, or how similar they judge two badly drawn alien animals to be. Such data are only interesting insofar as they tell us something about the underlying psychological processes that govern attention, perception, decision making, memory and categorization.</p>
+<p>To make matters even more difficult, usually multiple distinct cognitive processes contribute to behavior. Combined, these issues often make it difficult to draw clear conclusions from behavioral data alone. Running t.tests on averaged raw behavioral data can only get you so far. Measurement models are an important tool to bridge the gap between latent psychological constructs and observable behavioral data.</p>
+<p>Such measurement models are nowadays used in many different areas of psychology. Some of the more popular models include drift diffusion models in decision making, signal detection theory models in perception and memory, and mixture models in visual working memory. The basic idea uniting these approaches is that we can decompose one or more observed measures (e.g., reaction times, accuracy rates, angular deviation, confidence ratings) into distinct theoretically meaningful parameters that reflect latent psychological processes (e.g., decision thresholds, different memory strength signals, the quality or precision of representations). These derived parameters can then be used to test hypotheses about the underlying cognitive processes that govern behavior.</p>
+</section>
+<section id="the-challenges-of-measurement-modeling" class="level2">
+<h2 class="anchored" data-anchor-id="the-challenges-of-measurement-modeling">The challenges of measurement modeling</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[[70,30],[100]]">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 70.0%;justify-content: flex-start;">
+<p>Unfortunately, technical challenges have prevented widespread adoption of measurement models for data analysis in psychology. And even when researchers do use these models, many (*<em>cough</em> *) rely on ad-hoc custom implementations that are not well-documented, not well-tested, not well-understood, not easily portable to new experiments, and not using optimal inference methods. This is where <code>bmm</code> comes in.</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 30.0%;justify-content: center;">
+<p><img src="https://venpopov.com/posts/2024/introducing-bmm/i_mean_me.gif" class="img-fluid" width="200"></p>
+</div>
+</div>
+</div>
+<p>Traditionally, to fit a measurement model in psychology, you had to build it yourself. The simple reality is, however, that most researchers don’t have the time, resources, or expertise to build and fit these models from scratch. This is doubly true for Bayesian hierarchical implementations, which require a different set of tools and skills than traditional maximum likelihood estimation. And even for those who do have the skills, the process can be time-consuming and error-prone.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2024/introducing-bmm/confused.gif" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>This is why we started working on the <code>bmm</code> package in the first place - we were tired of doing the same thing over and over again for every new project. What started as a personal project to make our own daily work easier has now turned into a fully-fledged R package. What we have built is a package that allows you to fit a wide range of measurement models with just a few lines of code.</p>
+<p>You no longer need to:</p>
+<ul>
+<li>copy-paste custom Jags or Stan code from one project to the next (or worse, try to decipher someone else’s code!) and painstakingly adjust it for your new experiment</li>
+<li>worry about whether you have correctly specified your priors or likelihoods</li>
+<li>worry about whether you have correctly implemented your model</li>
+<li>worry about how to adjust the script for your new experimental design and to spend hours debugging it</li>
+</ul>
+<p>The <code>bmm</code> package takes care of all of that for you.</p>
+<p>While there exist tools for some measurement models, such as for drift diffusion models (via the wiener distribution in <code>brms</code> for <code>R</code> or via the HDDM package for <code>Python</code>), this is not the case for the vast majority of measurement models used in psychology. The <code>bmm</code> package aims to fill this gap by providing a general framework that can be extended and continuously improved by the community.</p>
+</section>
+<section id="example---the-interference-measurement-model" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="example---the-interference-measurement-model">Example - the Interference Measurement Model</h2>
+<p>To give you a sense of how easy it is to fit a model using the <code>bmm</code> package, let’s walk through an example. Let’s say you have collected data from <a href="https://venpopov.github.io/bmm/articles/bmm_vwm_crt.html">a continuous reproduction</a> visual working memory task (see the margin for a visual representation of the task and the distribution of the data).</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="vwm-crt.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Participants study 1 to 8 colors in different locations. After a delay, they reproduce one of the colors as precisely as they can on a color wheel. Click image to enlarge."><img src="https://venpopov.com/posts/2024/introducing-bmm/vwm-crt.png" class="img-fluid figure-img" alt="Participants study 1 to 8 colors in different locations. After a delay, they reproduce one of the colors as precisely as they can on a color wheel. Click image to enlarge."></a></p>
+<figcaption>Participants study 1 to 8 colors in different locations. After a delay, they reproduce one of the colors as precisely as they can on a color wheel. <em>Click image to enlarge.</em></figcaption>
+</figure>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="index_files/figure-html/error_plot-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Density plots of the deviation from the target color in radians, split by set size. Click image to enlarge."><img src="https://venpopov.com/posts/2024/introducing-bmm/index_files/figure-html/error_plot-1.png" class="img-fluid figure-img" width="240" alt="Density plots of the deviation from the target color in radians, split by set size. Click image to enlarge."></a></p>
+<figcaption>Density plots of the deviation from the target color in radians, split by set size. <em>Click image to enlarge.</em></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div></div><p>Assume you want to fit the <a href="https://venpopov.github.io/bmm/articles/bmm_imm.html">Interference Measurement Model (IMM)</a><span class="citation" data-cites="oberauer2017">(Oberauer et al. 2017)</span> to your data. For convenience, we have included the data from this study in the <code>bmm</code> package, so we can use it directly and fit the model to it. The IMM model attributes errors to different sources of activation in memory: target features, non-target features, the spacial distance between them, and random noise<sup>1</sup>.</p>
+<p>Before we go into the different parts, here is the entire code that you would need to fit the IMM model to the data. Yes, it’s that simple:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(bmm)</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># load the data</span></span>
+<span id="cb2-4">my_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> oberauer_lin_2017</span>
+<span id="cb2-5"></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># inform the model about the data structure</span></span>
+<span id="cb2-7">imm_model <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">imm</span>(</span>
+<span id="cb2-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">resp_error =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dev_rad"</span>,</span>
+<span id="cb2-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nt_features =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"col_nt"</span>,</span>
+<span id="cb2-10">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nt_distances =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dist_nt"</span>,</span>
+<span id="cb2-11">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">set_size =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"set_size"</span>,</span>
+<span id="cb2-12">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">version =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"full"</span>,</span>
+<span id="cb2-13">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">regex =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb2-14">)</span>
+<span id="cb2-15"></span>
+<span id="cb2-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># specify the regression formula for the model parameters</span></span>
+<span id="cb2-17">imm_formula <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bmmformula</span>(</span>
+<span id="cb2-18">  c <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID),</span>
+<span id="cb2-19">  a <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID),</span>
+<span id="cb2-20">  s <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID),</span>
+<span id="cb2-21">  kappa <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID)</span>
+<span id="cb2-22">)</span>
+<span id="cb2-23"></span>
+<span id="cb2-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># fit the model via `brms` and `Stan`</span></span>
+<span id="cb2-25">imm_fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bmm</span>(</span>
+<span id="cb2-26">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">formula =</span> imm_formula,</span>
+<span id="cb2-27">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> my_data,</span>
+<span id="cb2-28">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">model =</span> imm_model,</span>
+<span id="cb2-29">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cores =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span></span>
+<span id="cb2-30">)</span></code></pre></div>
+<p>Let’s take a brief look at the data we are working with. In this case, the dependent variable is <code>dev_rad</code> - the deviation of the response from the target color (in radians). <code>col_nt1</code> to <code>col_nt7</code>are the colors of the non-target items which were studied but are not being tested (coded relative to the target). Finally, <code>dist_nt1</code> to <code>dist_nt7</code> are the spatial distances of the non-target items from the target item, and <code>set_size</code> is the number of items in the display.</p>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 1%">
+<col style="width: 4%">
+<col style="width: 3%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">ID</th>
+<th style="text-align: left;">session</th>
+<th style="text-align: right;">trial</th>
+<th style="text-align: left;">set_size</th>
+<th style="text-align: right;">dev_rad</th>
+<th style="text-align: right;">col_nt1</th>
+<th style="text-align: right;">col_nt2</th>
+<th style="text-align: right;">col_nt3</th>
+<th style="text-align: right;">col_nt4</th>
+<th style="text-align: right;">col_nt5</th>
+<th style="text-align: right;">col_nt6</th>
+<th style="text-align: right;">col_nt7</th>
+<th style="text-align: right;">dist_nt1</th>
+<th style="text-align: right;">dist_nt2</th>
+<th style="text-align: right;">dist_nt3</th>
+<th style="text-align: right;">dist_nt4</th>
+<th style="text-align: right;">dist_nt5</th>
+<th style="text-align: right;">dist_nt6</th>
+<th style="text-align: right;">dist_nt7</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">7</td>
+<td style="text-align: right;">0.3839724</td>
+<td style="text-align: right;">0.8726646</td>
+<td style="text-align: right;">0.8552113</td>
+<td style="text-align: right;">2.7750735</td>
+<td style="text-align: right;">2.094395</td>
+<td style="text-align: right;">1.2566371</td>
+<td style="text-align: right;">0.0698132</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.9332878</td>
+<td style="text-align: right;">2.416610</td>
+<td style="text-align: right;">1.9332878</td>
+<td style="text-align: right;">0.4833219</td>
+<td style="text-align: right;">0.9666439</td>
+<td style="text-align: right;">2.899932</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">3</td>
+<td style="text-align: right;">-0.4537856</td>
+<td style="text-align: right;">0.8552113</td>
+<td style="text-align: right;">1.9547688</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">1.9332878</td>
+<td style="text-align: right;">2.416610</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">5</td>
+<td style="text-align: right;">-0.0872665</td>
+<td style="text-align: right;">0.7155850</td>
+<td style="text-align: right;">-2.6179939</td>
+<td style="text-align: right;">-1.0297443</td>
+<td style="text-align: right;">1.378810</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.9666439</td>
+<td style="text-align: right;">2.899932</td>
+<td style="text-align: right;">2.4166097</td>
+<td style="text-align: right;">1.9332878</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">6</td>
+<td style="text-align: right;">0.3665191</td>
+<td style="text-align: right;">0.2617994</td>
+<td style="text-align: right;">2.0420352</td>
+<td style="text-align: right;">0.1047198</td>
+<td style="text-align: right;">1.099557</td>
+<td style="text-align: right;">-0.9250245</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">0.4833219</td>
+<td style="text-align: right;">2.899932</td>
+<td style="text-align: right;">0.9666439</td>
+<td style="text-align: right;">0.9666439</td>
+<td style="text-align: right;">1.9332878</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">-0.0349066</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">0.1396263</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><br></p>
+<p>To fit the IMM model to this data, we need to follow a few simple steps:</p>
+<section id="specify-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="specify-the-model">1) Specify the model</h3>
+<p>First, set up the <code>bmmodel</code> object to specify which variables in your data contain information about the identity of the target and non-target features, the distances between them, and the set size of the display. For the IMM model, this would look like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">imm_model <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">imm</span>(</span>
+<span id="cb3-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">resp_error =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dev_rad"</span>,</span>
+<span id="cb3-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nt_features =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"col_nt"</span>,</span>
+<span id="cb3-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nt_distances =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"dist_nt"</span>,</span>
+<span id="cb3-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">set_size =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"set_size"</span>,</span>
+<span id="cb3-6">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">version =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"full"</span>,</span>
+<span id="cb3-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">regex =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span></span>
+<span id="cb3-8">)</span></code></pre></div>
+</div>
+<p>Here we used the <code>regex</code> option to specify that columns which begin with <code>col_nt</code> and <code>dist_nt</code> should be treated as non-target features and distances, respectively. This is useful when you have multiple non-target features and distances in your data (instead of enumerating them all).</p>
+</section>
+<section id="specify-the-regression-formula-for-the-model-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="specify-the-regression-formula-for-the-model-parameters">2) Specify the regression formula for the model parameters</h3>
+<p>Second, specify how the parameters of the model should vary over different conditions. A list of all model parameters and their meaning is saved in the model object and can be accessed using the <code>parameters</code> element.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1">imm_model<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>parameters</span>
+<span id="cb4-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; $mu1</span></span>
+<span id="cb4-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Location parameter of the von Mises distribution for memory responses (in radians). Fixed internally to 0 by default.</span></span>
+<span id="cb4-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; </span></span>
+<span id="cb4-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; $kappa</span></span>
+<span id="cb4-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] "Concentration parameter of the von Mises distribution"</span></span>
+<span id="cb4-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; </span></span>
+<span id="cb4-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; $a</span></span>
+<span id="cb4-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] "General activation of memory items"</span></span>
+<span id="cb4-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; </span></span>
+<span id="cb4-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; $c</span></span>
+<span id="cb4-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] "Context activation"</span></span>
+<span id="cb4-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; </span></span>
+<span id="cb4-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; $s</span></span>
+<span id="cb4-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] "Spatial similarity gradient"</span></span></code></pre></div>
+</div>
+<p>Using this information, we can set up the <code>bmmformula</code> for the different model parameters. Let’s say we want to first get an idea how all parameters vary across set_size:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">imm_formula <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bmmformula</span>(</span>
+<span id="cb5-2">  c <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID),</span>
+<span id="cb5-3">  a <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID),</span>
+<span id="cb5-4">  s <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID),</span>
+<span id="cb5-5">  kappa <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">~</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|</span> ID)</span>
+<span id="cb5-6">)</span></code></pre></div>
+</div>
+<p>The <code>bmmformula</code> object is closely aligned with the <code>brmsformula</code> syntax and allows for an easy specification of grouped effects. In this case, we assume random effects for all parameters over the <code>ID</code> variable, thus implementing a hierarchical model estimating individual differences in all parameters across the different set sizes.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Take a closer look at the formula object. This is where the power and flexibility of this approach comes from. You can specify any combination of fixed and random effects for any parameter in the model. This allows you to test a wide range of hypotheses about how the parameters of the model vary across different experimental conditions. In essence, fitting a hierarchical measurement model is not much different from fitting a mixed-effects regression model. You can find a more comprehensive tutorial on the <code>bmmformula</code> syntax and features in <a href="https://venpopov.github.io/bmm/articles/bmm_bmmformula.html">the online vignette</a></p>
+</div>
+</div>
+</div>
+</section>
+<section id="fit-the-model" class="level3">
+<h3 class="anchored" data-anchor-id="fit-the-model">3) Fit the model</h3>
+<p>Finally, we only need to call the <code>bmm</code> function to estimate the model. For this, we pass the data the specified <code>bmmodel</code> and <code>bmmformula</code> to the function. In addition, we can pass additional options to the function to customize sampling (<code>warmup</code>, <code>iter</code>, <code>chains</code>, <code>cores</code>), save the fitted model object (<code>file</code>), or choose the backend the model should be estimated with.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">imm_fit <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">bmm</span>(</span>
+<span id="cb6-2">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># required inputs</span></span>
+<span id="cb6-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">data =</span> my_data,</span>
+<span id="cb6-4">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">model =</span> imm_model,</span>
+<span id="cb6-5">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">formula =</span> imm_formula,</span>
+<span id="cb6-6">  </span>
+<span id="cb6-7">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># customize sampler settings</span></span>
+<span id="cb6-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">warmup =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000</span>,</span>
+<span id="cb6-9">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">iter =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span>,</span>
+<span id="cb6-10">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">chains =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb6-11">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">cores =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb6-12">  </span>
+<span id="cb6-13">  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># save fitted model object</span></span>
+<span id="cb6-14">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">file =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"imm_fit"</span></span>
+<span id="cb6-15">)</span></code></pre></div>
+<p>The <code>bmm</code> package is closely integrated with <code>brms</code>, the leading R package for Bayesian Regression Models. This allows you to use almost any post-processing and inference method implemented for <code>brms</code> models with the measurement models implemented in <code>bmm</code></p>
+<p>You can find more detailed introductions into the different model currently implemented in <code>bmm</code> on the <a href="https://venpopov.github.io/bmm/articles/index.html">package website</a>. And we have also written a <a href="https://osf.io/preprints/psyarxiv/umt57">tutorial paper</a> that explains more details about the implementation of several measurement models, and how to specify <code>bmmodels</code> in different experimental settings.</p>
+</section>
+</section>
+<section id="design-principles" class="level2">
+<h2 class="anchored" data-anchor-id="design-principles">Design principles</h2>
+<p>The <code>bmm</code> package is built on a few key design principles, some of which were strongly inspired by the <code>brms</code> package for Bayesian regression modeling:</p>
+<section id="simplicity" class="level3">
+<h3 class="anchored" data-anchor-id="simplicity">Simplicity</h3>
+<p>Fitting a cognitive measurement model should be as simple as fitting a linear, logistic or a poisson regression model. You select the model you want to fit, specify a formula to predict how each parameter of the model varies across different experimental conditions, and hit go</p>
+</section>
+<section id="flexibility" class="level3">
+<h3 class="anchored" data-anchor-id="flexibility">Flexibility</h3>
+<p>the package should be able to handle a wide range of measurement models and experimental designs. Any model for which you can write down a likelihood function should be able to be fit with <code>bmm</code>. And every parameter in the model should be able to vary across any combination of continuous and categorical predictors. This is a big departure from many existing techniques, which fit models separately to each experimental condition, forcing all parameters to vary across the same set of conditions, and preventing you from including continuous predictors. You should also be able to fix some parameters to specific values, or to impose complex constraints on them</p>
+</section>
+<section id="hierarhical-estimation-and-one-step-inference" class="level3">
+<h3 class="anchored" data-anchor-id="hierarhical-estimation-and-one-step-inference">Hierarhical estimation and one step inference</h3>
+<p>Rather than fitting each model separately to each participant, the package should allow you to estimate all parameters of the model simultaneously, while accounting for individual differences and benefit from shrinkage and sharing of information. As we detail in our <a href="https://osf.io/preprints/psyarxiv/umt57">tutorial paper</a>, this has a number of advantages, including more stable estimates of population parameters, better generalization to new data, and more reliable estimates of individual differences (especially when there are few trials per participant)</p>
+</section>
+<section id="reliability-and-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="reliability-and-documentation">Reliability and documentation</h3>
+<p>All models should be thoroughly tested and documented, so you can be confident that the model you are fitting is the model you think you are fitting. Each model should come with references to the relevant literature, so you can understand the theoretical background of the model and how it is implemented in <code>bmm</code>. The package should also provide detailed information on how to specify the model, including which parameters are available and how they can be varied across different experimental conditions</p>
+</section>
+<section id="parameter-recovery" class="level3">
+<h3 class="anchored" data-anchor-id="parameter-recovery">Parameter recovery</h3>
+<p>Related to the previous point, the package should be able to recover the parameters of the model from simulated data. These parameter recovery studies should be available as online vignettes and be fully reproducible, rather than being buried in the supplementary materials of academic papers <a href="https://github.com/GidonFrischkorn/Tutorial-MixtureModel-VWM/issues/16">(currently work in progress)</a>. Any trade-offs in the parameter recovery should be clearly documented, so you can understand the limitations of the model and how to interpret the results.</p>
+</section>
+<section id="efficiency-and-future-proofing" class="level3">
+<h3 class="anchored" data-anchor-id="efficiency-and-future-proofing">Efficiency and future-proofing</h3>
+<p>Use state-of-the-art sampling algorithms and optimization techniques to ensure that the models can be fit quickly and accurately. <code>bmm</code> is built on top of the <code>brms</code> package, which itself is an interface to the <code>Stan</code> probabilistic programming language. This means that the models are fit using the No-U-Turn Sampler (NUTS) algorithm, which is a state-of-the-art Hamiltonian Monte Carlo algorithm. These are packages that are actively maintained, used and supported by a large community of researchers, so that any future advances in the field of Bayesian statistics can be easily incorporated into the package as alternative backends or sampling algorithms. Furthermore, the package should be designed in a modular way, so that new models can be easily added by the community without having to change the core codebase. Finally, we have been working actively with the core developers of <code>brms</code> and <code>Stan</code> to <a href="https://github.com/stan-dev/math/issues/3008">improve sampling speed</a> and <a href="https://github.com/stan-dev/math/issues/3035">stability</a> of existing distributions used by our models.</p>
+</section>
+</section>
+<section id="currently-supported-models" class="level2">
+<h2 class="anchored" data-anchor-id="currently-supported-models">Currently supported models</h2>
+<p>We currently have the following models implemented:</p>
+<p><strong>Visual working memory</strong></p>
+<ul>
+<li>Interference measurement model by Oberauer and Lin (2017).</li>
+<li>Two-parameter mixture model by Zhang and Luck (2008).</li>
+<li>Three-parameter mixture model by Bays et al (2009).</li>
+<li>Signal Discrimination Model (SDM) by Oberauer (2023)</li>
+</ul>
+<p>However, the setup of the <code>bmm</code> package provides the foundation for the implementation of a broad range of cognitive measurement models. In fact, we are already working on implementing additional models, such as:</p>
+<ul>
+<li>Signal-Detection Models</li>
+<li>Evidence Accumulation Models</li>
+<li>Memory Models for categorical response</li>
+</ul>
+<p>If you have suggestions for models that should be added to the package, feel free to create an issue on <a href="https://github.com/venpopov/bmm/">GitHub</a>. Ideally this should describe the model, point towards literature that gives details on the model, and if possible link to code that has already implemented the model.</p>
+<p>Given the dynamic nature the <code>bmm</code> package is currently in, you can always view the latest list of supported models by running:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">bmm<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">supported_models</span>()</span></code></pre></div>
+<p>So stay tuned for updates and new models! We hope you will find the <code>bmm</code> package useful and will try fitting one of the already available models to your data. We appreciate all feedback and hope that the <code>bmm</code> package will make the use of measurement models easier for everybody.</p>
+<!-- ::: {.callout-tip appearance="simple"} -->
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-oberauer2017" class="csl-entry">
+Oberauer, Klaus, Colin Stoneking, Dominik Wabersich, and Hsuan-Yu Lin. 2017. <span>“Hierarchical Bayesian Measurement Models for Continuous Reproduction of Visual Features from Working Memory.”</span> <em>Journal of Vision</em> 17 (5): 11. <a href="https://doi.org/10.1167/17.5.11">https://doi.org/10.1167/17.5.11</a>.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>We won’t go into much detail here - you can find a detailed explanation of the IMM model and results of the model fitting in the <a href="https://venpopov.github.io/bmm/articles/bmm_imm.html">package documentation</a>.↩︎</p></li>
+</ol>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+  author = {Popov, Vencislav},
+  title = {Introducing the {Bayesian} {Measurement} {Modeling} {R}
+    {Package} (Bmm)},
+  date = {2024-06-13},
+  url = {https://venpopov.com/posts/2024/introducing-bmm/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2024. <span>“Introducing the Bayesian Measurement
+Modeling R Package (Bmm).”</span> June 13, 2024. <a href="https://venpopov.com/posts/2024/introducing-bmm/">https://venpopov.com/posts/2024/introducing-bmm/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>Modeling</category>
+  <category>Bayesian</category>
+  <category>R-package</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/introducing-bmm/</guid>
+  <pubDate>Wed, 12 Jun 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2024/introducing-bmm/microscope.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Locally Ignoring Git Files Without Affecting Others’ .gitignore</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/git-local-ignore/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>I often collaborate on git projects and I find that I want to have a folder or some files stored locally in the repo but that I don’t want to be tracked by git. Obviously I could add them to .gitignore, but then I have two options:</p>
+<ul>
+<li>commit the .gitignore file and push it to the repo. For public projects to which I’m contributing small changes, this is not ideal as it clutters the repo with my personal configuration (and it’s not very polite to the repo owner)</li>
+<li>not commit the .gitignore file and keep it only locally. This is not ideal either, as I have to remember to not commit it every time I make a change to the repo</li>
+</ul>
+<p>A specific example is when I collaborate on R packages. There are several .Rprofile files which R uses to load some settings at startup. I have a bunch of convenience configurations in my user .Rprofile which helps me with my workflow. The problem is that if there is an .Rprofile file in the project root, R will use that one instead of my user .Rprofile. A workaround is to <a href="https://github.com/klmr/rprofile">add some lines to the project .Rprofile to source my user .Rprofile</a>, but I don’t want to commit these lines to the project .Rprofile.</p>
+<p>There is an easy solution to <a href="https://stackoverflow.com/questions/1753070/how-do-i-configure-git-to-ignore-some-files-locally">this</a>, but I always forget the syntax and after the 4th time I had to look it up, I decided to write it down in a blog post.</p>
+</section>
+<section id="the-solution" class="level2">
+<h2 class="anchored" data-anchor-id="the-solution">The Solution</h2>
+<p>The solution depends on the state of the file.</p>
+<section id="if-the-file-is-not-yet-tracked-by-git-new-file" class="level3">
+<h3 class="anchored" data-anchor-id="if-the-file-is-not-yet-tracked-by-git-new-file">If the file is not yet tracked by git (new file)</h3>
+<p>If this is a new file that is yet untracked by git, you can just add it to the local <code>.git/info/exclude file</code>. This file is not tracked by git and is specific to your local repo. You can add the file to this file and it will be ignored by git. This follows the same syntax as the <code>.gitignore</code> file. You can do this manually by opening the file and adding the file path to it, or you can do it with the following command:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"&lt;file&gt;"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;</span> .git/info/exclude</span></code></pre></div>
+<p>where <code>&lt;file&gt;</code> is the path to the file you want to exclude.</p>
+</section>
+<section id="if-the-file-is-already-tracked-by-git" class="level3">
+<h3 class="anchored" data-anchor-id="if-the-file-is-already-tracked-by-git">If the file is already tracked by git</h3>
+<p>In addition to adding the file to the local <code>.git/info/exclude</code> file, you also need to remove the file from the git index. This can be done with the following command:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> update-index <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--skip-worktree</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+<p>if you change your mind and want to track this file, you can do so with the following command:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> update-index <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--no-skip-worktree</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+</section>
+</section>
+<section id="define-an-alias-for-easy-access" class="level2">
+<h2 class="anchored" data-anchor-id="define-an-alias-for-easy-access">Define an alias for easy access</h2>
+<p>I find that I use this command often enough to warrant an alias. You can run the <a href="https://stackoverflow.com/a/39086325/3556519">following commands to add an alias to your git configuration</a>:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--global</span> alias.ignore <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'update-index --skip-worktree'</span></span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--global</span> alias.unignore <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'update-index --no-skip-worktree'</span></span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> config <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--global</span> alias.ignored <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'git ls-files -v | grep "^S"'</span></span></code></pre></div>
+<p>and then you can use the following commands to ignore and unignore files:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> ignore <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> unignore <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span></span></code></pre></div>
+</section>
+<section id="putting-it-all-together-an-example" class="level2">
+<h2 class="anchored" data-anchor-id="putting-it-all-together-an-example">Putting it all together (an example)</h2>
+<p>Let’s say I want to contribute code to an R package which is developed on GitHub. I can fork the repo and clone it to my local machine. The package has an .Rprofile file which overwrites my user configuration. I have a bunch of convenience configurations in my user .Rprofile which I want to use when working on this project. I can add the following lines to the project .Rprofile to source my user .Rprofile:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">try</span>(rprofile<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">load</span>())</span></code></pre></div>
+<p>I can then add the project .Rprofile to the local <code>.git/info/exclude</code> file:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".Rprofile"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;</span> .git/info/exclude</span></code></pre></div>
+<p>and finally tell git to ignore the file locally (assuming I already have the alias defined):</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> ignore .Rprofile</span></code></pre></div>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+  author = {Popov, Vencislav},
+  title = {Locally {Ignoring} {Git} {Files} {Without} {Affecting}
+    {Others’} .gitignore},
+  date = {2024-05-24},
+  url = {https://venpopov.com/posts/2024/git-local-ignore/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2024. <span>“Locally Ignoring Git Files Without
+Affecting Others’ .gitignore.”</span> May 24, 2024. <a href="https://venpopov.com/posts/2024/git-local-ignore/">https://venpopov.com/posts/2024/git-local-ignore/</a>.
+</div></div></section></div> ]]></description>
+  <category>git</category>
+  <category>GitHub</category>
+  <category>reproducibility</category>
+  <category>workflow</category>
+  <category>collaboration</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/git-local-ignore/</guid>
+  <pubDate>Thu, 23 May 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2024/git-local-ignore/dontshare.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+<item>
+  <title>Working with multiple versions of an R package</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/r-multiple-package-versions/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="the-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
+<p>Have you ever wanted to test whether your code works with multiple versions of an R package? Or compare how the behavior of certain functions has changed? There are several ways to do that, each involving a lot of setup.</p>
+<section id="base-r" class="level3">
+<h3 class="anchored" data-anchor-id="base-r">Base R</h3>
+<p>The way to work with different package versions in base R requires you to manually specify a folder in which to install each version. Let’s assume your current version of the package <code>stringr</code> is 1.4.0, and you want to install separately the latest version (as of the time of this writing, 1.5.1). The following will install <code>stringr</code> in a folder <code>stringr-new</code> in your user home folder:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dir.create</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'~/stringr-new'</span>)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'stringr'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lib =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
+<p>Afterwards, you can load the default package with</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(stringr)</span></code></pre></div>
+<p>and the new version with</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(stringr, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lib.loc =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
+<p>A few issues with this approach:</p>
+<ul>
+<li>You have to manually specify the folder for each version. And remember what it was when you want to use it again.</li>
+<li>You have to remember to specify the <code>lib.loc</code> argument every time you want to use the new version.</li>
+<li>You have to remember to detach the old version before loading the new one.</li>
+<li>You cannot install a specific version of a package from CRAN. You have to download the tarball from CRAN, extract it, and install it from the extracted folder.</li>
+<li>You have to do this one by one for each package you want to test.</li>
+</ul>
+</section>
+<section id="remotesinstall_version" class="level3">
+<h3 class="anchored" data-anchor-id="remotesinstall_version">remotes::install_version</h3>
+<p>We can augment the base R approach with the <code>remotes</code> package, which provides the <code>install_version</code> function. This function allows you to install a specific version of a package from CRAN. The following will install <code>stringr</code> version 1.5.1 in a folder <code>stringr-new</code> in your user home folder:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dir.create</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'~/stringr-new'</span>)</span>
+<span id="cb4-2">remotes<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install_version</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'stringr'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">version =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1.5.1'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">lib =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
+<p>Loading the packages is the same as before. This approach solves the issue of having to download and install a specific version of a package from CRAN. However, it does not solve the other issues.</p>
+</section>
+<section id="renv" class="level3">
+<h3 class="anchored" data-anchor-id="renv">renv</h3>
+<p>The <code>renv</code> package is a package manager for R. It allows you to create a project-specific library, and to specify the versions of packages you want to use in a <code>renv.lock</code> file. It allows for a completely reproducible environment, and is the best solution for that purpose. However, it can be an overkill if you just want to test a few versions of a package. For an introduction to <code>renv</code>, see <a href="https://rstudio.github.io/renv/articles/renv.html">this blog post</a>.</p>
+</section>
+</section>
+<section id="introducing-vmisc-pkg_vload" class="level2">
+<h2 class="anchored" data-anchor-id="introducing-vmisc-pkg_vload">Introducing <code>Vmisc</code>: pkg_vload()</h2>
+<p>I was dissatisfied with the existing solutions, so I wrote a package to do that. The <code>Vmisc</code> package provides the <code>pkg_vload</code> function, which allows you to load a specific version of a package, or to install it if it is not already installed. You can start by installing and loading the package:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Vmisc'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">repos =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://popov-lab.r-universe.dev'</span>))</span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(Vmisc)</span></code></pre></div>
+<p>The function <code>pkg_vload</code> combines the functionality of library(), remotes::install_version(), and dir.create(), and it also allows you to list as many packages as you want. The simplest option, for everyday use, is to specify just the package names, as you would with library():</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_vload</span>(stringr, dplyr, ggplot2)</span></code></pre></div>
+<p>If you already have the package installed, it will load the default version. If you don’t, it will install the latest version from CRAN in the default library. This use case is identical to <code>xfun::pkg_load()</code>, but there is some added functionality for handling different versions of a package.</p>
+<p>To load a specific version, you can specify the version argument:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_vload</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringr</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1.5.1'</span>), dplyr, ggplot2)</span></code></pre></div>
+<p>The function expects a call to the package name, followed by the version in parentheses. It will also recognize if the version you specified is already installed. For example, if you already have <code>stringr</code> version 1.5.1 installed the good old way, it will load it from the default library. And you will see the following output:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Loading required package: stringr</span></span>
+<span id="cb8-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Loading required package: dplyr</span></span>
+<span id="cb8-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Attaching package: ‘dplyr’</span></span>
+<span id="cb8-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Attaching package: ‘ggplot2’</span></span></code></pre></div>
+<p>But let’s say we want to install version 1.0.0 of stringr. We can do that with the following:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_vload</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringr</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1.0.0'</span>))</span></code></pre></div>
+<p>which results in</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Downloading package from url: https://cran.rstudio.com//src/contrib/Archive/stringr/stringr_1.0.0.tar.gz</span></span>
+<span id="cb10-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; * installing *source* package 'stringr' ...</span></span>
+<span id="cb10-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; ** package 'stringr' successfully unpacked and MD5 sums checked</span></span>
+<span id="cb10-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; ** using staged installation</span></span>
+<span id="cb10-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; ** ## output omitted ##</span></span>
+<span id="cb10-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; * DONE (stringr)</span></span>
+<span id="cb10-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Loading required package: stringr</span></span></code></pre></div>
+<p>pkg_vload has created a folder <code>stringr-1.0.0</code> in the default library path, installed the package there, and loaded it from there. The following two folders now coexist:</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">dirs <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list.dirs</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">.libPaths</span>(), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">recursive =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">FALSE</span>)</span>
+<span id="cb11-2">dirs[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grepl</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'stringr'</span>, dirs)]</span>
+<span id="cb11-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr"</span></span>
+<span id="cb11-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [2] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr-1.0.0"</span></span></code></pre></div>
+<p><code>pkg_vload(stringr('1.0.0'))</code> not only installed the package but also loaded it. If you restart your session, you can load either versions by simply using <code>pkg_vload(stringr)</code> or <code>pkg_vload(stringr('1.0.0'))</code>.</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_vload</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stringr</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1.0.0'</span>)) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for version 1.0.0</span></span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_vload</span>(stringr) <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for the default version</span></span></code></pre></div>
+<p>Benefits of using <code>pkg_vload</code>:</p>
+<ul>
+<li>vectorized: you can load multiple packages at once</li>
+<li>if a package exists, it will be loaded, otherwise it will be installed and loaded</li>
+<li>you can specify the version of the package you want to load/install, without having to specify the library path (although you can)</li>
+<li>you can install as many versions of a package as you want, and they will coexist in the same library path</li>
+<li>you can switch which version will be the default with another function from the package, <code>pkg_switch_default</code></li>
+</ul>
+</section>
+<section id="switching-the-default-version-of-a-package" class="level2">
+<h2 class="anchored" data-anchor-id="switching-the-default-version-of-a-package">Switching the default version of a package</h2>
+<p>The <code>Vmisc</code> package also provides a function to switch the default version of a package. For example, if you have versions 1.0.0 and 1.5.1 of <code>stringr</code> installed, and you want to make 1.0.0 the default, you can do that with the following:</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_switch_default</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'stringr'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1.0.0'</span>)</span>
+<span id="cb13-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; The default version of stringr has been switched to 1.0.0. The previous default version has been renamed to stringr-1.5.1</span></span>
+<span id="cb13-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Please restart R to complete the process.</span></span></code></pre></div>
+<p>What this will do is rename the folder <code>stringr</code> to <code>stringr-1.5.1</code> and <code>stringr-1.0.0</code> to <code>stringr</code>. After you restart your session, <code>pkg_vload(stringr)</code> or even just <code>library(stringr)</code> will load version 1.0.0. You can also switch back to the default version with:</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pkg_switch_default</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'stringr'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'1.5.1'</span>)</span>
+<span id="cb14-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; The default version of stringr has been switched to 1.5.1. The previous default version has been renamed to stringr-1.0.0</span></span>
+<span id="cb14-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Please restart R to complete the process.</span></span></code></pre></div>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Although not a replacement for <code>renv</code> for reproducible environments, <code>Vmisc</code> provides a simple way to work with multiple versions of an R package. It is especially useful for testing and comparing different versions of a package. The package is available on my <a href="https://popov-lab.r-universe.dev">R-universe</a> and on <a href="https://github.com/venpopov/Vmisc">GitHub</a>. It was inspired by the <code>xfun</code> package, and contains other functions that I found useful in my everyday work. I hope you find it useful too.</p>
+</section>
+<section id="bonus-finding-all-global-options-used-by-a-package" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-finding-all-global-options-used-by-a-package">Bonus: finding all global options used by a package</h2>
+<p>The <code>Vmisc</code> package also provides a function to find all global options used by a package. These are options you can set via <code>options()</code>, but they are rarely well documented in the package documentation. The function <code>packageOptions</code> will list all global options used by a package, and their default values. For example, to find all global options used by the <code>brms</code> package, you can use the following:</p>
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">packageOptions</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'brms'</span>)</span>
+<span id="cb15-2"></span>
+<span id="cb15-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Package brms current options:</span></span>
+<span id="cb15-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; </span></span>
+<span id="cb15-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.save_pars       :  NULL </span></span>
+<span id="cb15-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; mc.cores             :  1 </span></span>
+<span id="cb15-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.threads         :  NULL </span></span>
+<span id="cb15-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.opencl          :  NULL </span></span>
+<span id="cb15-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.normalize       :  TRUE </span></span>
+<span id="cb15-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.algorithm       :  "sampling" </span></span>
+<span id="cb15-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.backend         :  "rstan" </span></span>
+<span id="cb15-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; future               :  FALSE </span></span>
+<span id="cb15-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.file_refit      :  "never" </span></span>
+<span id="cb15-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; wiener_backend       :  "Rwiener" </span></span>
+<span id="cb15-15"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.verbose         :  FALSE </span></span>
+<span id="cb15-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; shinystan.rstudio    :  FALSE </span></span>
+<span id="cb15-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.plot_points     :  FALSE </span></span>
+<span id="cb15-18"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.plot_rug        :  FALSE </span></span>
+<span id="cb15-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; brms.short_summary   :  FALSE </span></span>
+<span id="cb15-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; .brmsfit_version     :  NULL </span></span></code></pre></div>
+<p>The function is experimental - it scrapes the source code of the package to find mentions of getOption(‘something’, default = something). It also does not provide documentation. But I found it useful for reminding myself of the options I can set for a package, and their default values.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+  author = {Popov, Vencislav},
+  title = {Working with Multiple Versions of an {R} Package},
+  date = {2024-03-03},
+  url = {https://venpopov.com/posts/2024/r-multiple-package-versions/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2024. <span>“Working with Multiple Versions of an R
+Package.”</span> March 3, 2024. <a href="https://venpopov.com/posts/2024/r-multiple-package-versions/">https://venpopov.com/posts/2024/r-multiple-package-versions/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>reproducibility</category>
+  <category>package management</category>
+  <category>R-package</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/r-multiple-package-versions/</guid>
+  <pubDate>Sat, 02 Mar 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2024/r-multiple-package-versions/juggling.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+</channel>
+</rss>
