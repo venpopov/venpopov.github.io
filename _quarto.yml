@@ -35,9 +35,13 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      dark: [cosmo, theme-dark.scss]
+      light: cosmo
     css: styles.css
     toc: true
+    highlight-style: monokai
+
 
 editor: visual
 

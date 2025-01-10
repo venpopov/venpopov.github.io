@@ -1,6 +1,6 @@
 ---
 title: "Computational thinking"
-subtitle: "Thoughts on computational modeling, metascience, reproducibility, R, bayesian methods and more"
+subtitle: "On computational modeling, metascience, reproducibility, bayesian methods & more"
 listing:
   feed: true
   contents: posts

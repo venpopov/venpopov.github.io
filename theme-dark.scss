@@ -1,0 +1,111 @@
+/*-- scss:defaults --*/
+// Base document colors
+$body-bg: #1F1F1F;
+$body-color: #d8d8d8;
+$link-color: #75AADB;
+
+// Header
+$navbar-bg: #181818;
+
+// Code blocks
+$code-block-bg: #282828;
+$code-bg: #282828;
+$code-color: white;
+
+// Banner
+.quarto-title-banner {
+    background-color: #181818 !important;
+    color: #d8d8d8 !important;
+}
+
+h1.title {
+    color: #d8d8d8 !important;
+}
+
+// font stuff
+// $bs-body-font-size: 30px !important;
+// $bs-body-line-height: 28px;
+//$bs-body-font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol;
+
+p {
+    font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol;
+    overflow: visible!important;
+    position: relative;
+    letter-spacing: 0.025em;
+}
+
+body {
+    font-family: Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Helvetica,Roboto,Arial,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji",Segoe UI Symbol !important;
+}
+
+.navbar-logo {
+   filter: invert(1);
+}
+
+.navbar-title, .menu-text {
+    color: #d8d8d8 !important;
+}
+
+span.co {
+    color: #7fa0a8 !important;
+}
+
+.listing-title {
+    margin-bottom: .5em !important;
+}
+
+.listing-category, .about-link, .quarto-category {
+    color: #d8d8d8 !important;
+    border-color: #282828 !important;
+    background-color: #2f2f2f !important;
+}
+
+.listing-category:hover, .about-link:hover, .quarto-category:hover {
+    color: #2f2f2f !important;
+    border-color: #d8d8d8 !important;
+    background-color: #d8d8d8 !important;
+}
+
+// .quarto-category {
+//     color: #ffffff !important;
+//     border-color: #1F1F1F !important;
+//     background-color: #1F1F1F !important;
+// }
+
+.quarto-post {
+    border-radius: 1rem !important;
+    margin-bottom: 1em !important;
+    background-color: #282828 !important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+    padding-left: 1em !important;
+    padding-right: 1em !important;   
+}
+
+.quarto-post:hover {
+    background-color: #2f2f2f !important;
+}
+
+.quarto-banner-title-block {
+    margin-top: 0em !important;    
+}
+
+.listing-subtitle {
+    display: none;
+}
+
+.metadata {
+    font-size: 0.9em !important;
+}
+
+pre code {
+    color: #ffffff !important;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+figcaption {
+    font-style: italic;
+}
