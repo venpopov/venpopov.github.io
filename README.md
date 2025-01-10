@@ -1,32 +1,12 @@
-## Tech Stack
-
--   The website is currently hosted on Blue Host
--   The website is generated using Quarto
--   I am using a local git repository, but not syncing with Github
-
-TODO: eventually move to Github pages
-
 ## How to update the website
 
-The website is generated using Quarto. After making any changes, run the following command to update the html files, which are stored in the `_site` directory:
+The website is generated using Quarto. After making any changes, run the following command to update the html files and publish to github pages:
 
 ``` bash
-quarto render
+quarto render && update_website
 ```
 
-After rendering, push the changes to the server using the following command:
-
-``` bash
-rsync -avz --progress --delete ~/venpopov.com/_site/ venpopov.com:/home4/venpopov/public_html/
-```
-
-To make it easier, I have setup the following alias in my `zshrc` file:
-
-``` bash
-alias update_website="rsync -avz --progress --delete ~/venpopov.com/_site/ venpopov.com:/home4/venpopov/public_html/"
-```
-
-So I can just run `update_website` to update the website.
+`update_website` is an alias for `quarto publish gh-pages --no-prompt --no-render --no-browser` defined in .zshrc [my dotfiles](https://github.com/venpopov/.dotfiles)
 
 ## How to add a new blog post
 
