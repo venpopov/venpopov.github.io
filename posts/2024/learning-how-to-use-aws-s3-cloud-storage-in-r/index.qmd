@@ -1,7 +1,7 @@
 ---
 title: "Learning how to use AWS S3 cloud storage in R"
 subtitle: ""
-categories: [Reproducibility,  R,  Cloud Storage,  Workflow,  2024]
+categories: [reproducibility,  R,  cloud storage,  workflow,  2024]
 date: "2024-11-17"
 draft: true
 execute: 

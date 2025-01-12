@@ -1,7 +1,7 @@
 ---
 title: Working with multiple versions of an R package
 subtitle: After being dissatisfied with existing solutions, I wrote a package to do that
-categories: [R, reproducibility, package management, R-package, 2024]
+categories: [R, reproducibility, package management, R package, 2024]
 image: juggling.png # source https://www.pexels.com/photo/a-woman-doing-juggling-8895421/
 date: "2024-03-03"
 ---

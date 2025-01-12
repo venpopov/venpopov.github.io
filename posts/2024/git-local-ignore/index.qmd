@@ -10,10 +10,10 @@ date: "2024-05-24"
 
 I often collaborate on git projects and I find that I want to have a folder or some files stored locally in the repo but that I don't want to be tracked by git. Obviously I could add them to .gitignore, but then I have two options:
 
-- commit the .gitignore file and push it to the repo. For public projects to which I'm contributing small changes, this is not ideal as it clutters the repo with my personal configuration (and it's not very polite to the repo owner)
-- not commit the .gitignore file and keep it only locally. This is not ideal either, as I have to remember to not commit it every time I make a change to the repo
+-   commit the .gitignore file and push it to the repo. For public projects to which I'm contributing small changes, this is not ideal as it clutters the repo with my personal configuration (and it's not very polite to the repo owner)
+-   not commit the .gitignore file and keep it only locally. This is not ideal either, as I have to remember to not commit it every time I make a change to the repo
 
-A specific example is when I collaborate on R packages. There are several .Rprofile files which R uses to load some settings at startup. I have a bunch of convenience configurations in my user .Rprofile which helps me with my workflow. The problem is that if there is an .Rprofile file in the project root, R will use that one instead of my user .Rprofile. A workaround is to [add some lines to the project .Rprofile to source my user .Rprofile](https://github.com/klmr/rprofile), but I don't want to commit these lines to the project .Rprofile. 
+A specific example is when I collaborate on R packages. There are several .Rprofile files which R uses to load some settings at startup. I have a bunch of convenience configurations in my user .Rprofile which helps me with my workflow. The problem is that if there is an .Rprofile file in the project root, R will use that one instead of my user .Rprofile. A workaround is to [add some lines to the project .Rprofile to source my user .Rprofile](https://github.com/klmr/rprofile), but I don't want to commit these lines to the project .Rprofile.
 
 There is an easy solution to [this](https://stackoverflow.com/questions/1753070/how-do-i-configure-git-to-ignore-some-files-locally), but I always forget the syntax and after the 4th time I had to look it up, I decided to write it down in a blog post.
 
@@ -25,24 +25,23 @@ The solution depends on the state of the file.
 
 If this is a new file that is yet untracked by git, you can just add it to the local `.git/info/exclude file`. This file is not tracked by git and is specific to your local repo. You can add the file to this file and it will be ignored by git. This follows the same syntax as the `.gitignore` file. You can do this manually by opening the file and adding the file path to it, or you can do it with the following command:
 
-```bash
+``` bash
 echo "<file>" >> .git/info/exclude
 ```
 
 where `<file>` is the path to the file you want to exclude.
 
-
 ### If the file is already tracked by git
 
 In addition to adding the file to the local `.git/info/exclude` file, you also need to remove the file from the git index. This can be done with the following command:
 
-```bash
+``` bash
 git update-index --skip-worktree <file>
 ```
 
 if you change your mind and want to track this file, you can do so with the following command:
 
-```bash
+``` bash
 git update-index --no-skip-worktree <file>
 ```
 
@@ -50,7 +49,7 @@ git update-index --no-skip-worktree <file>
 
 I find that I use this command often enough to warrant an alias. You can run the [following commands to add an alias to your git configuration](https://stackoverflow.com/a/39086325/3556519):
 
-```bash
+``` bash
 git config --global alias.ignore 'update-index --skip-worktree'
 git config --global alias.unignore 'update-index --no-skip-worktree'
 git config --global alias.ignored 'git ls-files -v | grep "^S"'
@@ -58,7 +57,7 @@ git config --global alias.ignored 'git ls-files -v | grep "^S"'
 
 and then you can use the following commands to ignore and unignore files:
 
-```bash
+``` bash
 git ignore <file>
 git unignore <file>
 ```
@@ -67,18 +66,18 @@ git unignore <file>
 
 Let's say I want to contribute code to an R package which is developed on GitHub. I can fork the repo and clone it to my local machine. The package has an .Rprofile file which overwrites my user configuration. I have a bunch of convenience configurations in my user .Rprofile which I want to use when working on this project. I can add the following lines to the project .Rprofile to source my user .Rprofile:
 
-```r
+``` r
 try(rprofile::load())
 ```
 
 I can then add the project .Rprofile to the local `.git/info/exclude` file:
 
-```bash
+``` bash
 echo ".Rprofile" >> .git/info/exclude
 ```
 
 and finally tell git to ignore the file locally (assuming I already have the alias defined):
 
-```bash
+``` bash
 git ignore .Rprofile
 ```

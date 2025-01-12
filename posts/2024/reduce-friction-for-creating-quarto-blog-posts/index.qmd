@@ -15,12 +15,12 @@ Last year I discovered Quarto and I immediately became excited by the possibilit
 
 While I can't do anything about that, I realized that one mental barrier arose every time I considered making a new post. Despite how easy Quarto makes it to publish technical material, there are a number of steps, at least in the way I have currently set up my system, that are just busywork, which I have to do any time I want to create a new post:
 
-- navigate to my website directory on my computer
-- make a new sub-folder in the `posts` directory to hold the files for the blog post
-- create an `index.qmd` file in the new folder with a specific front matter boilerplate
-- write the post
-- execute `quarto render` to view it
-- commit and push my changes to update the website
+-   navigate to my website directory on my computer
+-   make a new sub-folder in the `posts` directory to hold the files for the blog post
+-   create an `index.qmd` file in the new folder with a specific front matter boilerplate
+-   write the post
+-   execute `quarto render` to view it
+-   commit and push my changes to update the website
 
 For some reason, the first three steps, as small as they appear, were a mental barrier that stopped me from even beginning new posts. Ideally, I want this to be as simple as possible. So I decided to write a bash script that automates it.
 
@@ -93,7 +93,7 @@ This prompts me to enter a title for the post, a subtitle and some tags, then cr
 
 ![](images/paste-1.png)
 
-Neat. Will this help me post more often? Time will tell. 
+Neat. Will this help me post more often? Time will tell.
 
 ## Postscript: AI and learning to code
 

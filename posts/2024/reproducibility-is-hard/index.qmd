@@ -1,7 +1,7 @@
 ---
 title: "Rethinking my approach to computational projects and reproducibility"
 subtitle: "There has to be a better way"
-categories: [Workflow,  Reproducibility,  R, targets, Project management, 2024]
+categories: [workflow,  reproducibility,  R, git, targets, project management, 2024]
 date: "2024-11-17"
 ---
 
@@ -13,9 +13,7 @@ For many years I had relatively stable workflows for project organization and ve
 
 ![I've been using the same project structure for 10+ years](folder-structure.png)
 
-## Learning to Dance
-
-This comfortable dance started changing last year, gradually at first, as I started working on my [first R package](../introducing-bmm/). What began as a side project quickly evolved into something that preoccupied me for months. This was partly because I had [a fantastic collaborator](https://www.gfrischkorn.org/), working with whom was an exhilarating, idea-bootstrapping experience. But collaborating also meant I had to up my game — I couldn’t rely on the shortcuts and hacks I’d developed over the years. For the first time, I had to learn about proper documentation, testing, and collaborative workflows.
+My comfortable routine started changing last year, gradually at first, as I began working on my [first R package](../introducing-bmm/). What began as a side project quickly evolved into something that preoccupied me for months. This was partly because I had [a fantastic collaborator](https://www.gfrischkorn.org/), working with whom was an exhilarating, idea-bootstrapping experience. But collaborating also meant I had to up my game — I couldn’t rely on the shortcuts and hacks I’d developed over the years. For the first time, I had to learn about proper documentation, testing, and collaborative workflows.
 
 When you’re working on a package, you’re not just writing code for yourself—you’re writing code for others to use. This means writing clear and concise documentation, creating tests to ensure your code works as expected, and developing code that is modular and easy to understand. And you have to do it in a way that makes collaboration less painful.
 

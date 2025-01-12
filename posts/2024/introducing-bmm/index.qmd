@@ -1,7 +1,7 @@
 ---
 title: Introducing the Bayesian Measurement Modeling R Package (bmm)
 subtitle: Making Bayesian measurement modeling in psychology accessible, reliable & efficient
-categories: [R, Modeling, Bayesian, R-package, 2024]
+categories: [R, modeling, bayesian, R package, 2024]
 image: microscope.jpg # made with ChatGPT4o
 date: 2024-06-13
 bibliography: references.bib
