@@ -249,6 +249,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
   <li><a href="#specify-a-set-of-environment-variables-in-.renviron" id="toc-specify-a-set-of-environment-variables-in-.renviron" class="nav-link" data-scroll-target="#specify-a-set-of-environment-variables-in-.renviron">Specify a set of environment variables in .Renviron</a></li>
   </ul></li>
   <li><a href="#working-with-aws.s3" id="toc-working-with-aws.s3" class="nav-link" data-scroll-target="#working-with-aws.s3">Working with <code>aws.s3</code></a></li>
+  <li><a href="#a-surprise---need-to-use-a-different-package" id="toc-a-surprise---need-to-use-a-different-package" class="nav-link" data-scroll-target="#a-surprise---need-to-use-a-different-package">A surprise - need to use a different package</a></li>
   </ul>
 </nav>
 </nav>
@@ -302,16 +303,277 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">AWS_ACCESS_KEY_ID</span><span class="op">=</span>YOUR_ACCESS_KEY</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="va">AWS_SECRET_ACCESS_KEY</span><span class="op">=</span>YOUR_SECRET_ACCESS_KEY</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="va">AWS_DEFAULT_REGION</span><span class="op">=</span>REGION</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in readRenviron(".env"): file '.env' cannot be opened for reading</code></pre>
+</div>
+</div>
 </section>
 </section>
 <section id="working-with-aws.s3" class="level2">
 <h2 class="anchored" data-anchor-id="working-with-aws.s3">Working with <code>aws.s3</code></h2>
 <p>Load the package and check available buckets on the account. Initial results are of course 0:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"aws.s3"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bucketlist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"aws.s3"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bucketlist</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>data frame with 0 columns and 0 rows</code></pre>
+</div>
+</div>
+<p>Let’s create a new bucket first:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">put_bucket</span>(<span class="st">"learning-aws"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 4
+ $ Code     : chr "AccessDenied"
+ $ Message  : chr "User: Anonymous is not authorized to perform: s3:CreateBucket on resource: \"arn:aws:s3:::learning-aws\" becaus"| __truncated__
+ $ RequestId: chr "PRBR3B8FD380TYVK"
+ $ HostId   : chr "1yGsvpjhRtKQId+ez7P8p+Y80kCOJ+RLBJ9efRM3Nru6eO/6W0Tkj1cYjbeMWWFKNJe4UTmhoKY="
+ - attr(*, "headers")=List of 7
+  ..$ x-amz-request-id : chr "PRBR3B8FD380TYVK"
+  ..$ x-amz-id-2       : chr "1yGsvpjhRtKQId+ez7P8p+Y80kCOJ+RLBJ9efRM3Nru6eO/6W0Tkj1cYjbeMWWFKNJe4UTmhoKY="
+  ..$ content-type     : chr "application/xml"
+  ..$ transfer-encoding: chr "chunked"
+  ..$ date             : chr "Sun, 12 Jan 2025 13:33:55 GMT"
+  ..$ connection       : chr "close"
+  ..$ server           : chr "AmazonS3"
+  ..- attr(*, "class")= chr [1:2] "insensitive" "list"
+ - attr(*, "class")= chr "aws_error"
+NULL</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in parse_aws_s3_response(r, Sig, verbose = verbose): Forbidden (HTTP 403).</code></pre>
+</div>
+</div>
+<p>Interesting, the bucket names are not unique to users - this one is already taken. Well, let’s use this opportunity to try reading from a bucket instead. I wonder what this one holds:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_bucket</span>(<span class="st">"learning-aws"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 4
+ $ Code     : chr "AccessDenied"
+ $ Message  : chr "Access Denied"
+ $ RequestId: chr "XKQ5JG5KX4CN0KJB"
+ $ HostId   : chr "Ou5nza9/PM9tEQLID1VGuOkT4McQl/dF7+Z05T6E3V+RPkq18p6Blj90IYGTynIY8YZ4i9044kA="
+ - attr(*, "headers")=List of 7
+  ..$ x-amz-bucket-region: chr "us-east-1"
+  ..$ x-amz-request-id   : chr "XKQ5JG5KX4CN0KJB"
+  ..$ x-amz-id-2         : chr "Ou5nza9/PM9tEQLID1VGuOkT4McQl/dF7+Z05T6E3V+RPkq18p6Blj90IYGTynIY8YZ4i9044kA="
+  ..$ content-type       : chr "application/xml"
+  ..$ transfer-encoding  : chr "chunked"
+  ..$ date               : chr "Sun, 12 Jan 2025 13:33:56 GMT"
+  ..$ server             : chr "AmazonS3"
+  ..- attr(*, "class")= chr [1:2] "insensitive" "list"
+ - attr(*, "class")= chr "aws_error"
+NULL</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in parse_aws_s3_response(r, Sig, verbose = verbose): Forbidden (HTTP 403).</code></pre>
+</div>
+</div>
+<p>Error. Hmm, some <a href="https://stackoverflow.com/questions/25027462/aws-s3-the-bucket-you-are-attempting-to-access-must-be-addressed-using-the-spec">googling</a> reveals that this is somehow related to the region, which I set by default in my case to “eu-central-1”. How to resolve this? Turns out I should specify the region manually when using <code>get_bucket</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_bucket</span>(<span class="st">"learning-aws"</span>, <span class="at">region =</span> <span class="st">"us-east-1"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 4
+ $ Code     : chr "AccessDenied"
+ $ Message  : chr "Access Denied"
+ $ RequestId: chr "XKQ84FPCTG9A4QMS"
+ $ HostId   : chr "8Zt624b+qLh+ogJO5WM54Iy99Sp3pyh1TUZwzLghvjLWVQQolQXtz8hGwHCbcU5VCfukboYzM20="
+ - attr(*, "headers")=List of 7
+  ..$ x-amz-bucket-region: chr "us-east-1"
+  ..$ x-amz-request-id   : chr "XKQ84FPCTG9A4QMS"
+  ..$ x-amz-id-2         : chr "8Zt624b+qLh+ogJO5WM54Iy99Sp3pyh1TUZwzLghvjLWVQQolQXtz8hGwHCbcU5VCfukboYzM20="
+  ..$ content-type       : chr "application/xml"
+  ..$ transfer-encoding  : chr "chunked"
+  ..$ date               : chr "Sun, 12 Jan 2025 13:33:56 GMT"
+  ..$ server             : chr "AmazonS3"
+  ..- attr(*, "class")= chr [1:2] "insensitive" "list"
+ - attr(*, "class")= chr "aws_error"
+NULL</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in parse_aws_s3_response(r, Sig, verbose = verbose): Forbidden (HTTP 403).</code></pre>
+</div>
+</div>
+<p>Alright, this isn’t a public bucket… Let’s try it with a dataset I <a href="https://aws.amazon.com/marketplace/pp/prodview-qh4qqd6ebnqio?sr=0-100&amp;applicationId=AWSMPContessa#resources">found online</a>, which is an archive of Full-text journal articles from PubMed. I also switch to the <code>get_bucket_df()</code> function so that I get a data.frame for easier use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pmc_bucket <span class="ot">&lt;-</span> <span class="fu">get_bucket_df</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">bucket =</span> <span class="st">'pmc-oa-opendata'</span>, </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">"us-east-1"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">max =</span> <span class="dv">1000</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pmc_bucket)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                        Key             LastModified
+1                        author_manuscript/ 2021-06-17T18:22:13.000Z
+2                    author_manuscript/txt/ 2021-06-17T18:23:29.000Z
+3 author_manuscript/txt/all/PMC10000016.txt 2024-06-16T09:20:24.000Z
+4 author_manuscript/txt/all/PMC10000018.txt 2024-06-16T09:20:13.000Z
+5 author_manuscript/txt/all/PMC10000019.txt 2024-06-16T09:20:16.000Z
+6 author_manuscript/txt/all/PMC10000020.txt 2024-06-16T09:20:42.000Z
+                                ETag  Size
+1 "d41d8cd98f00b204e9800998ecf8427e"     0
+2 "d41d8cd98f00b204e9800998ecf8427e"     0
+3 "b64f69f96fa82f24914dc59b0f60b385" 23432
+4 "7eaa9c853b05ba20c3eff8bd0cd1fea9" 14691
+5 "be821355607ee4228a82e10a2a31f77b" 12272
+6 "ebdb75e4cba9bbd7b6e18c44ee76b15c" 90950
+                                                          Owner_ID
+1 7dd4dcfe9b004fb7433c61af3e87972f2e9477fa7f0760a02827f771b41b3455
+2 7dd4dcfe9b004fb7433c61af3e87972f2e9477fa7f0760a02827f771b41b3455
+3 7dd4dcfe9b004fb7433c61af3e87972f2e9477fa7f0760a02827f771b41b3455
+4 7dd4dcfe9b004fb7433c61af3e87972f2e9477fa7f0760a02827f771b41b3455
+5 7dd4dcfe9b004fb7433c61af3e87972f2e9477fa7f0760a02827f771b41b3455
+6 7dd4dcfe9b004fb7433c61af3e87972f2e9477fa7f0760a02827f771b41b3455
+          Owner_DisplayName StorageClass          Bucket
+1 NIH_NLM_NCBI_SRA_opendata     STANDARD pmc-oa-opendata
+2 NIH_NLM_NCBI_SRA_opendata     STANDARD pmc-oa-opendata
+3 NIH_NLM_NCBI_SRA_opendata     STANDARD pmc-oa-opendata
+4 NIH_NLM_NCBI_SRA_opendata     STANDARD pmc-oa-opendata
+5 NIH_NLM_NCBI_SRA_opendata     STANDARD pmc-oa-opendata
+6 NIH_NLM_NCBI_SRA_opendata     STANDARD pmc-oa-opendata</code></pre>
+</div>
+</div>
+<p>We see a list of articles available as .txt files. Let’s download one of them:</p>
+</section>
+<section id="a-surprise---need-to-use-a-different-package" class="level2">
+<h2 class="anchored" data-anchor-id="a-surprise---need-to-use-a-different-package">A surprise - need to use a different package</h2>
+<p>At this point I notice that the package <a href="https://github.com/cloudyr/aws.s3/issues/433">hasn’t received any updates since 2018</a>, so I’ll ignore this method. Some functions still seem to work, but who knows for how long, and it’s never a good idea to base a workflow on a library that’s not maintained.</p>
+<p>An alternative seems to be the <a href="https://github.com/paws-r/paws">paws</a> package, which is featured on <a href="https://aws.amazon.com/blogs/opensource/getting-started-with-r-on-amazon-web-services/">AWS blog</a>. Another option is the <a href="https://github.com/DyfanJones/s3fs">s3fs</a> package which let’s you treat the S3 service as a file system. I’ll focus now on ‘paws’, since it underlies s3fs, but might come back later to the other package.</p>
+<p>Install the package of course:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'paws'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Load the package and create a new bucket for testing</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paws)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We start by creating what paws calls a ‘client’ for the S3 service. Since I’ve already set up the credentials, it works very simply:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mys3 <span class="ot">&lt;-</span> <span class="fu">s3</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This is a simple list of functions which we can called with <code>mys3$functionname()</code> syntax. Here are all available functions:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mys3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "abort_multipart_upload"                         
+  [2] "complete_multipart_upload"                      
+  [3] "copy_object"                                    
+  [4] "create_bucket"                                  
+  [5] "create_multipart_upload"                        
+  [6] "create_session"                                 
+  [7] "delete_bucket"                                  
+  [8] "delete_bucket_analytics_configuration"          
+  [9] "delete_bucket_cors"                             
+ [10] "delete_bucket_encryption"                       
+ [11] "delete_bucket_intelligent_tiering_configuration"
+ [12] "delete_bucket_inventory_configuration"          
+ [13] "delete_bucket_lifecycle"                        
+ [14] "delete_bucket_metrics_configuration"            
+ [15] "delete_bucket_ownership_controls"               
+ [16] "delete_bucket_policy"                           
+ [17] "delete_bucket_replication"                      
+ [18] "delete_bucket_tagging"                          
+ [19] "delete_bucket_website"                          
+ [20] "delete_object"                                  
+ [21] "delete_object_tagging"                          
+ [22] "delete_objects"                                 
+ [23] "delete_public_access_block"                     
+ [24] "get_bucket_accelerate_configuration"            
+ [25] "get_bucket_acl"                                 
+ [26] "get_bucket_analytics_configuration"             
+ [27] "get_bucket_cors"                                
+ [28] "get_bucket_encryption"                          
+ [29] "get_bucket_intelligent_tiering_configuration"   
+ [30] "get_bucket_inventory_configuration"             
+ [31] "get_bucket_lifecycle"                           
+ [32] "get_bucket_lifecycle_configuration"             
+ [33] "get_bucket_location"                            
+ [34] "get_bucket_logging"                             
+ [35] "get_bucket_metrics_configuration"               
+ [36] "get_bucket_notification"                        
+ [37] "get_bucket_notification_configuration"          
+ [38] "get_bucket_ownership_controls"                  
+ [39] "get_bucket_policy"                              
+ [40] "get_bucket_policy_status"                       
+ [41] "get_bucket_replication"                         
+ [42] "get_bucket_request_payment"                     
+ [43] "get_bucket_tagging"                             
+ [44] "get_bucket_versioning"                          
+ [45] "get_bucket_website"                             
+ [46] "get_object"                                     
+ [47] "get_object_acl"                                 
+ [48] "get_object_attributes"                          
+ [49] "get_object_legal_hold"                          
+ [50] "get_object_lock_configuration"                  
+ [51] "get_object_retention"                           
+ [52] "get_object_tagging"                             
+ [53] "get_object_torrent"                             
+ [54] "get_public_access_block"                        
+ [55] "head_bucket"                                    
+ [56] "head_object"                                    
+ [57] "list_bucket_analytics_configurations"           
+ [58] "list_bucket_intelligent_tiering_configurations" 
+ [59] "list_bucket_inventory_configurations"           
+ [60] "list_bucket_metrics_configurations"             
+ [61] "list_buckets"                                   
+ [62] "list_directory_buckets"                         
+ [63] "list_multipart_uploads"                         
+ [64] "list_object_versions"                           
+ [65] "list_objects"                                   
+ [66] "list_objects_v2"                                
+ [67] "list_parts"                                     
+ [68] "put_bucket_accelerate_configuration"            
+ [69] "put_bucket_acl"                                 
+ [70] "put_bucket_analytics_configuration"             
+ [71] "put_bucket_cors"                                
+ [72] "put_bucket_encryption"                          
+ [73] "put_bucket_intelligent_tiering_configuration"   
+ [74] "put_bucket_inventory_configuration"             
+ [75] "put_bucket_lifecycle"                           
+ [76] "put_bucket_lifecycle_configuration"             
+ [77] "put_bucket_logging"                             
+ [78] "put_bucket_metrics_configuration"               
+ [79] "put_bucket_notification"                        
+ [80] "put_bucket_notification_configuration"          
+ [81] "put_bucket_ownership_controls"                  
+ [82] "put_bucket_policy"                              
+ [83] "put_bucket_replication"                         
+ [84] "put_bucket_request_payment"                     
+ [85] "put_bucket_tagging"                             
+ [86] "put_bucket_versioning"                          
+ [87] "put_bucket_website"                             
+ [88] "put_object"                                     
+ [89] "put_object_acl"                                 
+ [90] "put_object_legal_hold"                          
+ [91] "put_object_lock_configuration"                  
+ [92] "put_object_retention"                           
+ [93] "put_object_tagging"                             
+ [94] "put_public_access_block"                        
+ [95] "restore_object"                                 
+ [96] "select_object_content"                          
+ [97] "upload_part"                                    
+ [98] "upload_part_copy"                               
+ [99] "write_get_object_response"                      
+[100] "download_file"                                  
+[101] "generate_presigned_url"                         
+[102] ".internal"                                      </code></pre>
+</div>
+</div>
+<p>the <code>create_bucket</code> function sounds like what we need</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mys3<span class="sc">$</span><span class="fu">create_bucket</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Bucket =</span> <span class="st">"learning-paws-aws-2024"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">CreateBucketConfiguration =</span> <span class="fu">list</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">LocationConstraint =</span> <span class="st">"eu-central-1"</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: No compatible credentials provided. Use `options("paws.log_level" = 3L)` for more information.</code></pre>
+</div>
+</div>
+<p>We can get a list of available buckets, which is currently 0:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mys3<span class="sc">$</span><span class="fu">list_buckets</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error: No compatible credentials provided. Use `options("paws.log_level" = 3L)` for more information.</code></pre>
 </div>
 </div>
 
