@@ -406,10 +406,7 @@ Posts.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/red
 <figcaption>I’ve been using the same project structure for 10+ years</figcaption>
 </figure>
 </div>
-</section>
-<section id="learning-to-dance" class="level2">
-<h2 class="anchored" data-anchor-id="learning-to-dance">Learning to Dance</h2>
-<p>This comfortable dance started changing last year, gradually at first, as I started working on my <a href="../introducing-bmm/">first R package</a>. What began as a side project quickly evolved into something that preoccupied me for months. This was partly because I had <a href="https://www.gfrischkorn.org/">a fantastic collaborator</a>, working with whom was an exhilarating, idea-bootstrapping experience. But collaborating also meant I had to up my game — I couldn’t rely on the shortcuts and hacks I’d developed over the years. For the first time, I had to learn about proper documentation, testing, and collaborative workflows.</p>
+<p>My comfortable routine started changing last year, gradually at first, as I began working on my <a href="../introducing-bmm/">first R package</a>. What began as a side project quickly evolved into something that preoccupied me for months. This was partly because I had <a href="https://www.gfrischkorn.org/">a fantastic collaborator</a>, working with whom was an exhilarating, idea-bootstrapping experience. But collaborating also meant I had to up my game — I couldn’t rely on the shortcuts and hacks I’d developed over the years. For the first time, I had to learn about proper documentation, testing, and collaborative workflows.</p>
 <p>When you’re working on a package, you’re not just writing code for yourself—you’re writing code for others to use. This means writing clear and concise documentation, creating tests to ensure your code works as expected, and developing code that is modular and easy to understand. And you have to do it in a way that makes collaboration less painful.</p>
 </section>
 <section id="the-pitfalls-of-self-taught-coding" class="level2">
@@ -476,11 +473,12 @@ Posts.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/red
 Popov, Vencislav. 2024. <span>“Rethinking My Approach to Computational
 Projects and Reproducibility.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/reproducibility-is-hard/">https://venpopov.com/posts/2024/reproducibility-is-hard/</a>.
 </div></div></section></div> ]]></description>
-  <category>Workflow</category>
-  <category>Reproducibility</category>
+  <category>workflow</category>
+  <category>reproducibility</category>
   <category>R</category>
+  <category>git</category>
   <category>targets</category>
-  <category>Project management</category>
+  <category>project management</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/reproducibility-is-hard/</guid>
   <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
@@ -521,9 +519,9 @@ Ven</p>
 Popov, Vencislav. 2024. <span>“Taking a Stand on Open Peer
 Review.”</span> August 4, 2024. <a href="https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/">https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</a>.
 </div></div></section></div> ]]></description>
-  <category>Academic Publishing</category>
-  <category>Peer Review</category>
-  <category>Open Science</category>
+  <category>academic aublishing</category>
+  <category>peer review</category>
+  <category>open science</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</guid>
   <pubDate>Sat, 03 Aug 2024 22:00:00 GMT</pubDate>
@@ -1254,9 +1252,9 @@ Popov, Vencislav. 2024. <span>“Introducing the Bayesian Measurement
 Modeling R Package (Bmm).”</span> June 13, 2024. <a href="https://venpopov.com/posts/2024/introducing-bmm/">https://venpopov.com/posts/2024/introducing-bmm/</a>.
 </div></div></section></div> ]]></description>
   <category>R</category>
-  <category>Modeling</category>
-  <category>Bayesian</category>
-  <category>R-package</category>
+  <category>modeling</category>
+  <category>bayesian</category>
+  <category>R package</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/introducing-bmm/</guid>
   <pubDate>Wed, 12 Jun 2024 22:00:00 GMT</pubDate>
@@ -1727,7 +1725,7 @@ Package.”</span> March 3, 2024. <a href="https://venpopov.com/posts/2024/r-mul
   <category>R</category>
   <category>reproducibility</category>
   <category>package management</category>
-  <category>R-package</category>
+  <category>R package</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/r-multiple-package-versions/</guid>
   <pubDate>Sat, 02 Mar 2024 23:00:00 GMT</pubDate>
