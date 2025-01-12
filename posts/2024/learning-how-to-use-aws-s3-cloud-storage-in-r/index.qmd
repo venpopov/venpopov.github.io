@@ -4,6 +4,8 @@ subtitle: ""
 categories: [Reproducibility,  R,  Cloud Storage,  Workflow,  2024]
 date: "2024-11-17"
 draft: true
+execute: 
+  error: true
 ---
 
 Ok, it’s time I learn this. I hope it can simplify my reproducible research workflows, particularly when using targets and versioning data objects. I’m going to start with the basics and then see how I can integrate it into my workflow.
@@ -52,6 +54,11 @@ The key will not be saved anywhere on AWS, so better save it somewhere safe (in 
 AWS_ACCESS_KEY_ID=YOUR_ACCESS_KEY
 AWS_SECRET_ACCESS_KEY=YOUR_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION=REGION
+```
+
+```{r}
+#| echo: false
+readRenviron(".env")
 ```
 
 ## Working with `aws.s3`
