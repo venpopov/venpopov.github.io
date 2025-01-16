@@ -270,6 +270,7 @@ specification of grouped effects. In this case, we assume random effects for all
 parameters across the different set sizes.
 
 ::: {.callout-tip appearance="simple"}
+
 ## Take a closer look at the formula object. 
 
 This is where the power and flexibility of this approach
