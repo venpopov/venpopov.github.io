@@ -96,7 +96,7 @@ div.csl-indent {
 <script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../../site_libs/bootstrap/bootstrap-9e6cc6e53158df145e54960250935bca.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../../site_libs/bootstrap/bootstrap-dark-ef0efe73e4fad15b1b07f5bd204e22a6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-a1574b19002a4e571223bc30fdcda90b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
 <link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
 <link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
@@ -625,14 +625,17 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>bmmformula</code> object is closely aligned with the <code>brmsformula</code> syntax and allows for an easy specification of grouped effects. In this case, we assume random effects for all parameters over the <code>ID</code> variable, thus implementing a hierarchical model estimating individual differences in all parameters across the different set sizes.</p>
-<div class="callout callout-style-simple callout-tip">
-<div class="callout-body d-flex">
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p>Take a closer look at the formula object. This is where the power and flexibility of this approach comes from. You can specify any combination of fixed and random effects for any parameter in the model. This allows you to test a wide range of hypotheses about how the parameters of the model vary across different experimental conditions. In essence, fitting a hierarchical measurement model is not much different from fitting a mixed-effects regression model. You can find a more comprehensive tutorial on the <code>bmmformula</code> syntax and features in <a href="https://venpopov.github.io/bmm/articles/bmm_bmmformula.html">the online vignette</a></p>
+<div class="callout-title-container flex-fill">
+Take a closer look at the formula object.
 </div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This is where the power and flexibility of this approach comes from. You can specify any combination of fixed and random effects for any parameter in the model. This allows you to test a wide range of hypotheses about how the parameters of the model vary across different experimental conditions. In essence, fitting a hierarchical measurement model is not much different from fitting a mixed-effects regression model. You can find a more comprehensive tutorial on the <code>bmmformula</code> syntax and features in <a href="https://venpopov.github.io/bmm/articles/bmm_bmmformula.html">the online vignette</a></p>
 </div>
 </div>
 </section>
