@@ -270,7 +270,9 @@ specification of grouped effects. In this case, we assume random effects for all
 parameters across the different set sizes.
 
 ::: {.callout-tip appearance="simple"}
-Take a closer look at the formula object. This is where the power and flexibility of this approach
+## Take a closer look at the formula object. 
+
+This is where the power and flexibility of this approach
 comes from. You can specify any combination of fixed and random effects for any parameter in the
 model. This allows you to test a wide range of hypotheses about how the parameters of the model vary
 across different experimental conditions. In essence, fitting a hierarchical measurement model is
