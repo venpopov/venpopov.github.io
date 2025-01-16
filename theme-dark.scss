@@ -102,10 +102,34 @@ pre code {
     color: #ffffff !important;
 }
 
+.cell-code {
+    padding: .5em !important;
+    border: 1px #75AADB !important;
+    border-radius: 0.5rem !important;
+}
+
 a {
     text-decoration: none !important;
 }
 
 figcaption {
     font-style: italic;
+}
+
+.input-group-text, .form-select, .form-control {
+    background-color: #1F1F1F !important;
+    border: 1px solid #464646 !important;
+}
+
+.callout {
+  border-top-right-radius:  0.75rem !important;
+  border-bottom-right-radius:  0.75rem !important;
+  border-top: #1F1F1F !important;
+  border-bottom: #1F1F1F !important;
+  border-right: #1F1F1F !important;
+  background-color: #282828 !important;
+}
+
+.callout-header {
+  margin-bottom: 0.5rem !important;
 }
