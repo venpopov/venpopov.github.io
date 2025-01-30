@@ -12,6 +12,7 @@ website:
   google-analytics: "G-ZVYQ98TZ00"
   twitter-card: true
   open-graph: true
+  search: false
   navbar:
     logo: images/popov-lab-logo-transparent.png
     pinned: true
