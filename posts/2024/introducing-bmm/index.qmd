@@ -270,16 +270,14 @@ specification of grouped effects. In this case, we assume random effects for all
 parameters across the different set sizes.
 
 ::: {.callout-tip appearance="simple"}
+## Take a closer look at the formula object.
 
-## Take a closer look at the formula object. 
-
-This is where the power and flexibility of this approach
-comes from. You can specify any combination of fixed and random effects for any parameter in the
-model. This allows you to test a wide range of hypotheses about how the parameters of the model vary
-across different experimental conditions. In essence, fitting a hierarchical measurement model is
-not much different from fitting a mixed-effects regression model. You can find a more comprehensive
-tutorial on the `bmmformula` syntax and features in [the online
-vignette](https://venpopov.github.io/bmm/articles/bmm_bmmformula.html)
+This is where the power and flexibility of this approach comes from. You can specify any combination
+of fixed and random effects for any parameter in the model. This allows you to test a wide range of
+hypotheses about how the parameters of the model vary across different experimental conditions. In
+essence, fitting a hierarchical measurement model is not much different from fitting a mixed-effects
+regression model. You can find a more comprehensive tutorial on the `bmmformula` syntax and features
+in [the online vignette](https://venpopov.github.io/bmm/articles/bmm_bmmformula.html)
 :::
 
 ### 3) Fit the model

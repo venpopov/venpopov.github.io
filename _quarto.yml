@@ -2,6 +2,8 @@ project:
   type: website
   resources:
     - "papers/*.pdf"
+  post-render: 
+    - ./purge_css.sh
 
 website:
   title: "Ven Popov"
