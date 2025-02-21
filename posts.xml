@@ -765,6 +765,1336 @@ Popov, Vencislav. 2025. <span>“R Love You, R Hate You.”</span> February
   <pubDate>Thu, 20 Feb 2025 23:00:00 GMT</pubDate>
 </item>
 <item>
+  <title>aRt-o Pollo</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2025/arto-pollo/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Imagine a universe where light behaves differently than ours. Rather than diffusing its intensity with distance, and simply increasing it with multiple sources, light in this universe is different. When two light beams meet, their combined intensity depends on the angle between them. Right angles are the best - when two light beams meet at a point perpendicularly, they have the highest possible intensity at that point. As the angle becomes smaller or bigger than 90 degrees (pi/2 radians), the intensity becomes weaker.</p>
+<p>Why would you imagine such a thing? I don’t know why I wonder about such things, but I often do. As an example, I drew the image below while thinking about this - we have two “suns”, the red dots are 90 degree intersections, the blue points are intersections with a smaller angle.</p>
+<p><img src="https://venpopov.com/posts/2025/arto-pollo/two-source-rays.png" class="img-fluid"></p>
+<p>Drawing can only get me so far, but this is an easy enough simulation to do in R, and the results are pretty, especially when we change some of those initial assumptions. I’ve long been a fan of Danielle Navarro’s <a href="https://art-from-code.netlify.app/">approach to generative art</a>, and it has been years since I dipped my toes in these waters, so here goes nothing. This post will be light on details, but hopefully it makes sense. Let’s explore how this imaginary physics creates some beautiful patterns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggplot2)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(purrr)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(patchwork)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ambient)</span>
+<span id="cb1-5"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(wesanderson)</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(httpgd)</span>
+<span id="cb1-7"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(ggdark)</span>
+<span id="cb1-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(viridis)</span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(fields)</span>
+<span id="cb1-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12345</span>)</span>
+<span id="cb1-11"></span>
+<span id="cb1-12"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_set</span>(</span>
+<span id="cb1-13">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dark_theme_void</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb1-14">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">plot.background =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_rect</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#1F1F1F"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#1F1F1F"</span>))</span>
+<span id="cb1-15">)</span></code></pre></div>
+</div>
+<p>What things do we need for the simplest possible simulation?</p>
+<ul>
+<li>two fixed points A and B for our light sources</li>
+<li>a way to calculate the angle formed at any other point X where beams from A and B intersect - a way to convert this angle into an intensity value</li>
+<li>calculate the intensity for many different points in the plane</li>
+<li>visualize the result</li>
+</ul>
+<p>Here are some basic functions to do this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' Calculates the angle formed by AX and BX</span></span>
+<span id="cb2-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#'</span></span>
+<span id="cb2-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param X a numeric vector of length 2 or a matrix with two columns in which each row represents the x and y coordinates of a point</span></span>
+<span id="cb2-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param A A numeric vector of length 2 representing the first source</span></span>
+<span id="cb2-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param B A numeric vector of length 2 representing the second source</span></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @return The angle in radians between vectors A and B with respect to point(s) X.</span></span>
+<span id="cb2-7">angle <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(X, A, B) {</span>
+<span id="cb2-8">  X <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.matrix</span>(X)</span>
+<span id="cb2-9">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(X) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) X <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t</span>(X)</span>
+<span id="cb2-10">  A <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(A, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(X)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-11">  B <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(B, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(X)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-12"></span>
+<span id="cb2-13">  v1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> X <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> A</span>
+<span id="cb2-14">  v2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> X <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> B</span>
+<span id="cb2-15">  dot_product <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rowSums</span>(v1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> v2)</span>
+<span id="cb2-16">  norm <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rowSums</span>(v1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> v1)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rowSums</span>(v2 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> v2))</span>
+<span id="cb2-17">  cos_theta <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> dot_product <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> norm</span>
+<span id="cb2-18">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">acos</span>(cos_theta)</span>
+<span id="cb2-19">}</span>
+<span id="cb2-20"></span>
+<span id="cb2-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' Convert angle to intensity</span></span>
+<span id="cb2-22"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#'</span></span>
+<span id="cb2-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param theta A numeric value representing the angle in radians.</span></span>
+<span id="cb2-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @return A numeric value representing the intensity.</span></span>
+<span id="cb2-25">angle_to_intensity <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(theta) {</span>
+<span id="cb2-26">  <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(theta <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pi <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (pi <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb2-27">}</span>
+<span id="cb2-28"></span>
+<span id="cb2-29"></span>
+<span id="cb2-30"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' Calculate intensity at a point</span></span>
+<span id="cb2-31"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' </span></span>
+<span id="cb2-32"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param x a numeric vector of length 2 or a matrix with two columns in which each row represents the x and y coordinates of a point</span></span>
+<span id="cb2-33"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param source1 A numeric vector of length 2 representing the first source</span></span>
+<span id="cb2-34"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param source2 A numeric vector of length 2 representing the second source</span></span>
+<span id="cb2-35"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @param angle_transform_fun A function that takes an angle in radians and returns</span></span>
+<span id="cb2-36"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#'  a value to be plotted as the coordinate intensity. Default is a linear function of </span></span>
+<span id="cb2-37"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#'  the absolute deviation from a right angle.</span></span>
+<span id="cb2-38"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#' @return A numeric value in [0, 1] representing the intensity at point x.</span></span>
+<span id="cb2-39">intensity <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, source1, source2, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle_transform_fun =</span> angle_to_intensity) {</span>
+<span id="cb2-40">  theta <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">angle</span>(x, source1, source2)</span>
+<span id="cb2-41">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">angle_transform_fun</span>(theta)</span>
+<span id="cb2-42">}</span></code></pre></div>
+</div>
+<p>With these functions in hand we can play around. We need two sources:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">A <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb3-2">B <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span></code></pre></div>
+</div>
+<p>Just as an illustration, the maximum intensity should be at point (0, 1) which forms a right angle. The minimum intensity should be at any point on the AB line, e.g.&nbsp;(0, 0) as it forms a 180 degree angle:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">intensity</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), A, B)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">intensity</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), A, B)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<p>Now we need a grid of points where their beams will intersect:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">grid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand.grid</span>(</span>
+<span id="cb8-2">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>),</span>
+<span id="cb8-3">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.01</span>)</span>
+<span id="cb8-4">)</span></code></pre></div>
+</div>
+<p>and evaluate their intensity:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">intensity</span>(grid[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"x"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"y"</span>)], A, B)</span>
+<span id="cb9-2"></span>
+<span id="cb9-3">main_plot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> grid <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> intensity1, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> intensity1)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb9-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_raster</span>()</span>
+<span id="cb9-6">  </span>
+<span id="cb9-7">main_plot <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors =</span> viridis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>That’s kinda cool. Mostly what I expected, but it’s pretty. We can try a few more color schemes and plot settings. To make things a bit easier, I want to simultaneously plot multiple versions with different binning granularities:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">plot3s <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(main, pallette) {</span>
+<span id="cb10-2">  p1 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> main <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb10-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_stepsn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors =</span> pallette, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n.breaks =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb10-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span>
+<span id="cb10-5">  p2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> main <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb10-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_stepsn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors =</span> pallette, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n.breaks =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">24</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb10-7">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span>
+<span id="cb10-8">  p3 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> main <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb10-9">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_fill_gradientn</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">colors =</span> pallette) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb10-10">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span>
+<span id="cb10-11"></span>
+<span id="cb10-12">  p1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> p2 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> p3</span>
+<span id="cb10-13">}</span></code></pre></div>
+</div>
+<p>For example with out original palette we get:</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(main_plot, viridis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>))</span></code></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>With the binned version on the left, I notice something that wasn’t as obvious in the smooth one: there is more than one circle! In fact, all points that form the same angle with A and B lie on a circle. This wasn’t immediately obvious to me, but I eventually remembered the <a href="https://www.wikiwand.com/en/articles/Inscribed_angle">inscribed angle theorem</a> from high school geometry. This theorem is a more general case of the well-known Thales’ theorem, which states that all points on a circle form 90-degree angles with any diameter line of the circle. The resulting figure also represents one half of what is known as the <a href="https://www.wikiwand.com/en/articles/Apollonian_circles">Apollonian circles</a>. This realization led me down a Wikipedia rabbit hole, where I read more about alternative coordinate systems like the <a href="https://www.wikiwand.com/en/articles/Bipolar_coordinates">bipolar coordinate system</a>. At first glance, it seems esoteric and pointless, but it turns out it can <a href="https://arc.net/l/quote/jfwaoyhl">simplify many problems</a> that are otherwise too complicated to compute in standard Cartesian coordinate systems.</p>
+<p>Anyway, let’s go on with making pretty variations on this theme.</p>
+<div class="cell page-columns page-full" data-layout-align="ce#| nter">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(main_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hcl.colors</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"YlOrRd"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rev =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span>
+<span id="cb12-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(main_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#00FFFF"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#8A2BE2"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FFD700"</span>))</span>
+<span id="cb12-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(main_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wes_palette</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Royal1"</span>))</span></code></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-ce#| nter page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid quarto-figure quarto-figure-ce#| nter figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-ce#| nter page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid quarto-figure quarto-figure-ce#| nter figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-ce#| nter page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid quarto-figure quarto-figure-ce#| nter figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Alright, how about we add some correlated noise for variety?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">gaussian_kernel <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(sigma_x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sigma_y =</span> sigma_x) {</span>
+<span id="cb13-2">  size_x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ceiling</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sigma_x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb13-3">  size_y <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ceiling</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sigma_y) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span id="cb13-4">  </span>
+<span id="cb13-5">  kernel <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">outer</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>size_x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>size_x, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>size_y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span>size_y, <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, y) {</span>
+<span id="cb13-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">exp</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>(x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sigma_x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> sigma_y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)))</span>
+<span id="cb13-7">  })</span>
+<span id="cb13-8"></span>
+<span id="cb13-9">  kernel <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sum</span>(kernel)</span>
+<span id="cb13-10">}</span>
+<span id="cb13-11"></span>
+<span id="cb13-12">convolve2d <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(mat, kernel) {</span>
+<span id="cb13-13">  fft_mat <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fft</span>(mat)</span>
+<span id="cb13-14">  fft_kernel <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fft</span>(kernel, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dim</span>(mat))</span>
+<span id="cb13-15">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">Re</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">fft</span>(fft_mat <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> fft_kernel, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">inverse =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(mat))</span>
+<span id="cb13-16">}</span>
+<span id="cb13-17"></span>
+<span id="cb13-18">smooth_matrix <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(mat, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">kernel =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gaussian_kernel</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)) {</span>
+<span id="cb13-19">  pad_kernel <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(mat), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">ncol =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ncol</span>(mat))</span>
+<span id="cb13-20">  pad_kernel[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(kernel), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ncol</span>(kernel)] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> kernel</span>
+<span id="cb13-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">convolve2d</span>(mat, pad_kernel)</span>
+<span id="cb13-22">}</span>
+<span id="cb13-23"></span>
+<span id="cb13-24">grid_size <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(grid))</span>
+<span id="cb13-25">noise <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(grid_size<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), grid_size)</span>
+<span id="cb13-26">noise <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">smooth_matrix</span>(noise, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">kernel =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gaussian_kernel</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>))</span></code></pre></div>
+</div>
+<p>Now won’t you look at that!</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity2 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity1 <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.vector</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t</span>(noise))</span>
+<span id="cb14-2"></span>
+<span id="cb14-3">noise_plot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> grid <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb14-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> intensity2, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> intensity2)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_raster</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span>
+<span id="cb14-7"></span>
+<span id="cb14-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rev</span>(viridis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>)))</span>
+<span id="cb14-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hcl.colors</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"YlOrRd"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rev =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span>
+<span id="cb14-10"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#00FFFF"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#8A2BE2"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FFD700"</span>))</span>
+<span id="cb14-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">wes_palette</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Royal1"</span>))</span></code></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-10-4.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Alright, one last one. Instead of clamping the intensity to be a linear function of how much the angle deviates from 90 degrees, let’s introduce some oscillations. We’ll also use a larger range of x and y coordinates.</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">nonlinear_intensity <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(theta) {</span>
+<span id="cb15-2">  deviation <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">abs</span>(theta <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> pi<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> (pi<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb15-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sin</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> pi <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> deviation)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb15-4">}</span>
+<span id="cb15-5"></span>
+<span id="cb15-6">bigger_grid <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">expand.grid</span>(</span>
+<span id="cb15-7">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.02</span>),</span>
+<span id="cb15-8">  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.02</span>)</span>
+<span id="cb15-9">)</span>
+<span id="cb15-10"></span>
+<span id="cb15-11">bigger_grid_size <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(bigger_grid)) </span>
+<span id="cb15-12">bigger_noise <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(bigger_grid_size<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), bigger_grid_size)</span>
+<span id="cb15-13">bigger_noise <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">smooth_matrix</span>(bigger_noise, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">kernel =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gaussian_kernel</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>))</span>
+<span id="cb15-14"></span>
+<span id="cb15-15">bigger_grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity3 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">intensity</span>(bigger_grid[<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>,<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)], A, B, nonlinear_intensity) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb15-16">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.vector</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">t</span>(bigger_noise))</span>
+<span id="cb15-17"></span>
+<span id="cb15-18">noise_plot_nl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> bigger_grid <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb15-19">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(y, x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> intensity3, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> intensity3)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_raster</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb15-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span>
+<span id="cb15-22"></span>
+<span id="cb15-23"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot_nl, viridis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>))</span>
+<span id="cb15-24"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot_nl, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">hcl.colors</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">12</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"YlOrRd"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rev =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span>
+<span id="cb15-25"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot_nl, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#00FFFF"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#8A2BE2"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"#FFD700"</span>))</span>
+<span id="cb15-26"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(noise_plot_nl, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grey.colors</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span></code></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Last one, for real this time:</p>
+<div class="cell page-columns page-full" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Generate and smooth directional noise</span></span>
+<span id="cb16-2">grid_size <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sqrt</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(grid))</span>
+<span id="cb16-3">noise_matrix <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">matrix</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(grid_size<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">nrow =</span> grid_size)</span>
+<span id="cb16-4">smoothed_noise <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">smooth_matrix</span>(noise_matrix, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">kernel =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gaussian_kernel</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sigma_x =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sigma_y =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb16-5"></span>
+<span id="cb16-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Apply noise only on the bottom part of the image and clip intensity between 0 and 1</span></span>
+<span id="cb16-7">is_lower_half <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>y <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb16-8">grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity4 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(</span>
+<span id="cb16-9">  is_lower_half,</span>
+<span id="cb16-10">  grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity1<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.75</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.vector</span>(smoothed_noise),</span>
+<span id="cb16-11">  grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity1</span>
+<span id="cb16-12">) </span>
+<span id="cb16-13"></span>
+<span id="cb16-14"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># somewhat random aesthetic choices</span></span>
+<span id="cb16-15">inside_upper_circle <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> (grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>y<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span>is_lower_half</span>
+<span id="cb16-16">grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity4 <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pmax</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pmin</span>(grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity4, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb16-17">grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity4[inside_upper_circle] <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> grid<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>intensity4[inside_upper_circle]<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span></span>
+<span id="cb16-18"></span>
+<span id="cb16-19">streak_noise_plot <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> grid <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb16-20">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(x, y, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> intensity4, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> intensity4)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb16-21">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_raster</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb16-22">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span>
+<span id="cb16-23"></span>
+<span id="cb16-24"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">plot3s</span>(streak_noise_plot, viridis<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">256</span>))</span></code></pre></div>
+<div class="cell-output-display page-columns page-full">
+<div class="quarto-figure quarto-figure-center page-columns page-full">
+<figure class="figure page-columns page-full">
+<p class="page-columns page-full"><img src="https://venpopov.com/posts/2025/arto-pollo/index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img column-page" width="1440"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2025,
+  author = {Popov, Vencislav},
+  title = {aRt-o {Pollo}},
+  date = {2025-02-21},
+  url = {https://venpopov.com/posts/2025/arto-pollo/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2025" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2025. <span>“aRt-o Pollo.”</span> February 21, 2025.
+<a href="https://venpopov.com/posts/2025/arto-pollo/">https://venpopov.com/posts/2025/arto-pollo/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>art</category>
+  <category>2025</category>
+  <guid>https://venpopov.com/posts/2025/arto-pollo/</guid>
+  <pubDate>Thu, 20 Feb 2025 23:00:00 GMT</pubDate>
+</item>
+<item>
   <title>Reduce friction for creating Quarto blog posts</title>
   <dc:creator>Vencislav Popov</dc:creator>
   <link>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</link>
