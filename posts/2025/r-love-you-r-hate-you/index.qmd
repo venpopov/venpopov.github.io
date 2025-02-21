@@ -27,13 +27,13 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-I do the majority of my coding in R. I've grown to love the language despite many of its quirks. Perhaps this is just Stockholm's Syndrom as I joked in my "Intro to programming" class recently, though I genuinely enjoy the language and its functional roots.
+I do the majority of my coding in R. I've grown to love the language despite many of its quirks. Perhaps this is just Stockholm Syndrome as I joked in my "Intro to programming" class recently, though I genuinely enjoy the language and its functional programming roots.
 
-That said, there are things that are objectively bad about it, with default that no sane person would choose. The more time I spend writing code for packages rather than data analysis, the more I've grown annoyed at how much extra work you need to do to avoid perplexing bugs and behavior. This is partly a weakness of dynamically typed languages - rather than depending on type-checking built into the language, you need to program defensively and explicitly handle user-input and whether it is what you expect it to be (some good posts on the topic [here](https://blog.r-hub.io/2022/03/10/input-checking/#checking-function-inputs-using-r-packages) and [here](https://blog.djnavarro.net/posts/2023-08-08_being-assertive/#just-assertr-carr)). It's a problem important enough that it has lead to the proliferation of many packages that aim to assist you with it - e.g. [checkmate](https://mllg.github.io/checkmate/articles/checkmate.html), [ensurer](https://github.com/smbache/ensurer), [tester](https://github.com/gastonstat/tester), [assertive](https://cran.r-project.org/web/packages/assertive/index.html), [assertr](https://docs.ropensci.org/assertr/index.html)). But another part is just due to some genuinely weird choices built in many of R's base functions.
+That said, there are things that are objectively bad about it, with defaults that no sane person would choose. The more time I spend writing code for packages rather than data analysis, the more I've grown annoyed at how much extra work you need to do to avoid perplexing bugs and behavior. This is partly a weakness of dynamically typed languages - rather than depending on type-checking built into the language, you need to program defensively and explicitly handle user-input and whether it is what you expect it to be (see excellent discussions [here](https://blog.r-hub.io/2022/03/10/input-checking/#checking-function-inputs-using-r-packages) and [here](https://blog.djnavarro.net/posts/2023-08-08_being-assertive/#just-assertr-carr)). It's a problem important enough that it has led to the proliferation of many packages that aim to assist you with it - e.g. [checkmate](https://mllg.github.io/checkmate/articles/checkmate.html), [ensurer](https://github.com/smbache/ensurer), [tester](https://github.com/gastonstat/tester), [assertive](https://cran.r-project.org/web/packages/assertive/index.html), [assertr](https://docs.ropensci.org/assertr/index.html). But another part is just due to some genuinely weird choices built in many of R's base functions.
 
 ### A case of bait and switch
 
-Here is a simple case which recently lead to a [headscratcher of a bug](https://github.com/venpopov/bmm/issues/269) in our [bmm package](../../2024/introducing-bmm). You write a function which does something different depending on a parameter:
+Here's a simple case which recently led to a head-scratcher of a bug in our [bmm package](../../2024/introducing-bmm). Consider a simple a function which gives a different greeting depending on a language parameter:
 
 ```{r}
 greeting <- function(name, language) {
@@ -54,14 +54,14 @@ Simple enough, right?
 greeting("Ven", "german")
 ```
 
-You get weird errors with non-character input if you don't properly check that the language argument is a character or that it is a valid choice, but at least the user will get an error:
+Currently, you will get weird errors with non-character input if you don't properly check that the language argument is a character or that it is a valid choice. But at least the user will get an error:
 
 ```{r}
 greeting("Ven", 2)
 greeting("Ven", "japanese")
 ```
 
-Ok, maybe a little confusing for the user ("object 'out'? What is object 'out'?"), but fine. You can and should go the extra mile and validate the input, but let's keep going. Now, if you had many different language options, you might decide to use a `switch` statement instead of an if/else structure:
+Ok, maybe a little confusing for the user who doesn't know how the function is implemented ("object 'out' not found? What is object 'out'?"), but fine. You can *and should* go the extra mile and validate the input, but let's keep going. Now, if you had many different language options, you might decide to use a more efficient `switch` statement instead of an if/else structure:
 
 ```{r}
 greeting2 <- function(name, language) {
@@ -74,7 +74,7 @@ greeting2 <- function(name, language) {
 }
 ```
 
-Our `switch` handles 3 defined cases, just like the if/else version, so unless you read the documentation, or have been already burnt by this, you might expect that this should fail:
+Our `switch` handles 3 explicitly defined cases, just like the if/else version, so unless you read the documentation, or have been already burnt by this, you might expect that this should fail:
 
 ```{r}
 greeting2("Ven", 2)
@@ -124,7 +124,7 @@ users$language
 str(users$language)
 ```
 
-So Gidon get's greeted in Bulgarian, because his "german" language is coded as 3 in the factor variable, and the third check in `switch` corresponds to "bulgarian". The documentation (`?switch`) helpfully explains that
+So Gidon gets greeted in Bulgarian, because his "german" language is coded as 3 in the factor variable, and the third check in `switch` corresponds to "bulgarian". The documentation (`?switch`) helpfully explains that
 
 > `switch` works in two distinct ways depending whether the first argument evaluates to a character string or a number.
 >
@@ -136,13 +136,13 @@ Wow, ok, I never knew this, or if I did I have completely forgotten about it.
 
 ## So what, we do get a warning don't we?
 
-We sure do, but warnings can be suppressed, just like I did above. It's common to suppress output of functions when running many iterations of a chatty function in an analysis script and problems can easily go unnoticed. That's exactly what happened recently in our Bayesian measurement modeling R package when a user reported [a weird bug](https://github.com/venpopov/bmm/issues/269). We have one computational model that can apply different forms of Luce's choice decision rule - a standard version and a version passed through a softmax normalization. Due to this weird way that `switch` treats factors, the wrong normalization was applied. This is a recent and not yet officially released model, so we are yet to write all input validations. This could have easily go unnoticed and lead to incorrect model specification that nevertheless lets the model run.
+We sure do, but warnings can be suppressed, just like I did above. It's common to suppress output of functions when running many iterations of a chatty function in an analysis script and problems can easily go unnoticed. That's exactly what happened recently in our Bayesian measurement modeling R package when a colleage reported [a weird bug](https://github.com/venpopov/bmm/issues/269). We have one computational model that can apply different forms of Luce's choice decision rule - a standard version and a version passed through a softmax normalization. Due to this weird way that `switch` treats factors, the wrong normalization was applied. This is a recent and not yet officially released model, so we are yet to write all input validations. This could have easily gone unnoticed and led to incorrect model specification that nevertheless lets the model run.
 
 *Warnings are not a reliable way to signal undesired behavior*. Especially when the documentation of switch's warning itself notes that "typically the character level is meant". Well, if typically a character level is meant, why is the default EXACTLY THE OPPOSITE?!?
 
 ## Fine, but you tell users "language" should be a character... right?
 
-We do, but here's the kicker - R *loves* to turn character vector into factors. So much so that disabling such behavior was one of the main motivation behind the development of `tibbles.` Until R4.0.0, whenever you used a function like `read.csv()` to read a file as a data.frame, R by default [converted character columns to factors](https://blog.r-project.org/2020/02/16/stringsasfactors/). Thankfully now this default has been reversed, but here's the deal - NOT EVERYWHERE!
+We do, but here's the kicker - R *loves* to turn character vectors into factors. So much so that disabling such behavior was one of the main motivation behind the development of `tibbles.` Until R4.0.0, whenever you used a function like `read.csv()` to read a file as a data.frame, R by default [converted character columns to factors](https://blog.r-project.org/2020/02/16/stringsasfactors/). Thankfully now this default has been reversed, but here's the deal - NOT EVERYWHERE!
 
 One place which I never knew R created factors out of character vectors is `expand.grid`. Expand.grid is a commonly used function to get a data.frame with all combinations of several variables, which is useful for running models with orthogonality manipulated conditions. E.g.:
 
@@ -155,7 +155,7 @@ conditions <- expand.grid(
 conditions
 ```
 
-Can you tell that version and choice_rule are factors? I've used `expand.grid` for years without knowing that behavior default of expand.grid, and it's partly that standard data.frame print method does not differentiate character and factor columns in any way. You can see that indeed we have factors underneath by using `str` for more details:
+Can you tell that version and choice_rule are factors? I've used `expand.grid` for years without knowing that default behavior of expand.grid, and it's partly that standard data.frame print method does not differentiate character and factor columns in any way. You can see that indeed we have factors underneath by using `str` for more details:
 
 ```{r}
 str(conditions, give.attr = FALSE)
@@ -193,13 +193,39 @@ tidyr::expand_grid(
 ) |> str()
 ```
 
-I am often annoyed at how frequently `tidyverse` packages break my code, and how often I have to relearn how to do things due to their fast pace of changes. I also dislike how interdependent and "heavy" tidyverse packages become - while I use them when writing analysis code, it is difficult to justify using them when writing packages that I wish to be lightweight and stable without constant watch. I also often get annoyed that tidyverse packages seem to often just wrap basic R functions because, which makes the language more varied than it needs to be. There are many arguments both pro and against the way that the `tidyverse` has affected the R community (some polemic discussion - e.g. [here](https://github.com/matloff/TidyverseSkeptic), [here](https://www.tinyverse.org/), [here](https://www.reddit.com/r/rprogramming/comments/rd4ksl/i_am_concerned_about_the_tidyverse_and_its_impact/), [here](https://forum.posit.co/t/should-tidyeval-be-abandoned/2238/12), [here](https://blog.thecoatlessprofessor.com/programming/r/woes-of-the-rlang-enabled-tidyverse/index.html)). I personally have shifted from a huge fan to a skeptic and nowadays try to do without when I can. But I don't want to throw away the baby with the bathwater. The tidyverse is right in at least one way - function APIs should be consistent and avoid "magic" behavior. Base R still suffers from that, mostly due to it being and very old language (or wanting to keep compatibility with an old language such as S).
+## Consistency is important
+
+Consistency is a loaded term. Whether two things are consistent or not necessarily depends on context and goals. One could go on and on about consistent naming styles, consistent argument order, consistent default behaviors, etc. At its core the problem with inconsistent design choices in a programming language is that it makes it very difficult, if not impossible, to build an accurate mental model of how the language works. It's more than a bit ironic when programming languages, which are supposed to be the precise counterpart of natural languages, become a similar tangled mess of exceptions you need to learn by heart, just like irregular verbs in English. 
+
+The main example of this post concerns the concept of [control flow](https://www.google.com/search?q=control+of+flow&sourceid=chrome&ie=UTF-8) in programming. Both if/else statements and case/switch statements aim to accomplish the same goal - to execute different parts of a program depending on a prespecified condition. One would expect that logical comparisons would work the same between those two constructs, but as this example has illustrated, they do not in R. Sometimes complex examples obscure the core problems, so let's present it at it's simplest form:
+
+```{r}
+x <- factor("Peace", levels = c("Violence", "Peace"))
+
+x == "Peace"
+x == 2
+x == "2"
+
+switch(x, Peace = "I choose peace", Violence = "I choose violence")
+```
+
+<div style="text-align: center">
+![Was Cercei mislead by R? We'll never know.](i-choose-violence.gif)
+</div>
+
+Logical comparisons treat factors as character vectors, switch comparisons treat them as integer values. This is not ok. Sure, you can learn that this is the case, but you shouldn't have to. 
+
+These inconsistencies in base R have led to various attempts at reform, most notably through the tidyverse ecosystem. While the tidyverse strongly emphasizes consistency, it presents its own challenges. Breaking changes are frequent, forcing regular code updates and relearning of functionality. While useful for analysis code, the packages' interdependence and heavy footprint make them difficult to justify in lightweight, stable package development. Many tidyverse functions on the surface appear to simply wrap basic R operations, unnecessarily expanding the language's complexity. The tidyverse's impact on the R community remains contentious, sparking numerous debates about its influence (see discussions [here](https://github.com/matloff/TidyverseSkeptic), [here](https://www.tinyverse.org/), [here](https://www.reddit.com/r/rprogramming/comments/rd4ksl/i_am_concerned_about_the_tidyverse_and_its_impact/), [here](https://forum.posit.co/t/should-tidyeval-be-abandoned/2238/12), [here](https://blog.thecoatlessprofessor.com/programming/r/woes-of-the-rlang-enabled-tidyverse/index.html)). My own perspective has evolved from enthusiasm to skepticism, though I still use tidyverse tools when appropriate. I don't want to throw away the baby along with the bathwater though - despite its drawbacks, the tidyverse gets one thing right: function APIs should be consistent and avoid "magic" behavior. R along with its predecessor S, is an old language, and a lot can be forgiven due to its legacy.
+
+This situation mirrors broader patterns in programming language evolution. Consider C++: despite being a modern, widely-used language, it carries significant legacy baggage due to its strict backwards compatibility requirements. Newer languages like Rust, free from such constraints, can implement better defaults and more consistent behavior from the start. The tidyverse represents a curious case of attempting to fix a language's shortcomings 'from within' rather than through dialect separation or replacement. While this approach maintains ecosystem cohesion, it creates a complex divide within the R community.
+
+Python offers an instructive contrast in language evolution. Through semantic versioning, Python made major breaking changes between versions 2 and 3, prioritizing language improvement over backwards compatibility. While the transition wasn't painless—Python 2 still claimed 25% usage a decade after Python 3's 2008 release—by 2023, Python 2 usage had [dropped to just 6%](https://lp.jetbrains.com/python-developers-survey-2023/?_gl=1tz6z12_gcl_auNjAwNzE4MDIwLjE3NDAxNTU0NjI.FPAUNjAwNzE4MDIwLjE3NDAxNTU0NjI._gaMTAyNzAzMTQwOC4xNzQwMTU1NDYx_ga_9J976DJZ68*MTc0MDE1NTQ2MC4xLjEuMTc0MDE1NTQ5Ni4yNi4wLjA.#python-versions) (and the transition plans were announced well in advance - PEP 3000 was published in 2006). R, conversely, maintains strong API stability between major versions. Many of the tidyverse's consistency-oriented features could serve as excellent candidates for a base R rewrite if the community embraced the possibility of meaningful breaking changes in major versions. Yes, such transitions can be challenging—Python's experience demonstrates this—but they also show that systematic language improvement is achievable with proper planning and community support."
 
 ## What now?
 
-First, of course, is to sit down and do the annoying grunt work of going through all user-facing functions and ensuring that we test and validate every input. There's a ton of ways to do it, either with vanilla R and custom functions, or with the help of some validation packages I listed earlier. Then add more unit tests about edge cases to make sure things like this don't happen. And so on... We have done this for a lot of our existing code, but as this example taught me, it's easy to forget - and sometimes easy to not know.
+First, of course, is for me to sit down and do the annoying grunt work of going through all user-facing functions and ensuring that we test and validate every input. There's a ton of ways to do it, either with vanilla R and custom functions (`stopifnot` and `match.arg` are your friends), or with the help of some validation packages I listed earlier. Then add more unit tests about edge cases to make sure things like this don't happen. And so on... We have done this for a lot of our existing code, but as this example taught me, it's easy to forget - and sometimes easy to not know.
 
-Long-term, however, I'm becoming more and more interested in programming languages that use a strong static type system. I've long taught that static typing is simply annoying - as a [self-taught](../../2024/reproducibility-is-hard) programmer, I haven't had the benefit of learning things "the right way". Over the last few months I've started digging deeper into programming as a core skill, exploring various languages and resources. I'm growing more and more attuned to the virtues of good type systems, for many other reasons. I'm sure another post on this topic is incoming at some time. In the meantime, follow this directive:
+Long-term, however, I'm becoming more and more interested in programming languages that use a strong static type system. I've long taught that static typing is simply annoying - as a [self-taught](../../2024/reproducibility-is-hard) programmer, I haven't had the benefit of learning things "the right way". Over the last few months I've started digging deeper into programming as a core skill, exploring various languages and resources. I'm growing more and more attuned to the virtues of good type systems, for many other reasons. I'm sure another post on this topic is incoming at some time. In the meantime:
 
 ``` r
 if (language == "R") {
