@@ -28,11 +28,11 @@
 
 
 
-<p>I do the majority of my coding in R. I’ve grown to love the language despite many of its quirks. Perhaps this is just Stockholm’s Syndrom as I joked in my “Intro to programming” class recently, though I genuinely enjoy the language and its functional roots.</p>
-<p>That said, there are things that are objectively bad about it, with default that no sane person would choose. The more time I spend writing code for packages rather than data analysis, the more I’ve grown annoyed at how much extra work you need to do to avoid perplexing bugs and behavior. This is partly a weakness of dynamically typed languages - rather than depending on type-checking built into the language, you need to program defensively and explicitly handle user-input and whether it is what you expect it to be (some good posts on the topic <a href="https://blog.r-hub.io/2022/03/10/input-checking/#checking-function-inputs-using-r-packages">here</a> and <a href="https://blog.djnavarro.net/posts/2023-08-08_being-assertive/#just-assertr-carr">here</a>). It’s a problem important enough that it has lead to the proliferation of many packages that aim to assist you with it - e.g.&nbsp;<a href="https://mllg.github.io/checkmate/articles/checkmate.html">checkmate</a>, <a href="https://github.com/smbache/ensurer">ensurer</a>, <a href="https://github.com/gastonstat/tester">tester</a>, <a href="https://cran.r-project.org/web/packages/assertive/index.html">assertive</a>, <a href="https://docs.ropensci.org/assertr/index.html">assertr</a>). But another part is just due to some genuinely weird choices built in many of R’s base functions.</p>
+<p>I do the majority of my coding in R. I’ve grown to love the language despite many of its quirks. Perhaps this is just Stockholm Syndrome as I joked in my “Intro to programming” class recently, though I genuinely enjoy the language and its functional programming roots.</p>
+<p>That said, there are things that are objectively bad about it, with defaults that no sane person would choose. The more time I spend writing code for packages rather than data analysis, the more I’ve grown annoyed at how much extra work you need to do to avoid perplexing bugs and behavior. This is partly a weakness of dynamically typed languages - rather than depending on type-checking built into the language, you need to program defensively and explicitly handle user-input and whether it is what you expect it to be (see excellent discussions <a href="https://blog.r-hub.io/2022/03/10/input-checking/#checking-function-inputs-using-r-packages">here</a> and <a href="https://blog.djnavarro.net/posts/2023-08-08_being-assertive/#just-assertr-carr">here</a>). It’s a problem important enough that it has led to the proliferation of many packages that aim to assist you with it - e.g.&nbsp;<a href="https://mllg.github.io/checkmate/articles/checkmate.html">checkmate</a>, <a href="https://github.com/smbache/ensurer">ensurer</a>, <a href="https://github.com/gastonstat/tester">tester</a>, <a href="https://cran.r-project.org/web/packages/assertive/index.html">assertive</a>, <a href="https://docs.ropensci.org/assertr/index.html">assertr</a>. But another part is just due to some genuinely weird choices built in many of R’s base functions.</p>
 <section id="a-case-of-bait-and-switch" class="level3">
 <h3 class="anchored" data-anchor-id="a-case-of-bait-and-switch">A case of bait and switch</h3>
-<p>Here is a simple case which recently lead to a <a href="https://github.com/venpopov/bmm/issues/269">headscratcher of a bug</a> in our <a href="../../2024/introducing-bmm">bmm package</a>. You write a function which does something different depending on a parameter:</p>
+<p>Here’s a simple case which recently led to a head-scratcher of a bug in our <a href="../../2024/introducing-bmm">bmm package</a>. Consider a simple a function which gives a different greeting depending on a language parameter:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">greeting <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -122,7 +122,7 @@ font-style: inherit;">"german"</span>)</span>
 background-color: null;
 font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div>
 </div>
-<p>You get weird errors with non-character input if you don’t properly check that the language argument is a character or that it is a valid choice, but at least the user will get an error:</p>
+<p>Currently, you will get weird errors with non-character input if you don’t properly check that the language argument is a character or that it is a valid choice. But at least the user will get an error:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -145,7 +145,7 @@ font-style: inherit;">"japanese"</span>)</span>
 background-color: null;
 font-style: inherit;">#&gt; Error in greeting("Ven", "japanese"): object 'out' not found</span></span></code></pre></div>
 </div>
-<p>Ok, maybe a little confusing for the user (“object ‘out’? What is object ‘out’?”), but fine. You can and should go the extra mile and validate the input, but let’s keep going. Now, if you had many different language options, you might decide to use a <code>switch</code> statement instead of an if/else structure:</p>
+<p>Ok, maybe a little confusing for the user who doesn’t know how the function is implemented (“object ‘out’ not found? What is object ‘out’?”), but fine. You can <em>and should</em> go the extra mile and validate the input, but let’s keep going. Now, if you had many different language options, you might decide to use a more efficient <code>switch</code> statement instead of an if/else structure:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">greeting2 <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -198,7 +198,7 @@ background-color: null;
 font-style: inherit;">"</span>)</span>
 <span id="cb4-8">}</span></code></pre></div>
 </div>
-<p>Our <code>switch</code> handles 3 defined cases, just like the if/else version, so unless you read the documentation, or have been already burnt by this, you might expect that this should fail:</p>
+<p>Our <code>switch</code> handles 3 explicitly defined cases, just like the if/else version, so unless you read the documentation, or have been already burnt by this, you might expect that this should fail:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -360,7 +360,7 @@ font-style: inherit;">$</span>language)</span>
 background-color: null;
 font-style: inherit;">#&gt;  Factor w/ 3 levels "bulgarian","chinese",..: 1 3 2</span></span></code></pre></div>
 </div>
-<p>So Gidon get’s greeted in Bulgarian, because his “german” language is coded as 3 in the factor variable, and the third check in <code>switch</code> corresponds to “bulgarian”. The documentation (<code>?switch</code>) helpfully explains that</p>
+<p>So Gidon gets greeted in Bulgarian, because his “german” language is coded as 3 in the factor variable, and the third check in <code>switch</code> corresponds to “bulgarian”. The documentation (<code>?switch</code>) helpfully explains that</p>
 <blockquote class="blockquote">
 <p><code>switch</code> works in two distinct ways depending whether the first argument evaluates to a character string or a number.</p>
 <p>If the value of <code>EXPR</code> is not a character string it is coerced to integer. Note that this also happens for <a href="vscode-webview://1j32ru5leek8sf3kqosuqvfte16jrk6ppg82mr9lgucrkob51ojg/base/help/factor" title="../../base/help/factor"><code>factor</code></a>s, with a warning, as typically the character level is meant. If the integer is between 1 and <code>nargs()-1</code> then the corresponding element of <code>...</code> is evaluated and the result returned: thus if the first argument is <code>3</code> then the fourth argument is evaluated and returned.</p>
@@ -370,12 +370,12 @@ font-style: inherit;">#&gt;  Factor w/ 3 levels "bulgarian","chinese",..: 1 3 2<
 </section>
 <section id="so-what-we-do-get-a-warning-dont-we" class="level2">
 <h2 class="anchored" data-anchor-id="so-what-we-do-get-a-warning-dont-we">So what, we do get a warning don’t we?</h2>
-<p>We sure do, but warnings can be suppressed, just like I did above. It’s common to suppress output of functions when running many iterations of a chatty function in an analysis script and problems can easily go unnoticed. That’s exactly what happened recently in our Bayesian measurement modeling R package when a user reported <a href="https://github.com/venpopov/bmm/issues/269">a weird bug</a>. We have one computational model that can apply different forms of Luce’s choice decision rule - a standard version and a version passed through a softmax normalization. Due to this weird way that <code>switch</code> treats factors, the wrong normalization was applied. This is a recent and not yet officially released model, so we are yet to write all input validations. This could have easily go unnoticed and lead to incorrect model specification that nevertheless lets the model run.</p>
+<p>We sure do, but warnings can be suppressed, just like I did above. It’s common to suppress output of functions when running many iterations of a chatty function in an analysis script and problems can easily go unnoticed. That’s exactly what happened recently in our Bayesian measurement modeling R package when a colleage reported <a href="https://github.com/venpopov/bmm/issues/269">a weird bug</a>. We have one computational model that can apply different forms of Luce’s choice decision rule - a standard version and a version passed through a softmax normalization. Due to this weird way that <code>switch</code> treats factors, the wrong normalization was applied. This is a recent and not yet officially released model, so we are yet to write all input validations. This could have easily gone unnoticed and led to incorrect model specification that nevertheless lets the model run.</p>
 <p><em>Warnings are not a reliable way to signal undesired behavior</em>. Especially when the documentation of switch’s warning itself notes that “typically the character level is meant”. Well, if typically a character level is meant, why is the default EXACTLY THE OPPOSITE?!?</p>
 </section>
 <section id="fine-but-you-tell-users-language-should-be-a-character-right" class="level2">
 <h2 class="anchored" data-anchor-id="fine-but-you-tell-users-language-should-be-a-character-right">Fine, but you tell users “language” should be a character… right?</h2>
-<p>We do, but here’s the kicker - R <em>loves</em> to turn character vector into factors. So much so that disabling such behavior was one of the main motivation behind the development of <code>tibbles.</code> Until R4.0.0, whenever you used a function like <code>read.csv()</code> to read a file as a data.frame, R by default <a href="https://blog.r-project.org/2020/02/16/stringsasfactors/">converted character columns to factors</a>. Thankfully now this default has been reversed, but here’s the deal - NOT EVERYWHERE!</p>
+<p>We do, but here’s the kicker - R <em>loves</em> to turn character vectors into factors. So much so that disabling such behavior was one of the main motivation behind the development of <code>tibbles.</code> Until R4.0.0, whenever you used a function like <code>read.csv()</code> to read a file as a data.frame, R by default <a href="https://blog.r-project.org/2020/02/16/stringsasfactors/">converted character columns to factors</a>. Thankfully now this default has been reversed, but here’s the deal - NOT EVERYWHERE!</p>
 <p>One place which I never knew R created factors out of character vectors is <code>expand.grid</code>. Expand.grid is a commonly used function to get a data.frame with all combinations of several variables, which is useful for running models with orthogonality manipulated conditions. E.g.:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">conditions <span class="ot" style="color: #003B4F;
@@ -440,7 +440,7 @@ font-style: inherit;">#&gt; 7     1      ss     softmax</span></span>
 background-color: null;
 font-style: inherit;">#&gt; 8   100      ss     softmax</span></span></code></pre></div>
 </div>
-<p>Can you tell that version and choice_rule are factors? I’ve used <code>expand.grid</code> for years without knowing that behavior default of expand.grid, and it’s partly that standard data.frame print method does not differentiate character and factor columns in any way. You can see that indeed we have factors underneath by using <code>str</code> for more details:</p>
+<p>Can you tell that version and choice_rule are factors? I’ve used <code>expand.grid</code> for years without knowing that default behavior of expand.grid, and it’s partly that standard data.frame print method does not differentiate character and factor columns in any way. You can see that indeed we have factors underneath by using <code>str</code> for more details:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -643,13 +643,93 @@ font-style: inherit;">#&gt;  $ version    : chr [1:8] "cs" "cs" "ss" "ss" ...</s
 background-color: null;
 font-style: inherit;">#&gt;  $ choice_rule: chr [1:8] "simple" "softmax" "simple" "softmax" ...</span></span></code></pre></div>
 </div>
-<p>I am often annoyed at how frequently <code>tidyverse</code> packages break my code, and how often I have to relearn how to do things due to their fast pace of changes. I also dislike how interdependent and “heavy” tidyverse packages become - while I use them when writing analysis code, it is difficult to justify using them when writing packages that I wish to be lightweight and stable without constant watch. I also often get annoyed that tidyverse packages seem to often just wrap basic R functions because, which makes the language more varied than it needs to be. There are many arguments both pro and against the way that the <code>tidyverse</code> has affected the R community (some polemic discussion - e.g.&nbsp;<a href="https://github.com/matloff/TidyverseSkeptic">here</a>, <a href="https://www.tinyverse.org/">here</a>, <a href="https://www.reddit.com/r/rprogramming/comments/rd4ksl/i_am_concerned_about_the_tidyverse_and_its_impact/">here</a>, <a href="https://forum.posit.co/t/should-tidyeval-be-abandoned/2238/12">here</a>, <a href="https://blog.thecoatlessprofessor.com/programming/r/woes-of-the-rlang-enabled-tidyverse/index.html">here</a>). I personally have shifted from a huge fan to a skeptic and nowadays try to do without when I can. But I don’t want to throw away the baby with the bathwater. The tidyverse is right in at least one way - function APIs should be consistent and avoid “magic” behavior. Base R still suffers from that, mostly due to it being and very old language (or wanting to keep compatibility with an old language such as S).</p>
+</section>
+<section id="consistency-is-important" class="level2">
+<h2 class="anchored" data-anchor-id="consistency-is-important">Consistency is important</h2>
+<p>Consistency is a loaded term. Whether two things are consistent or not necessarily depends on context and goals. One could go on and on about consistent naming styles, consistent argument order, consistent default behaviors, etc. At its core the problem with inconsistent design choices in a programming language is that it makes it very difficult, if not impossible, to build an accurate mental model of how the language works. It’s more than a bit ironic when programming languages, which are supposed to be the precise counterpart of natural languages, become a similar tangled mess of exceptions you need to learn by heart, just like irregular verbs in English.</p>
+<p>The main example of this post concerns the concept of <a href="https://www.google.com/search?q=control+of+flow&amp;sourceid=chrome&amp;ie=UTF-8">control flow</a> in programming. Both if/else statements and case/switch statements aim to accomplish the same goal - to execute different parts of a program depending on a prespecified condition. One would expect that logical comparisons would work the same between those two constructs, but as this example has illustrated, they do not in R. Sometimes complex examples obscure the core problems, so let’s present it at it’s simplest form:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">x <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Peace"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">levels =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Violence"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Peace"</span>))</span>
+<span id="cb17-2"></span>
+<span id="cb17-3">x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Peace"</span></span>
+<span id="cb17-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] TRUE</span></span>
+<span id="cb17-5">x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span></span>
+<span id="cb17-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] FALSE</span></span>
+<span id="cb17-7">x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2"</span></span>
+<span id="cb17-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] FALSE</span></span>
+<span id="cb17-9"></span>
+<span id="cb17-10"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">switch</span>(x, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Peace =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I choose peace"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Violence =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I choose violence"</span>)</span>
+<span id="cb17-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; Warning in switch(x, Peace = "I choose peace", Violence = "I choose violence"): EXPR is a "factor", treated as integer.</span></span>
+<span id="cb17-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt;  Consider using 'switch(as.character( * ), ...)' instead.</span></span>
+<span id="cb17-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#&gt; [1] "I choose violence"</span></span></code></pre></div>
+</div>
+<div style="text-align: center">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://venpopov.com/posts/2025/r-love-you-r-hate-you/i-choose-violence.gif" class="img-fluid figure-img"></p>
+<figcaption>Was Cercei mislead by R? We’ll never know.</figcaption>
+</figure>
+</div>
+</div>
+<p>Logical comparisons treat factors as character vectors, switch comparisons treat them as integer values. This is not ok. Sure, you can learn that this is the case, but you shouldn’t have to.</p>
+<p>These inconsistencies in base R have led to various attempts at reform, most notably through the tidyverse ecosystem. While the tidyverse strongly emphasizes consistency, it presents its own challenges. Breaking changes are frequent, forcing regular code updates and relearning of functionality. While useful for analysis code, the packages’ interdependence and heavy footprint make them difficult to justify in lightweight, stable package development. Many tidyverse functions on the surface appear to simply wrap basic R operations, unnecessarily expanding the language’s complexity. The tidyverse’s impact on the R community remains contentious, sparking numerous debates about its influence (see discussions <a href="https://github.com/matloff/TidyverseSkeptic">here</a>, <a href="https://www.tinyverse.org/">here</a>, <a href="https://www.reddit.com/r/rprogramming/comments/rd4ksl/i_am_concerned_about_the_tidyverse_and_its_impact/">here</a>, <a href="https://forum.posit.co/t/should-tidyeval-be-abandoned/2238/12">here</a>, <a href="https://blog.thecoatlessprofessor.com/programming/r/woes-of-the-rlang-enabled-tidyverse/index.html">here</a>). My own perspective has evolved from enthusiasm to skepticism, though I still use tidyverse tools when appropriate. I don’t want to throw away the baby along with the bathwater though - despite its drawbacks, the tidyverse gets one thing right: function APIs should be consistent and avoid “magic” behavior. R along with its predecessor S, is an old language, and a lot can be forgiven due to its legacy.</p>
+<p>This situation mirrors broader patterns in programming language evolution. Consider C++: despite being a modern, widely-used language, it carries significant legacy baggage due to its strict backwards compatibility requirements. Newer languages like Rust, free from such constraints, can implement better defaults and more consistent behavior from the start. The tidyverse represents a curious case of attempting to fix a language’s shortcomings ‘from within’ rather than through dialect separation or replacement. While this approach maintains ecosystem cohesion, it creates a complex divide within the R community.</p>
+<p>Python offers an instructive contrast in language evolution. Through semantic versioning, Python made major breaking changes between versions 2 and 3, prioritizing language improvement over backwards compatibility. While the transition wasn’t painless—Python 2 still claimed 25% usage a decade after Python 3’s 2008 release—by 2023, Python 2 usage had <a href="https://lp.jetbrains.com/python-developers-survey-2023/?_gl=1tz6z12_gcl_auNjAwNzE4MDIwLjE3NDAxNTU0NjI.FPAUNjAwNzE4MDIwLjE3NDAxNTU0NjI._gaMTAyNzAzMTQwOC4xNzQwMTU1NDYx_ga_9J976DJZ68*MTc0MDE1NTQ2MC4xLjEuMTc0MDE1NTQ5Ni4yNi4wLjA.#python-versions">dropped to just 6%</a> (and the transition plans were announced well in advance - PEP 3000 was published in 2006). R, conversely, maintains strong API stability between major versions. Many of the tidyverse’s consistency-oriented features could serve as excellent candidates for a base R rewrite if the community embraced the possibility of meaningful breaking changes in major versions. Yes, such transitions can be challenging—Python’s experience demonstrates this—but they also show that systematic language improvement is achievable with proper planning and community support.”</p>
 </section>
 <section id="what-now" class="level2">
 <h2 class="anchored" data-anchor-id="what-now">What now?</h2>
-<p>First, of course, is to sit down and do the annoying grunt work of going through all user-facing functions and ensuring that we test and validate every input. There’s a ton of ways to do it, either with vanilla R and custom functions, or with the help of some validation packages I listed earlier. Then add more unit tests about edge cases to make sure things like this don’t happen. And so on… We have done this for a lot of our existing code, but as this example taught me, it’s easy to forget - and sometimes easy to not know.</p>
-<p>Long-term, however, I’m becoming more and more interested in programming languages that use a strong static type system. I’ve long taught that static typing is simply annoying - as a <a href="../../2024/reproducibility-is-hard">self-taught</a> programmer, I haven’t had the benefit of learning things “the right way”. Over the last few months I’ve started digging deeper into programming as a core skill, exploring various languages and resources. I’m growing more and more attuned to the virtues of good type systems, for many other reasons. I’m sure another post on this topic is incoming at some time. In the meantime, follow this directive:</p>
-<div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><span class="cf" style="color: #003B4F;
+<p>First, of course, is for me to sit down and do the annoying grunt work of going through all user-facing functions and ensuring that we test and validate every input. There’s a ton of ways to do it, either with vanilla R and custom functions (<code>stopifnot</code> and <code>match.arg</code> are your friends), or with the help of some validation packages I listed earlier. Then add more unit tests about edge cases to make sure things like this don’t happen. And so on… We have done this for a lot of our existing code, but as this example taught me, it’s easy to forget - and sometimes easy to not know.</p>
+<p>Long-term, however, I’m becoming more and more interested in programming languages that use a strong static type system. I’ve long taught that static typing is simply annoying - as a <a href="../../2024/reproducibility-is-hard">self-taught</a> programmer, I haven’t had the benefit of learning things “the right way”. Over the last few months I’ve started digging deeper into programming as a core skill, exploring various languages and resources. I’m growing more and more attuned to the virtues of good type systems, for many other reasons. I’m sure another post on this topic is incoming at some time. In the meantime:</p>
+<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">if</span> (language <span class="sc" style="color: #5E5E5E;
@@ -657,12 +737,12 @@ background-color: null;
 font-style: inherit;">==</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"R"</span>) {</span>
-<span id="cb17-2">  <span class="fu" style="color: #4758AB;
+<span id="cb18-2">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">stopifnot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">inputs_are_carefully_validated</span>())</span>
-<span id="cb17-3">}</span></code></pre></div>
+<span id="cb18-3">}</span></code></pre></div>
 
 
 </section>
