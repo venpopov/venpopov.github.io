@@ -1,0 +1,208 @@
+---
+title: "R love you, R hate you"
+categories: [R,  programming,  2025]
+date: "2025-02-21"
+execute:
+  error: true
+  cache: false
+knitr:
+  opts_chunk: 
+    collapse: true
+    comment: "#>"
+---
+
+```{r wrap-hook}
+#| echo: false
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = xfun::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+```
+
+I do the majority of my coding in R. I've grown to love the language despite many of its quirks. Perhaps this is just Stockholm's Syndrom as I joked in my "Intro to programming" class recently, though I genuinely enjoy the language and its functional roots.
+
+That said, there are things that are objectively bad about it, with default that no sane person would choose. The more time I spend writing code for packages rather than data analysis, the more I've grown annoyed at how much extra work you need to do to avoid perplexing bugs and behavior. This is partly a weakness of dynamically typed languages - rather than depending on type-checking built into the language, you need to program defensively and explicitly handle user-input and whether it is what you expect it to be (some good posts on the topic [here](https://blog.r-hub.io/2022/03/10/input-checking/#checking-function-inputs-using-r-packages) and [here](https://blog.djnavarro.net/posts/2023-08-08_being-assertive/#just-assertr-carr)). It's a problem important enough that it has lead to the proliferation of many packages that aim to assist you with it - e.g. [checkmate](https://mllg.github.io/checkmate/articles/checkmate.html), [ensurer](https://github.com/smbache/ensurer), [tester](https://github.com/gastonstat/tester), [assertive](https://cran.r-project.org/web/packages/assertive/index.html), [assertr](https://docs.ropensci.org/assertr/index.html)). But another part is just due to some genuinely weird choices built in many of R's base functions.
+
+### A case of bait and switch
+
+Here is a simple case which recently lead to a [headscratcher of a bug](https://github.com/venpopov/bmm/issues/269) in our [bmm package](../../2024/introducing-bmm). You write a function which does something different depending on a parameter:
+
+```{r}
+greeting <- function(name, language) {
+  if (language == "chinese") {
+    out <- paste0("嗨 ", name, "! 多么美好的一天")
+  } else if (language == "german") {
+    out <- paste0("Hallo ", name, "! Was für ein toller Tag!")
+  } else if (language == "bulgarian") {
+    out <- paste0("Здравей ", name, "! Какъв страхотен ден!")
+  }
+  cat(out, "\n")
+}
+```
+
+Simple enough, right?
+
+```{r}
+greeting("Ven", "german")
+```
+
+You get weird errors with non-character input if you don't properly check that the language argument is a character or that it is a valid choice, but at least the user will get an error:
+
+```{r}
+greeting("Ven", 2)
+greeting("Ven", "japanese")
+```
+
+Ok, maybe a little confusing for the user ("object 'out'? What is object 'out'?"), but fine. You can and should go the extra mile and validate the input, but let's keep going. Now, if you had many different language options, you might decide to use a `switch` statement instead of an if/else structure:
+
+```{r}
+greeting2 <- function(name, language) {
+  out <- switch(language,
+    chinese = paste0("嗨 ", name, "! 多么美好的一天"),
+    german = paste0("Hallo ", name, "! Was für ein toller Tag!"),
+    bulgarian = paste0("Здравей ", name, "! Какъв страхотен ден!")
+  )
+  cat(out, "\n")
+}
+```
+
+Our `switch` handles 3 defined cases, just like the if/else version, so unless you read the documentation, or have been already burnt by this, you might expect that this should fail:
+
+```{r}
+greeting2("Ven", 2)
+```
+
+Oh, it runs! Ok, so even though we have explicitly defined the cases by name, switch tries to be clever and interpret integer input as a case selection. Not only that, but it will try really hard to make the input an integer if it can. The following makes no sense as a language selector, but R happily forces 2.8 into an integer sleeve and greets us again:
+
+```{r}
+greeting2("Ven", 2.8)
+```
+
+Fine, it's strange, but who in their right mind will try to pass numeric values for a language variable? Maybe no one on purpose, but some things in R are (sometimes) secretly integers. Namely, factors. Consider this - we have some `data.frame` with names and language preferences of users, the latter of which is coded as a factor variable.
+
+```{r}
+users <- data.frame(
+  name = c("Ven", "Gidon", "Chenyu"),
+  language = factor(c("bulgarian", "german", "chinese"))
+)
+
+users
+```
+
+If we were to use our if/else-based greeting function to greet each user, everything works as we would expect:
+
+```{r}
+purrr::pwalk(users, greeting)
+```
+
+What about the greeting2, which uses `switch` to determine which greeting to use?
+
+```{r}
+#| warning: false
+purrr::pwalk(users, greeting2)
+```
+
+What the hell? Well, I cheated a bit and hid the warning R helpfully gave us (naughty!). Here is the output again without suppressing the warning:
+
+```{r}
+#| code-overflow: wrap
+purrr::pwalk(users, greeting2)
+```
+
+Ah, that explains it (although doesn't excuse it). When a factor variable is passed to a switch statement, the variable is treated as an integer. By default factor levels are ordered alphabetically, which we can see if we examine our `language` factor structure:
+
+```{r}
+users$language
+str(users$language)
+```
+
+So Gidon get's greeted in Bulgarian, because his "german" language is coded as 3 in the factor variable, and the third check in `switch` corresponds to "bulgarian". The documentation (`?switch`) helpfully explains that
+
+> `switch` works in two distinct ways depending whether the first argument evaluates to a character string or a number.
+>
+> If the value of `EXPR` is not a character string it is coerced to integer. Note that this also happens for [`factor`](vscode-webview://1j32ru5leek8sf3kqosuqvfte16jrk6ppg82mr9lgucrkob51ojg/base/help/factor "../../base/help/factor")s, with a warning, as typically the character level is meant. If the integer is between 1 and `nargs()-1` then the corresponding element of `...` is evaluated and the result returned: thus if the first argument is `3` then the fourth argument is evaluated and returned.
+>
+> If `EXPR` evaluates to a character string then that string is matched (exactly) to the names of the elements in `...`...
+
+Wow, ok, I never knew this, or if I did I have completely forgotten about it.
+
+## So what, we do get a warning don't we?
+
+We sure do, but warnings can be suppressed, just like I did above. It's common to suppress output of functions when running many iterations of a chatty function in an analysis script and problems can easily go unnoticed. That's exactly what happened recently in our Bayesian measurement modeling R package when a user reported [a weird bug](https://github.com/venpopov/bmm/issues/269). We have one computational model that can apply different forms of Luce's choice decision rule - a standard version and a version passed through a softmax normalization. Due to this weird way that `switch` treats factors, the wrong normalization was applied. This is a recent and not yet officially released model, so we are yet to write all input validations. This could have easily go unnoticed and lead to incorrect model specification that nevertheless lets the model run.
+
+*Warnings are not a reliable way to signal undesired behavior*. Especially when the documentation of switch's warning itself notes that "typically the character level is meant". Well, if typically a character level is meant, why is the default EXACTLY THE OPPOSITE?!?
+
+## Fine, but you tell users "language" should be a character... right?
+
+We do, but here's the kicker - R *loves* to turn character vector into factors. So much so that disabling such behavior was one of the main motivation behind the development of `tibbles.` Until R4.0.0, whenever you used a function like `read.csv()` to read a file as a data.frame, R by default [converted character columns to factors](https://blog.r-project.org/2020/02/16/stringsasfactors/). Thankfully now this default has been reversed, but here's the deal - NOT EVERYWHERE!
+
+One place which I never knew R created factors out of character vectors is `expand.grid`. Expand.grid is a commonly used function to get a data.frame with all combinations of several variables, which is useful for running models with orthogonality manipulated conditions. E.g.:
+
+```{r}
+conditions <- expand.grid(
+  value = c(1, 100),
+  version = c("cs","ss"), 
+  choice_rule = c("simple", "softmax")
+)
+conditions
+```
+
+Can you tell that version and choice_rule are factors? I've used `expand.grid` for years without knowing that behavior default of expand.grid, and it's partly that standard data.frame print method does not differentiate character and factor columns in any way. You can see that indeed we have factors underneath by using `str` for more details:
+
+```{r}
+str(conditions, give.attr = FALSE)
+```
+
+You can examine the documentation, or directly check with `formals` that expand.grid, just like `read.csv` has a argument `stringsAsFactors`, which defaults to TRUE:
+
+```{r}
+formals(expand.grid)
+```
+
+Wait, but didn't I just write that R4.0.0 solves the problem? As of R4.4.2, it only does that for `read.table` and `data.frame`, but not `expand.grid`
+
+```{r}
+version$version.string
+formals(read.table)["stringsAsFactors"]
+formals(data.frame)["stringsAsFactors"]
+formals(expand.grid)["stringsAsFactors"]
+```
+
+You can of course change that by being explicit about not wanting factors, or use `tidyr::expand_grid` alternative instead:
+
+```{r}
+expand.grid(
+  value = c(1, 100),
+  version = c("cs","ss"), 
+  choice_rule = c("simple", "softmax"),
+  stringsAsFactors = FALSE
+) |> str(give.attr = FALSE)
+
+tidyr::expand_grid(
+  value = c(1, 100),
+  version = c("cs","ss"), 
+  choice_rule = c("simple", "softmax")
+) |> str()
+```
+
+I am often annoyed at how frequently `tidyverse` packages break my code, and how often I have to relearn how to do things due to their fast pace of changes. I also dislike how interdependent and "heavy" tidyverse packages become - while I use them when writing analysis code, it is difficult to justify using them when writing packages that I wish to be lightweight and stable without constant watch. I also often get annoyed that tidyverse packages seem to often just wrap basic R functions because, which makes the language more varied than it needs to be. There are many arguments both pro and against the way that the `tidyverse` has affected the R community (some polemic discussion - e.g. [here](https://github.com/matloff/TidyverseSkeptic), [here](https://www.tinyverse.org/), [here](https://www.reddit.com/r/rprogramming/comments/rd4ksl/i_am_concerned_about_the_tidyverse_and_its_impact/), [here](https://forum.posit.co/t/should-tidyeval-be-abandoned/2238/12), [here](https://blog.thecoatlessprofessor.com/programming/r/woes-of-the-rlang-enabled-tidyverse/index.html)). I personally have shifted from a huge fan to a skeptic and nowadays try to do without when I can. But I don't want to throw away the baby with the bathwater. The tidyverse is right in at least one way - function APIs should be consistent and avoid "magic" behavior. Base R still suffers from that, mostly due to it being and very old language (or wanting to keep compatibility with an old language such as S).
+
+## What now?
+
+First, of course, is to sit down and do the annoying grunt work of going through all user-facing functions and ensuring that we test and validate every input. There's a ton of ways to do it, either with vanilla R and custom functions, or with the help of some validation packages I listed earlier. Then add more unit tests about edge cases to make sure things like this don't happen. And so on... We have done this for a lot of our existing code, but as this example taught me, it's easy to forget - and sometimes easy to not know.
+
+Long-term, however, I'm becoming more and more interested in programming languages that use a strong static type system. I've long taught that static typing is simply annoying - as a [self-taught](../../2024/reproducibility-is-hard) programmer, I haven't had the benefit of learning things "the right way". Over the last few months I've started digging deeper into programming as a core skill, exploring various languages and resources. I'm growing more and more attuned to the virtues of good type systems, for many other reasons. I'm sure another post on this topic is incoming at some time. In the meantime, follow this directive:
+
+``` r
+if (language == "R") {
+  stopifnot(inputs_are_carefully_validated())
+}
+```
