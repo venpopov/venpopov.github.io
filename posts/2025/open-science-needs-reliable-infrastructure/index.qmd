@@ -3,6 +3,7 @@ title: "Open Science needs reliable infrastructure"
 subtitle: "A Postmortem on the OSF Redesign Incident"
 categories: [open science,  reproducibility,  academic publishing,  2025]
 date: "2025-11-06"
+draft: true
 format:
   html:
     code-overflow: wrap
@@ -185,17 +186,35 @@ After I sent my detailed critique, Brian Nosek responded personally and with gra
 > 
 > Thanks again for giving us such useful reporting on your experience with this to help us continue to improve the service.
 
-Despite this response, I was still deeply troubled. I briefly considered whether I'm overreacting. However, after consulting several colleagues, they were all also very concerned not only that this had happened, *but that it was possible to happen in the first place*. As my colleague [Philipp Musfeld](https://www.psychologie.uzh.ch/de/bereiche/nec/allgpsy/team/alumni/pmusfeld.html) put it:
+Despite this response, I was still deeply troubled. I briefly considered whether I'm overreacting. However, after consulting several colleagues, they were all also very concerned not only that this had happened, *but that it was possible to happen in the first place*. As one of my colleagues put it:
 
-> I agree, I think the issue is more severe than it sounds like. The effect is crazy to me. Not only that they retrospectively delete the stuff but also how many people can be affected by it. It’s already severe in your case with a large network of collaborators. But image klaus account gets flagged and he doesn’t realize it. This would probably take hundreds of preprints offline, which are primary the work of others. It’s bad enough that they take the stuff down that you put on OSF but it also deletes the work where someone else just linked your name with? This also can’t be right…
+> I agree, I think the issue is more severe than it sounds like. The effect is crazy to me. Not only that they retrospectively delete the stuff but also how many people can be affected by it. It’s already severe in your case with a large network of collaborators. Butimagine Klaus's account gets flagged and he doesn’t realize it. This would probably take hundreds of preprints offline, which are primary the work of others [junior researchers]. It’s bad enough that they take the stuff down that you put on OSF but it also deletes the work where someone else just linked your name with? This also can’t be right...
 
-I followed up with a longer message explaining why the issue mattered so deeply: not because of personal inconvenience, but because silent retroactive suppression of long-standing records is incompatible with the role of an archive.
+After some reflection, I followed up with Brian Nosek with a longer message explaining why the issue mattered so deeply: not because of personal inconvenience, but because silent retroactive suppression of long-standing records is incompatible with the role of an archive.
 
-His reply was thoughtful and generous:
+> < On Nov 4, 2025 at 13:49 +0100, Ven Popov wrote:>
+> 
+> Thank you for the thoughtful response. I appreciate that you will take this case seriously in developing future solutions.
+> 
+> I just really want to stress why I am so concerned about this having happened. It's not about my work and that it affected me personally, although that clearly made me more motivated to get to the bottom of it. My work is also backed up on other platforms, including ResearchGate, a University of Zurich repository and my personal website. The real problem is that something like this should not be possible to happen in the first place, let alone as the result of an automated filter. 
+> 
+> Whatever the reason my account was flagged, an automated filter should never have the authority to retroactively block access to the work of hundreds of researchers simply because I’m listed as a co-author. These were not new uploads but materials that had been part of the scholarly record for nearly a decade.
+> 
+> I was lucky to notice the disappearance within days; others might not. Under different circumstances, months could have passed during which all these digital objects appeared effectively erased. The consequences for more prominent researchers with hundreds of linked projects - and for junior collaborators relying on those links - could be far more severe.
+> 
+> Your own guidelines stress that even authors themselves cannot delete accepted preprints - that preprints can only be withdrawn, and that the associated metadata and reasons for withdrawn will always remain part of the record.
+> 
+> I considered whether I might be overreacting, but after discussing the issue with several colleagues, everyone agrees that this is a critical infrastructure-level bug. This requires more than a patch for this particular case, but systems in place to ensure that nothing can in principle cause something like it to happen in the future.
+> 
+> I am writing all this out in detail not to attack COS or its work on maintaining OSF. *It's exactly the opposite - I share all COS values and view it as a fundamentally important institution. The traditional academic publishing system is rotten to core, but in order for any reform to succeed long-term, people must trust the infrastructure and systems in place.* I want to see COS and OSF continue to succeed and continue to play the vital role that it has attained. This is why I am being so adamant about this incident being taken so seriously.
 
-> “There is nothing inappropriate at all about your comments or approach. It is very clear that your comments are made in good faith to help us improve the services and meet the aspirations of reliable, persistent open scholarship.”
+His reply was thoughtful and for the moment I am satisfied that this incident will be taken seriously:
 
-That, to me, felt like the right place to stop.
+> <On Nov 4, 2025 at 14:45 +0100, Brian Nosek, wrote:>
+> 
+> Thanks for the follow-up. There is nothing inappropriate at all about your comments or approach. It is very clear that your comments are made in good faith to help us improve the services and meet the aspirations of reliable, persistent open scholarship. We truly appreciate your willingness to put time into documenting and sharing the challenges you experienced here.
+
+That, to me, felt like the right place to stop. That said, ideally, I would like some official statement from COS about what they plan to do in order to ensure that something like this doesn't happen again in the future.
 
 ## Data vs. Trust
 
@@ -203,6 +222,6 @@ No data were ultimately lost. But something far more important was at stake: the
 
 If this episode serves any purpose, let it be a reminder that openness is not just about making information accessible — it’s about ensuring it stays accessible. Scientific infrastructure must be engineered for trustworthiness, not just availability.
 
-The traditional publishing system is rotten to the core, but for any reform to succeed long-term, people must trust the infrastructure and systems in place.
+As we argued in a recent perspective paper, [the traditional publishing system is rotten to the core](https://www.pnas.org/doi/abs/10.1073/pnas.2401231121). But for any reform to succeed long-term, people must trust the infrastructure and systems in place.
 
 Trust is slow to earn and quick to erode. I hope OSF uses this experience to reinforce that trust — not only by fixing the bug, but by institutionalizing the safeguards that make open scholarship durable.
