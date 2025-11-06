@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Ven Popov</title>
+<link>https://venpopov.com/posts.html</link>
+<atom:link href="https://venpopov.com/posts.xml" rel="self" type="application/rss+xml"/>
+<description>Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.</description>
+<image>
+<url>https://venpopov.com/images/venpopov.png</url>
+<title>Ven Popov</title>
+<link>https://venpopov.com/posts.html</link>
+<height>144</height>
+<width>144</width>
+</image>
+<generator>quarto-1.6.40</generator>
+<lastBuildDate>Thu, 20 Feb 2025 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>{B4F502887207:/posts/2025/r-love-you-r-hate-you/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2025/r-love-you-r-hate-you/</link>
+  <description>{B4F502887207:/posts/2025/r-love-you-r-hate-you/index.html}</description>
+  <category>R</category>
+  <category>programming</category>
+  <category>2025</category>
+  <guid>https://venpopov.com/posts/2025/r-love-you-r-hate-you/</guid>
+  <pubDate>Thu, 20 Feb 2025 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2025/arto-pollo/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2025/arto-pollo/</link>
+  <description>{B4F502887207:/posts/2025/arto-pollo/index.html}</description>
+  <category>R</category>
+  <category>art</category>
+  <category>2025</category>
+  <guid>https://venpopov.com/posts/2025/arto-pollo/</guid>
+  <pubDate>Thu, 20 Feb 2025 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</link>
+  <description>{B4F502887207:/posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html}</description>
+  <category>workflow</category>
+  <category>shell</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</guid>
+  <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2024/reproducibility-is-hard/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/reproducibility-is-hard/</link>
+  <description>{B4F502887207:/posts/2024/reproducibility-is-hard/index.html}</description>
+  <category>workflow</category>
+  <category>reproducibility</category>
+  <category>R</category>
+  <category>git</category>
+  <category>targets</category>
+  <category>project management</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/reproducibility-is-hard/</guid>
+  <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2024/taking-a-stand-on-open-peer-review/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</link>
+  <description>{B4F502887207:/posts/2024/taking-a-stand-on-open-peer-review/index.html}</description>
+  <category>academic publishing</category>
+  <category>peer review</category>
+  <category>open science</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</guid>
+  <pubDate>Sat, 03 Aug 2024 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2024/introducing-bmm/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/introducing-bmm/</link>
+  <description>{B4F502887207:/posts/2024/introducing-bmm/index.html}</description>
+  <category>R</category>
+  <category>modeling</category>
+  <category>bayesian</category>
+  <category>R package</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/introducing-bmm/</guid>
+  <pubDate>Wed, 12 Jun 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2024/introducing-bmm/microscope.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2024/git-local-ignore/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/git-local-ignore/</link>
+  <description>{B4F502887207:/posts/2024/git-local-ignore/index.html}</description>
+  <category>git</category>
+  <category>GitHub</category>
+  <category>reproducibility</category>
+  <category>workflow</category>
+  <category>collaboration</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/git-local-ignore/</guid>
+  <pubDate>Thu, 23 May 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2024/git-local-ignore/dontshare.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+<item>
+  <title>{B4F502887207:/posts/2024/r-multiple-package-versions/index.html}</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2024/r-multiple-package-versions/</link>
+  <description>{B4F502887207:/posts/2024/r-multiple-package-versions/index.html}</description>
+  <category>R</category>
+  <category>reproducibility</category>
+  <category>package management</category>
+  <category>R package</category>
+  <category>2024</category>
+  <guid>https://venpopov.com/posts/2024/r-multiple-package-versions/</guid>
+  <pubDate>Sat, 02 Mar 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2024/r-multiple-package-versions/juggling.png" medium="image" type="image/png" height="144" width="144"/>
+</item>
+</channel>
+</rss>
