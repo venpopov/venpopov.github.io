@@ -3,7 +3,6 @@ title: "Open Science needs reliable infrastructure"
 subtitle: "A Postmortem on the OSF Redesign Incident"
 categories: [open science,  reproducibility,  academic publishing,  2025]
 date: "2025-11-06"
-draft: true
 format:
   html:
     code-overflow: wrap
@@ -116,7 +115,7 @@ At first, I assumed it was a global outage consistent with the widespread perfor
 {"message_short": "Resource deleted", "message_long": "User has deleted this content. If this should not have occurred and the issue persists, please report it to <a href=\"mailto:support@osf.io\">support@osf.io<\/a>.", "code": 410, "referrer": null}
 ```
 
-Most worrisome of all - the "blackout" included files linked in published journal articles and materials for projects currently under  peer review.
+Most worrisome of all - the "blackout" included files linked in published journal articles and materials for projects currently under  peer review. 
 
 I reported the issue to OSF support with screenshots and links, expecting acknowledgment that something had gone wrong with the migration:
 
@@ -283,5 +282,7 @@ No data were ultimately lost. But something far more important was at stake: the
 If this episode serves any purpose, let it be a reminder that openness is not just about making information accessible — it’s about ensuring it stays accessible. Scientific infrastructure must be engineered for trustworthiness, not just availability.
 
 As we argued in a recent perspective paper, [the traditional publishing system is rotten to the core](https://www.pnas.org/doi/abs/10.1073/pnas.2401231121). But for any reform to succeed long-term, people must trust the infrastructure and systems in place.
+
+I also don't know if this incident is related to the OSF redesign - I described it here within that context - or whether it would have occurred with the previous platform. Ultimately it doesn't matter.
 
 Trust is slow to earn and quick to erode. I hope OSF uses this experience to reinforce that trust — not only by fixing the bug, but by institutionalizing the safeguards that make open scholarship durable.
