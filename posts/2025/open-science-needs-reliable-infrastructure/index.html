@@ -8,6 +8,7 @@
 
 <meta name="author" content="Vencislav Popov">
 <meta name="dcterms.date" content="2025-11-06">
+<meta name="description" content="After OSF’s October 2025 redesign, I discovered that eight years of DOI-linked preprints and materials were silently hidden by an automated spam flag. What happened, how it was resolved, and what it reveals about trust in open science infrastructure.">
 
 <title>Open Science needs reliable infrastructure – Ven Popov</title>
 <style>
@@ -108,11 +109,11 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 
 <link rel="stylesheet" href="../../../styles.css">
 <meta property="og:title" content="Open Science needs reliable infrastructure – Ven Popov">
-<meta property="og:description" content="A Postmortem on the OSF Redesign Incident">
+<meta property="og:description" content="After OSF’s October 2025 redesign, I discovered that eight years of DOI-linked preprints and materials were silently hidden by an automated spam flag. What happened, how it was resolved, and what it reveals about trust in open science infrastructure.">
 <meta property="og:image" content="https://venpopov.com/posts/2025/open-science-needs-reliable-infrastructure/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta property="og:site_name" content="Ven Popov">
 <meta name="twitter:title" content="Open Science needs reliable infrastructure – Ven Popov">
-<meta name="twitter:description" content="A Postmortem on the OSF Redesign Incident">
+<meta name="twitter:description" content="After OSF’s October 2025 redesign, I discovered that eight years of DOI-linked preprints and materials were silently hidden by an automated spam flag. What happened, how it was resolved, and what it reveals about trust in open science infrastructure.">
 <meta name="twitter:image" content="https://venpopov.com/posts/2025/open-science-needs-reliable-infrastructure/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -185,7 +186,12 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
     <div class="quarto-title column-body">
       <h1 class="title">Open Science needs reliable infrastructure</h1>
             <p class="subtitle lead">A Postmortem on the OSF Redesign Incident</p>
-                                <div class="quarto-categories">
+                  <div>
+        <div class="description">
+          After OSF’s October 2025 redesign, I discovered that eight years of DOI-linked preprints and materials were silently hidden by an automated spam flag. What happened, how it was resolved, and what it reveals about trust in open science infrastructure.
+        </div>
+      </div>
+                          <div class="quarto-categories">
                 <div class="quarto-category">open science</div>
                 <div class="quarto-category">reproducibility</div>
                 <div class="quarto-category">academic publishing</div>
@@ -250,32 +256,28 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <p>Within days, many discovered that the new redesign ironically came with slower loading times, but more troubling, with a host of bugs and glitches:</p>
 <blockquote class="bluesky-embed blockquote" data-bluesky-uri="at://did:plc:rbamsrq5xdc25fdrmiicvi3f/app.bsky.feed.post/3m2yc4yxe5k2r" data-bluesky-cid="bafyreiadcxtyo4zj7qmsdsfhpd65vowglwopqoz6apy4znyfublyayyhhq" data-bluesky-embed-color-mode="system">
 <p lang="en">
-PSA: seems like the update broke the ability to directly download files with a link, like osf.io/XXXX/download this lead to an error in one of my R package vignettes, and presumably will break lots of code.<br><br><a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m2yc4yxe5k2r?ref_src=embed">[image or embed]</a>
-</p>
-— Ruben C. Arslan (<a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f?ref_src=embed"><span class="citation" data-cites="ruben.the100.ci">@ruben.the100.ci</span></a>) <a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m2yc4yxe5k2r?ref_src=embed">October 12, 2025 at 10:34 AM</a>
+</p><p>PSA: seems like the update broke the ability to directly download files with a link, like osf.io/XXXX/download this lead to an error in one of my R package vignettes, and presumably will break lots of code.<br><br><a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m2yc4yxe5k2r?ref_src=embed">[image or embed]</a></p>
+<p></p>
+<p>— Ruben C. Arslan (<a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f?ref_src=embed"><span class="citation" data-cites="ruben.the100.ci">@ruben.the100.ci</span></a>) <a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m2yc4yxe5k2r?ref_src=embed">October 12, 2025 at 10:34 AM</a></p>
 </blockquote>
-<script async="" src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
 <blockquote class="bluesky-embed blockquote" data-bluesky-uri="at://did:plc:rbamsrq5xdc25fdrmiicvi3f/app.bsky.feed.post/3m3chsxwxps2m" data-bluesky-cid="bafyreiaeakvrevoo2vfyt26arzvgxs4emvvl7g4du7x5ccjesotetoyehi" data-bluesky-embed-color-mode="system">
 <p lang="en">
-Thanks. I think this is urgent. I suspect it also broke Google Scholar listing PDFs from OSF, at least I get broken links for some, no links for others and generally OSF seems to be massively downranked in the list of sources. Started getting email requests for PDFs again.
-</p>
-— Ruben C. Arslan (<a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f?ref_src=embed"><span class="citation" data-cites="ruben.the100.ci">@ruben.the100.ci</span></a>) <a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m3chsxwxps2m?ref_src=embed">October 16, 2025 at 11:43 AM</a>
+</p><p>Thanks. I think this is urgent. I suspect it also broke Google Scholar listing PDFs from OSF, at least I get broken links for some, no links for others and generally OSF seems to be massively downranked in the list of sources. Started getting email requests for PDFs again.</p>
+<p></p>
+<p>— Ruben C. Arslan (<a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f?ref_src=embed"><span class="citation" data-cites="ruben.the100.ci">@ruben.the100.ci</span></a>) <a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m3chsxwxps2m?ref_src=embed">October 16, 2025 at 11:43 AM</a></p>
 </blockquote>
-<script async="" src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
 <blockquote class="bluesky-embed blockquote" data-bluesky-uri="at://did:plc:gansgyiuhvaa25asqnjtfj6r/app.bsky.feed.post/3m2wkfr5ick2c" data-bluesky-cid="bafyreielfjskux4rxlzj66hinsoi43ztxabzuzczqd4xr6imw4rtrpjtrq" data-bluesky-embed-color-mode="system">
 <p lang="en">
-<span class="citation" data-cites="cos.io">@cos.io</span> Why cant I read in rds files from my repo? I was trying to reproduce my manuscript and now I cant read in rds files from the site. I am going to assume it has to do with the new UI?
-</p>
-— jgeller1phd.bsky.social (<a href="https://bsky.app/profile/did:plc:gansgyiuhvaa25asqnjtfj6r?ref_src=embed"><span class="citation" data-cites="jgeller1phd.bsky.social">@jgeller1phd.bsky.social</span></a>) <a href="https://bsky.app/profile/did:plc:gansgyiuhvaa25asqnjtfj6r/post/3m2wkfr5ick2c?ref_src=embed">October 11, 2025 at 5:57 PM</a>
+</p><p><span class="citation" data-cites="cos.io">@cos.io</span> Why cant I read in rds files from my repo? I was trying to reproduce my manuscript and now I cant read in rds files from the site. I am going to assume it has to do with the new UI?</p>
+<p></p>
+<p>— jgeller1phd.bsky.social (<a href="https://bsky.app/profile/did:plc:gansgyiuhvaa25asqnjtfj6r?ref_src=embed"><span class="citation" data-cites="jgeller1phd.bsky.social">@jgeller1phd.bsky.social</span></a>) <a href="https://bsky.app/profile/did:plc:gansgyiuhvaa25asqnjtfj6r/post/3m2wkfr5ick2c?ref_src=embed">October 11, 2025 at 5:57 PM</a></p>
 </blockquote>
-<script async="" src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
 <blockquote class="bluesky-embed blockquote" data-bluesky-uri="at://did:plc:gwmol5ml44miarkuvymvq6ax/app.bsky.feed.post/3m3sfvwn5ck2x" data-bluesky-cid="bafyreie4inpgiob6rw4h4pfyrrllrrkduoqxv6h7rsu334ncqzx4rfdyzm" data-bluesky-embed-color-mode="system">
 <p lang="en">
-Is anyone else experiencing significant issues (lags, not loading) with OSF (<span class="citation" data-cites="cos.io">@cos.io</span>) since the interface update?
-</p>
-— Charlotte Pennington 🌻 (<a href="https://bsky.app/profile/did:plc:gwmol5ml44miarkuvymvq6ax?ref_src=embed"><span class="citation" data-cites="drcpennington.bsky.social">@drcpennington.bsky.social</span></a>) <a href="https://bsky.app/profile/did:plc:gwmol5ml44miarkuvymvq6ax/post/3m3sfvwn5ck2x?ref_src=embed">October 22, 2025 at 7:51 PM</a>
+</p><p>Is anyone else experiencing significant issues (lags, not loading) with OSF (<span class="citation" data-cites="cos.io">@cos.io</span>) since the interface update?</p>
+<p></p>
+<p>— Charlotte Pennington 🌻 (<a href="https://bsky.app/profile/did:plc:gwmol5ml44miarkuvymvq6ax?ref_src=embed"><span class="citation" data-cites="drcpennington.bsky.social">@drcpennington.bsky.social</span></a>) <a href="https://bsky.app/profile/did:plc:gwmol5ml44miarkuvymvq6ax/post/3m3sfvwn5ck2x?ref_src=embed">October 22, 2025 at 7:51 PM</a></p>
 </blockquote>
-<script async="" src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
 <blockquote class="bluesky-embed blockquote" data-bluesky-uri="at://did:plc:pi4upwjkevc3thmjn4k3bqic/app.bsky.feed.post/3m3ftbca4aw2q" data-bluesky-cid="bafyreihm7jppz7tlk77p5i7ots4imsbtxfqna5texo2oxkrek4sijqm7cq" data-bluesky-embed-color-mode="system">
 <p lang="en">
 </p><p>🪲 OSF Update: Ongoing Fixes Following the OSF redesign, some issues have been identified:</p>
@@ -284,19 +286,18 @@ Is anyone else experiencing significant issues (lags, not loading) with OSF (<sp
 <li>OSF shows a max. of 10 contributors</li>
 <li>Some pages load slowly or seem unresponsive</li>
 </ul>
-These are on our critical fix list &amp; should be resolved soon. (1/2)
+<p>These are on our critical fix list &amp; should be resolved soon. (1/2)</p>
 <p></p>
-— Center for Open Science (<a href="https://bsky.app/profile/did:plc:pi4upwjkevc3thmjn4k3bqic?ref_src=embed"><span class="citation" data-cites="cos.io">@cos.io</span></a>) <a href="https://bsky.app/profile/did:plc:pi4upwjkevc3thmjn4k3bqic/post/3m3ftbca4aw2q?ref_src=embed">October 17, 2025 at 7:46 PM</a>
+<p>— Center for Open Science (<a href="https://bsky.app/profile/did:plc:pi4upwjkevc3thmjn4k3bqic?ref_src=embed"><span class="citation" data-cites="cos.io">@cos.io</span></a>) <a href="https://bsky.app/profile/did:plc:pi4upwjkevc3thmjn4k3bqic/post/3m3ftbca4aw2q?ref_src=embed">October 17, 2025 at 7:46 PM</a></p>
 </blockquote>
-<script async="" src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
 <blockquote class="bluesky-embed blockquote" data-bluesky-uri="at://did:plc:rau7a3uk7uaz27xnj53jum7r/app.bsky.feed.post/3m3ssm2ro522o" data-bluesky-cid="bafyreid3goqipiruikkux2ywbcaohch6dllxc3wbzud6fhulzffwyf547m" data-bluesky-embed-color-mode="system">
 <p lang="en">
-Also, - Login screen doesn't work on Safari - Preregistrations impossible (got many error messages &amp; after I was finally able to submit got an email saying trouble archiving my preregistration so it wasn't completed)… this means I can't actually run my study :( - Symbols not rendering (e.g., &amp;, &lt;)
-</p>
-— Cassandra Chapman (<a href="https://bsky.app/profile/did:plc:rau7a3uk7uaz27xnj53jum7r?ref_src=embed"><span class="citation" data-cites="cassandrachapman.bsky.social">@cassandrachapman.bsky.social</span></a>) <a href="https://bsky.app/profile/did:plc:rau7a3uk7uaz27xnj53jum7r/post/3m3ssm2ro522o?ref_src=embed">October 22, 2025 at 11:38 PM</a>
+</p><p>Also, - Login screen doesn’t work on Safari - Preregistrations impossible (got many error messages &amp; after I was finally able to submit got an email saying trouble archiving my preregistration so it wasn’t completed)… this means I can’t actually run my study :( - Symbols not rendering (e.g., &amp;, &lt;)</p>
+<p></p>
+<p>— Cassandra Chapman (<a href="https://bsky.app/profile/did:plc:rau7a3uk7uaz27xnj53jum7r?ref_src=embed"><span class="citation" data-cites="cassandrachapman.bsky.social">@cassandrachapman.bsky.social</span></a>) <a href="https://bsky.app/profile/did:plc:rau7a3uk7uaz27xnj53jum7r/post/3m3ssm2ro522o?ref_src=embed">October 22, 2025 at 11:38 PM</a></p>
 </blockquote>
 <script async="" src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
-<p>I do not mention complaints about design, as those are subjective. But it was worrisome that a redesign would break existing download link patterns without a redirect - this should not happen to an archival service. To their credit, COS fixed hat particular problem quickly, though it should never needed fixing in the first place. The performance issues remain, and the irony that this performance update made performance worse is not lost to anyone. What seemed like transitional friction soon turned into something stranger.</p>
+<p>I do not mention complaints about design, as those are subjective. But it was worrisome that a redesign would break existing download link patterns without a redirect - this should not happen to an archival service. To their credit, COS fixed that particular problem quickly, though it should never needed fixing in the first place. The performance issues remain, and the irony that this performance update made performance worse is not lost to anyone. What seemed like transitional friction soon turned into something stranger.</p>
 </section>
 <section id="the-disappearance" class="level2">
 <h2 class="anchored" data-anchor-id="the-disappearance">The Disappearance</h2>
@@ -316,11 +317,11 @@ Also, - Login screen doesn't work on Safari - Preregistrations impossible (got m
 <p>When I try to access any of the preprints on which I am a co-author, I get an error.</p>
 <p>If I try to access the preprint via and OSF url, I get a blank page with a red banner “Not found” (see attached screenshot). Examples:</p>
 <ul>
-<li><a href="https://osf.io/yr9xb">https://osf.io/yr9xb</a></li>
-<li><a href="https://osf.io/gwd4s">https://osf.io/gwd4s</a></li>
-<li><a href="https://osf.io/hmu9r">https://osf.io/hmu9r</a></li>
-<li><a href="https://osf.io/dsx6y">https://osf.io/dsx6y</a></li>
-<li><a href="https://osf.io/vj8pn">https://osf.io/vj8pn</a> (this one was uploaded only 4 days ago by a colleague!)</li>
+<li><a href="https://osf.io/yr9xb" class="uri">https://osf.io/yr9xb</a></li>
+<li><a href="https://osf.io/gwd4s" class="uri">https://osf.io/gwd4s</a></li>
+<li><a href="https://osf.io/hmu9r" class="uri">https://osf.io/hmu9r</a></li>
+<li><a href="https://osf.io/dsx6y" class="uri">https://osf.io/dsx6y</a></li>
+<li><a href="https://osf.io/vj8pn" class="uri">https://osf.io/vj8pn</a> (this one was uploaded only 4 days ago by a colleague!)</li>
 </ul>
 <p>If I try to access the PDF links on Google Scholar (e.g.&nbsp;this link), I get the following JSON error message:</p>
 <p>[…]</p>
@@ -344,11 +345,11 @@ Also, - Login screen doesn't work on Safari - Preregistrations impossible (got m
 <p>&lt; On Nov 3, 2025 at 16:04 +0100, Michaela Support <a href="mailto:support@osf.io" class="email">support@osf.io</a>, wrote:&gt;</p>
 <p>Please fill out the form: <a href="https://forms.gle/jc5D1ENdkL5WaY4F8">Account Disabled or Falsely Flagged as SPAM reporting</a>. Your preprint have been flagged as spam. This is an important step in tracking how effective (or not) our spam filters are, and to review and resolve the issue.</p>
 </blockquote>
-<p>Frustrated, I copied Brian Nosek on a detailed escalation email explaining that this was not a support ticket issue but a catastrophic integrity failure: twenty preprints, hundreds of files, dozens of co-authors, and years of published work were all inaccessible. It was not a single “preprint flagged as spam”. Anything I or anyone associated with me had uploaded since 2017 was completely inaccessible and OSF essentially communicated to the world that all this work simply no longer existed.</p>
+<p>Frustrated, I copied Brian Nosek on a detailed escalation email explaining that this was not a single-ticket problem but a catastrophic integrity failure: twenty preprints, hundreds of files, dozens of co-authors, and years of published work were all inaccessible. It was not one “preprint flagged as spam.” Anything I — or anyone associated with me — had uploaded since 2017 was completely inaccessible, and OSF was effectively communicating to the world that this work no longer existed.</p>
 <blockquote class="blockquote">
 <p>&lt;On Nov 3, 2025 at 16:45 +0100, Ven Popov, wrote:&gt;</p>
 <p>As I replied in my previous email, I already filled out the form.</p>
-<p>Furthermore, it is not one preprint that is inacessible. All of the 20+ preprints that I have published on OSF since 2017 are unavailable. Neither the OSF links from my profile, nor the Google Scholar links that have worked for years can be opened.</p>
+<p>Furthermore, it is not one preprint that is inaccessible. All of the 20+ preprints that I have published on OSF since 2017 are unavailable. Neither the OSF links from my profile, nor the Google Scholar links that have worked for years can be opened.</p>
 <p>Please escalate this issue. This is a serious misstep on OSF’s part. I have had an account with OSF for 8 years, I have published about 20 preprints during this time, and none of them are available. For some of them, the OSF links might be the only record online of these published works, and it is a serious issue concerning the longevity of scholarship that an archival platform like OSF cannot allow to happen.</p>
 <p><span class="citation" data-cites="Brian">@Brian</span>, can you please get your support team to take this seriously? I’m getting repeated emails asking me to do something I already did and overlooking the extent of the problem. Please see the message history for the detailed report and links to my profile, a subset of broken preprint links, and an API error from Google Scholar links.</p>
 </blockquote>
@@ -359,7 +360,7 @@ Also, - Login screen doesn't work on Safari - Preregistrations impossible (got m
 <p>Here’s the message I received:</p>
 <blockquote class="blockquote">
 <p>&lt; On Nov 3, 2025 at 19:31 +0100, Michaela Support <a href="mailto:support@osf.io" class="email">support@osf.io</a>, wrote&gt;</p>
-<p>Thank you for reaching out to the OSF support team! You are correct it looks like your project was caught in our spam filter. As a free open access platform we are frequently the target of spammers, and therefore we must use multiple different spam filters that take a plethora of different factors into account when flagging spam, everything from odd titles to suspicious activity from a nearby IP address could get flagged. Truthfully it’s hard to tell why your content got it’s attention. I’m sorry for the inconvenience. I’ve removed the flag from material and your content should be active again!</p>
+<p>Thank you for reaching out to the OSF support team! You are correct it looks like your project was caught in our spam filter. As a free open access platform we are frequently the target of spammers, and therefore we must use multiple different spam filters that take a plethora of different factors into account when flagging spam, everything from odd titles to suspicious activity from a nearby IP address could get flagged. Truthfully it’s hard to tell why your content got its attention. I’m sorry for the inconvenience. I’ve removed the flag from material and your content should be active again!</p>
 </blockquote>
 <p>It was an honest reply — but also a disturbing one.</p>
 <p>OSF’s filters had quarantined everything I or <em>any of my colleagues</em> had <em>ever</em> uploaded, without warning, without a visible flag on my dashboard, and without preserving any metadata or landing pages. Public DOIs and Google Scholar entries now pointed to HTTP 410 “Resource deleted” responses — a code that explicitly signals permanent removal to search engines.</p>
@@ -408,9 +409,9 @@ Also, - Login screen doesn't work on Safari - Preregistrations impossible (got m
 <p>I really appreciate the detailed notes that you provided to help identify the source of the problem, and even more the solutioning that you offered to improve user experience and more gracefully manage the identification and mitigation of spam. I have not heard of a case like this, so while it was a painful experience that you had to deal with, hopefully the exposure of the problem with your diligent reporting will help us to identify the extent to which it is occurring more widely and develop effective solutions.</p>
 <p>Thanks again for giving us such useful reporting on your experience with this to help us continue to improve the service.</p>
 </blockquote>
-<p>Despite this response, I was still deeply troubled. I briefly considered whether I’m overreacting. However, after consulting several colleagues, they were all also very concerned not only that this had happened, <em>but that it was possible to happen in the first place</em>. As one of my colleagues put it:</p>
+<p>Despite this response, I was still deeply troubled. I briefly considered whether I’m overreacting. After consulting several colleagues, they were unanimous: the severity is not that it happened to me, but that it could happen at all — silently and retroactively. As one colleague put it:</p>
 <blockquote class="blockquote">
-<p>I agree, I think the issue is more severe than it sounds like. The effect is crazy to me. Not only that they retrospectively delete the stuff but also how many people can be affected by it. It’s already severe in your case with a large network of collaborators. Butimagine Klaus’s account gets flagged and he doesn’t realize it. This would probably take hundreds of preprints offline, which are primary the work of others [junior researchers]. It’s bad enough that they take the stuff down that you put on OSF but it also deletes the work where someone else just linked your name with? This also can’t be right…</p>
+<p>I agree, I think the issue is more severe than it sounds like. The effect is crazy to me. Not only that they retrospectively delete the stuff but also how many people can be affected by it. It’s already severe in your case with a large network of collaborators. But imagine Klaus’s account gets flagged and he doesn’t realize it. This would probably take hundreds of preprints offline, which are primary the work of others [junior researchers]. It’s bad enough that they take the stuff down that you put on OSF but it also deletes the work where someone else just linked your name with? This also can’t be right…</p>
 </blockquote>
 <p>After some reflection, I followed up with Brian Nosek with a longer message explaining why the issue mattered so deeply: not because of personal inconvenience, but because silent retroactive suppression of long-standing records is incompatible with the role of an archive.</p>
 <blockquote class="blockquote">
@@ -428,7 +429,7 @@ Also, - Login screen doesn't work on Safari - Preregistrations impossible (got m
 <p>&lt;On Nov 4, 2025 at 14:45 +0100, Brian Nosek, wrote:&gt;</p>
 <p>Thanks for the follow-up. There is nothing inappropriate at all about your comments or approach. It is very clear that your comments are made in good faith to help us improve the services and meet the aspirations of reliable, persistent open scholarship. We truly appreciate your willingness to put time into documenting and sharing the challenges you experienced here.</p>
 </blockquote>
-<p>That, to me, felt like the right place to stop. That said, ideally, I would like some official statement from COS about what they plan to do in order to ensure that something like this doesn’t happen again in the future.</p>
+<p>That, to me, felt like the right place to stop. Ideally, I’d still like an official statement from COS about what they plan to do to ensure that something like this doesn’t happen again.</p>
 </section>
 <section id="data-vs.-trust" class="level2">
 <h2 class="anchored" data-anchor-id="data-vs.-trust">Data vs.&nbsp;Trust</h2>
