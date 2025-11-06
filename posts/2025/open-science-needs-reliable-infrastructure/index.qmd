@@ -1,0 +1,208 @@
+---
+title: "Open Science needs reliable infrastructure"
+subtitle: "A Postmortem on the OSF Redesign Incident"
+categories: [open science,  reproducibility,  academic publishing,  2025]
+date: "2025-11-06"
+format:
+  html:
+    code-overflow: wrap
+---
+
+In October 2025, a redesign of the Open Science Framework (OSF) led to widespread access failures across the platform. What began as a few broken download links became, in my case, a total disappearance of eight years of DOI-registered work. This is the story of what happened, how it was resolved, and what it reveals about trust and infrastructure in open science.
+
+## Widespread glitches
+
+On October 11th, 2025, the Center for Open Science (COS) [announced](https://bsky.app/profile/cos.io/post/3m2x2af4jwc2o) that the Open Science Framework — its flagship platform for preprints, data, and code — had received a major redesign. The update promised ["to make managing research projects easier, faster, and more intuitive."](https://www.cos.io/blog/now-live-refreshed-osf-interface)
+
+Within days, many discovered that the new redesign ironically came with slower loading times, but more troubling, with a host of bugs and glitches:
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:rbamsrq5xdc25fdrmiicvi3f/app.bsky.feed.post/3m2yc4yxe5k2r" data-bluesky-cid="bafyreiadcxtyo4zj7qmsdsfhpd65vowglwopqoz6apy4znyfublyayyhhq" data-bluesky-embed-color-mode="system"><p lang="en">PSA: seems like the update broke the ability to directly download files with a link, like osf.io/XXXX/download this lead to an error in one of my R package vignettes, and presumably will break lots of code.<br><br><a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m2yc4yxe5k2r?ref_src=embed">[image or embed]</a></p>&mdash; Ruben C. Arslan (<a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f?ref_src=embed">@ruben.the100.ci</a>) <a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m2yc4yxe5k2r?ref_src=embed">October 12, 2025 at 10:34 AM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:rbamsrq5xdc25fdrmiicvi3f/app.bsky.feed.post/3m3chsxwxps2m" data-bluesky-cid="bafyreiaeakvrevoo2vfyt26arzvgxs4emvvl7g4du7x5ccjesotetoyehi" data-bluesky-embed-color-mode="system"><p lang="en">Thanks. I think this is urgent. I suspect it also broke Google Scholar listing PDFs from OSF, at least I get broken links for some, no links for others and generally OSF seems to be massively downranked in the list of sources. Started getting email requests for PDFs again.</p>&mdash; Ruben C. Arslan (<a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f?ref_src=embed">@ruben.the100.ci</a>) <a href="https://bsky.app/profile/did:plc:rbamsrq5xdc25fdrmiicvi3f/post/3m3chsxwxps2m?ref_src=embed">October 16, 2025 at 11:43 AM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:gansgyiuhvaa25asqnjtfj6r/app.bsky.feed.post/3m2wkfr5ick2c" data-bluesky-cid="bafyreielfjskux4rxlzj66hinsoi43ztxabzuzczqd4xr6imw4rtrpjtrq" data-bluesky-embed-color-mode="system"><p lang="en">@cos.io Why cant I read in rds files from my repo? I was trying to reproduce my manuscript and now I cant read in rds files from the site. I am going to assume it has to do with the new UI?</p>&mdash; jgeller1phd.bsky.social (<a href="https://bsky.app/profile/did:plc:gansgyiuhvaa25asqnjtfj6r?ref_src=embed">@jgeller1phd.bsky.social</a>) <a href="https://bsky.app/profile/did:plc:gansgyiuhvaa25asqnjtfj6r/post/3m2wkfr5ick2c?ref_src=embed">October 11, 2025 at 5:57 PM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:gwmol5ml44miarkuvymvq6ax/app.bsky.feed.post/3m3sfvwn5ck2x" data-bluesky-cid="bafyreie4inpgiob6rw4h4pfyrrllrrkduoqxv6h7rsu334ncqzx4rfdyzm" data-bluesky-embed-color-mode="system"><p lang="en">Is anyone else experiencing significant issues (lags, not loading) with OSF (@cos.io) since the interface update?</p>&mdash; Charlotte Pennington 🌻 (<a href="https://bsky.app/profile/did:plc:gwmol5ml44miarkuvymvq6ax?ref_src=embed">@drcpennington.bsky.social</a>) <a href="https://bsky.app/profile/did:plc:gwmol5ml44miarkuvymvq6ax/post/3m3sfvwn5ck2x?ref_src=embed">October 22, 2025 at 7:51 PM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:pi4upwjkevc3thmjn4k3bqic/app.bsky.feed.post/3m3ftbca4aw2q" data-bluesky-cid="bafyreihm7jppz7tlk77p5i7ots4imsbtxfqna5texo2oxkrek4sijqm7cq" data-bluesky-embed-color-mode="system"><p lang="en">🪲 OSF Update: Ongoing Fixes
+Following the OSF redesign, some issues have been identified:
+
+- Some custom registry templates may not showall fields
+- OSF shows a max. of 10 contributors
+- Some pages load slowly or seem unresponsive
+
+These are on our critical fix list &amp; should be resolved soon. (1/2)</p>&mdash; Center for Open Science (<a href="https://bsky.app/profile/did:plc:pi4upwjkevc3thmjn4k3bqic?ref_src=embed">@cos.io</a>) <a href="https://bsky.app/profile/did:plc:pi4upwjkevc3thmjn4k3bqic/post/3m3ftbca4aw2q?ref_src=embed">October 17, 2025 at 7:46 PM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+
+<blockquote class="bluesky-embed" data-bluesky-uri="at://did:plc:rau7a3uk7uaz27xnj53jum7r/app.bsky.feed.post/3m3ssm2ro522o" data-bluesky-cid="bafyreid3goqipiruikkux2ywbcaohch6dllxc3wbzud6fhulzffwyf547m" data-bluesky-embed-color-mode="system"><p lang="en">Also,
+- Login screen doesn&#x27;t work on Safari
+- Preregistrations impossible (got many error messages &amp; after I was finally able to submit got an email saying trouble archiving my preregistration so it wasn&#x27;t completed)... this means I can&#x27;t actually run my study :(
+- Symbols not rendering (e.g., &amp;, &lt;)</p>&mdash; Cassandra Chapman (<a href="https://bsky.app/profile/did:plc:rau7a3uk7uaz27xnj53jum7r?ref_src=embed">@cassandrachapman.bsky.social</a>) <a href="https://bsky.app/profile/did:plc:rau7a3uk7uaz27xnj53jum7r/post/3m3ssm2ro522o?ref_src=embed">October 22, 2025 at 11:38 PM</a></blockquote><script async src="https://embed.bsky.app/static/embed.js" charset="utf-8"></script>
+
+I do not mention complaints about design, as those are subjective. But it was worrisome that a redesign would break existing download link patterns without a redirect - this should not happen to an archival service. To their credit, COS fixed hat particular problem quickly, though it should never needed fixing in the first place. The performance issues remain, and the irony that this performance update made performance worse is not lost to anyone. What seemed like transitional friction soon turned into something stranger.
+
+## The Disappearance
+
+On November 2, I realized that none of my OSF preprints would open. Every single one — roughly twenty projects spanning eight years — returned either a blank page with a red banner reading “Not found” or a JSON message declaring the resource “deleted by the user.”
+
+At first, I assumed it was a global outage consistent with the widespread performance issues mentioned above. But when I double checked, the pattern was unmistakable:
+
+-   Other authors’ preprints worked fine.
+-   The error appeared for every preprint and dataset linked to my name — including one uploaded by a colleague just four days earlier.
+-   Even Google Scholar links that had functioned for years now led to “Resource deleted” errors:
+
+```json 
+{"message_short": "Resource deleted", "message_long": "User has deleted this content. If this should not have occurred and the issue persists, please report it to <a href=\"mailto:support@osf.io\">support@osf.io<\/a>.", "code": 410, "referrer": null}
+```
+
+Most worrisome of all - the "blackout" included files linked in published journal articles and materials for projects currently under  peer review.
+
+I reported the issue to OSF support with screenshots and links, expecting acknowledgment that something had gone wrong with the migration:
+
+> <On Nov 2, 2025 at 23:40 +0100, Ven Popov, wrote:>
+> 
+> I am experiencing a serious issue with my preprints on OSF. At first I thought this was a global OSF issue, but it seems like it is affecting all and only my preprints, which makes me very concerned.
+>
+> When I try to access any of the preprints on which I am a co-author, I get an error.
+>
+> If I try to access the preprint via and OSF url, I get a blank page with a red banner "Not found" (see attached screenshot). Examples:
+> 
+> - [https://osf.io/yr9xb](https://osf.io/yr9xb)
+> - [https://osf.io/gwd4s](https://osf.io/gwd4s)
+> - [https://osf.io/hmu9r](https://osf.io/hmu9r)
+> - [https://osf.io/dsx6y](https://osf.io/dsx6y)
+> - [https://osf.io/vj8pn](https://osf.io/vj8pn) (this one was uploaded only 4 days ago by a colleague!)
+> 
+> If I try to access the PDF links on Google Scholar (e.g. this link), I get the following JSON error message:
+> 
+> [...]
+> 
+> I tested this with all ~20 preprints listed on [my profile](https://osf.io/et763/) and I get the error on all of them. When I try to open any other preprint that is not authored by me, I can open it just fine. I'd appreciate any assistance with resolving this issue.
+
+
+Instead, I was asked to fill out a form for “accounts flagged as spam.”
+
+> < On Mon, Nov 3, 2025 at 7:30 AM EST, Blaine Support <support@osf.io> wrote:>
+> 
+> If you received this email, it means that we need your assistance in investigating your account. Please help us by providing more information through this form: [Account Disabled or Falsely Flagged as SPAM reporting](https://forms.gle/jc5D1ENdkL5WaY4F8). If we don't receive your form submission, we won't be able to investigate the issue. Your input is invaluable as we work to improve our spam detection systems.
+
+## The Support Loop
+
+I filled out the spam-flag form, though I knew my account was active and clean. I was logged into my account and could change my account information. I could also see all my project listings, though not the details. I replied back:
+
+> < On Mon, Nov 3, 2025 at 7:47 AM EST, Ven Popov, wrote:>
+> 
+> I filled out the form, but my account is neither deactivated nor flagged as SPAM. I simply cannot access any of the 20+ preprints that I or my colleagues have uploaded over the last 8 years! In the form I supplied a link to one preprint, but all of my preprints are inaccessible.
+
+A few hours later I received a message from a new support representative, asking me again to fill out the same form:
+
+> < On Nov 3, 2025 at 16:04 +0100, Michaela Support <support@osf.io>, wrote:>
+> 
+> Please fill out the form: [Account Disabled or Falsely Flagged as SPAM reporting](https://forms.gle/jc5D1ENdkL5WaY4F8). Your preprint have been flagged as spam. This is an important step in tracking how effective (or not) our spam filters are, and to review and resolve the issue.
+
+Frustrated, I copied Brian Nosek on a detailed escalation email explaining that this was not a support ticket issue but a catastrophic integrity failure: twenty preprints, hundreds of files, dozens of co-authors, and years of published work were all inaccessible. It was not a single "preprint flagged as spam". Anything I or anyone associated with me had uploaded since 2017 was completely inaccessible and OSF essentially communicated to the world that all this work simply no longer existed.
+
+> <On Nov 3, 2025 at 16:45 +0100, Ven Popov, wrote:>
+> 
+> As I replied in my previous email, I already filled out the form. 
+> 
+> Furthermore, it is not one preprint that is inacessible. All of the 20+ preprints that I have published on OSF since 2017 are unavailable. Neither the OSF links from my profile, nor the Google Scholar links that have worked for years can be opened.
+> 
+> Please escalate this issue. This is a serious misstep on OSF's part. I have had an account with OSF for 8 years, I have published about 20 preprints during this time, and none of them are available. For some of them, the OSF links might be the only record online of these published works, and it is a serious issue concerning the longevity of scholarship that an archival platform like OSF cannot allow to happen.
+> 
+> @Brian, can you please get your support team to take this seriously? I'm getting repeated emails asking me to do something I already did and overlooking the extent of the problem. Please see the message history for the detailed report and links to my profile, a subset of broken preprint links, and an API error from Google Scholar links.
+
+Within hours, OSF staff identified the cause: my account had been automatically flagged as spam by their filters. Once the flag was removed, everything reappeared.
+
+## The Explanation
+
+Here’s the message I received:
+
+> < On Nov 3, 2025 at 19:31 +0100, Michaela Support <support@osf.io>, wrote>
+> 
+> Thank you for reaching out to the OSF support team! You are correct it looks like your project was caught in our spam filter. As a free open access platform we are frequently the target of spammers, and therefore we must use multiple different spam filters that take a plethora of different factors into account when flagging spam, everything from odd titles to suspicious activity from a nearby IP address could get flagged. Truthfully it's hard to tell why your content got it's attention. I'm sorry for the inconvenience. I've removed the flag from material and your content should be active again!
+
+It was an honest reply — but also a disturbing one.
+
+OSF’s filters had quarantined everything I or *any of my colleagues* had *ever* uploaded, without warning, without a visible flag on my dashboard, and without preserving any metadata or landing pages. Public DOIs and Google Scholar entries now pointed to HTTP 410 “Resource deleted” responses — a code that explicitly signals permanent removal to search engines.
+
+In other words, for several days, OSF’s infrastructure told the world that our work no longer existed.
+
+## The Deeper Problem
+
+This incident isn’t about data loss — most of my materials were mirrored elsewhere. The issue is trust.
+
+Researchers use OSF because it promises persistence. It issues DOIs, integrates with journals, and serves as part of the scholarly record. That promise was violated — not through malice, but through a structural design choice: an automated filter was allowed to silently deindex archival content.
+
+Spam detection is necessary. But a true archive must never delete first and explain later. An archive is defined by its immutability and accountability.
+
+The design flaw wasn’t that a spam flag existed — it’s that its activation could unpublish a decade’s worth of DOI-assigned material without human review, notification, or even the retention of metadata.
+
+This episode highlights a broader fragility in the open science ecosystem. The infrastructure of modern scholarship — repositories, indexing services, DOI registries — runs on trust. When that infrastructure silently fails, the damage is epistemic: we lose not just access to data, but confidence in the permanence of the scientific record.
+
+An archival platform must therefore: 
+
+- Retain metadata and landing pages even when content is quarantined. 
+- Notify users when materials are flagged or hidden
+- Require human verification before suppressing DOI-linked material. 
+- Use non-destructive HTTP codes for temporary removals.
+
+These are not minor UX fixes — they are the foundations of reliability in digital scholarship. I made this much clear in an email reply:
+
+> <On Mon, Nov 3, 2025 at 2:26 PM Ven Popov wrote:>
+> 
+> Thank you for resolving the issue and restoring access to my materials. I understand that OSF, as a free and open platform, must protect itself against spam.
+> 
+> However, the way your spam-filtering system currently operates is unacceptable and incompatible with OSF’s stated mission as an archival repository. Automatically blocking access to more than twenty DOI-registered preprints, datasets, and supplementary materials spanning nearly a decade — including work co-authored by dozens of researchers and cited in published papers — is not a minor glitch. It constitutes a violation of the very FAIR principles OSF promotes and undermines trust in your platform as part of the scholarly record.
+> 
+> Worse, the system suppressed all metadata and landing pages, returning an HTTP 410 “Resource deleted” response. That code explicitly signals to search engines that a resource has been permanently removed and should be de-indexed. This means the issue not only disrupted access but actively damaged the discoverability and citation continuity of legitimate research outputs.
+> 
+> I fully support the need for robust spam protection. But the current implementation — silent removal of legitimate archival content, without notice or human verification, and with a response that signals permanent deletion — is deeply inconsistent with COS’s commitments to openness, transparency, and persistence.
+> 
+> I urge COS to review this policy and implement safeguards such as:
+> 
+> - Human review before suppressing any DOI-assigned or public scholarly record.
+> - Retention of metadata and landing pages for any quarantined content.
+> - Clear notifications to affected users.
+> - Use of non-destructive HTTP status codes (e.g., 451 or 503) for temporary suppression.
+> 
+> These are not just usability issues; they concern the credibility of OSF as a reliable component of the scientific infrastructure.
+> 
+> I am deeply troubled by this incident, and I do not say this lightly. I have been a staunch supporter of COS and its mission for years. But this event exposes an infrastructural weakness that seriously undermines trust in the OSF platform.
+> 
+> I would appreciate a response from COS leadership that demonstrates an understanding of the gravity of this failure and provides a clear plan to prevent similar occurrences in the future.
+> 
+> I intend to publish this correspondence publicly, and I hope that I can do so alongside a response that acknowledges these concerns and reaffirms COS’s commitment to openness, transparency, and durability in scientific communication.
+
+## Aftermath
+
+After I sent my detailed critique, Brian Nosek responded personally and with grace. He acknowledged that this case was unprecedented, thanked me for the thorough documentation, and assured me that it would help the team identify whether others had been similarly affected.
+
+> < On Nov 3, 2025 at 22:05 +0100, Brian Nosek, wrote:>
+> 
+> I see from the thread that your issue is resolved, but I am sorry that you had to go through that!
+>
+> I really appreciate the detailed notes that you provided to help identify the source of the problem, and even more the solutioning that you offered to improve user experience and more gracefully manage the identification and mitigation of spam. I have not heard of a case like this, so while it was a painful experience that you had to deal with, hopefully the exposure of the problem with your diligent reporting will help us to identify the extent to which it is occurring more widely and develop effective solutions.
+> 
+> Thanks again for giving us such useful reporting on your experience with this to help us continue to improve the service.
+
+Despite this response, I was still deeply troubled. I briefly considered whether I'm overreacting. However, after consulting several colleagues, they were all also very concerned not only that this had happened, *but that it was possible to happen in the first place*. As my colleague [Philipp Musfeld](https://www.psychologie.uzh.ch/de/bereiche/nec/allgpsy/team/alumni/pmusfeld.html) put it:
+
+> I agree, I think the issue is more severe than it sounds like. The effect is crazy to me. Not only that they retrospectively delete the stuff but also how many people can be affected by it. It’s already severe in your case with a large network of collaborators. But image klaus account gets flagged and he doesn’t realize it. This would probably take hundreds of preprints offline, which are primary the work of others. It’s bad enough that they take the stuff down that you put on OSF but it also deletes the work where someone else just linked your name with? This also can’t be right…
+
+I followed up with a longer message explaining why the issue mattered so deeply: not because of personal inconvenience, but because silent retroactive suppression of long-standing records is incompatible with the role of an archive.
+
+His reply was thoughtful and generous:
+
+> “There is nothing inappropriate at all about your comments or approach. It is very clear that your comments are made in good faith to help us improve the services and meet the aspirations of reliable, persistent open scholarship.”
+
+That, to me, felt like the right place to stop.
+
+## Data vs. Trust
+
+No data were ultimately lost. But something far more important was at stake: the continuity of the scholarly record.
+
+If this episode serves any purpose, let it be a reminder that openness is not just about making information accessible — it’s about ensuring it stays accessible. Scientific infrastructure must be engineered for trustworthiness, not just availability.
+
+The traditional publishing system is rotten to the core, but for any reform to succeed long-term, people must trust the infrastructure and systems in place.
+
+Trust is slow to earn and quick to erode. I hope OSF uses this experience to reinforce that trust — not only by fixing the bug, but by institutionalizing the safeguards that make open scholarship durable.
