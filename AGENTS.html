@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Computational thinking – Ven Popov</title>
+<title>agents – Ven Popov</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,13 +20,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <link href="./images/favicon.ico" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -54,35 +86,6 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-date','listing-title','listing-description','listing-reading-time','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author","listing-subtitle","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-ZVYQ98TZ00"></script>
 
 <script type="text/javascript">
@@ -93,45 +96,14 @@ gtag('js', new Date());
 gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 </script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Ven Popov" href="posts.xml" data-external="1"><meta property="og:title" content="Computational thinking – Ven Popov">
-<meta property="og:description" content="On computational modeling, metascience, reproducibility, bayesian methods &amp; more">
+<meta property="og:title" content="Ven Popov">
 <meta property="og:image" content="https://venpopov.com/images/venpopov.png">
 <meta property="og:site_name" content="Ven Popov">
 <meta property="og:image:height" content="501">
 <meta property="og:image:width" content="501">
-<meta name="twitter:title" content="Computational thinking – Ven Popov">
-<meta name="twitter:description" content="On computational modeling, metascience, reproducibility, bayesian methods &amp; more">
+<meta name="twitter:title" content="Ven Popov">
 <meta name="twitter:image" content="https://venpopov.com/images/venpopov.png">
 <meta name="twitter:image-height" content="501">
 <meta name="twitter:image-width" content="501">
@@ -141,7 +113,7 @@ window.Quarto = {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -189,7 +161,7 @@ window.Quarto = {
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="./posts.html" aria-current="page"> 
+    <a class="nav-link" href="./posts.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -201,392 +173,193 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page-left">
-      <h1 class="title">Computational thinking</h1>
-            <p class="subtitle lead">On computational modeling, metascience, reproducibility, bayesian methods &amp; more</p>
-                      </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta column-page-left">
-
-      
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(9)</span></div><div class="category" data-category="MjAyNA==">2024 <span class="quarto-category-count">(6)</span></div><div class="category" data-category="MjAyNQ==">2025 <span class="quarto-category-count">(3)</span></div><div class="category" data-category="R2l0SHVi">GitHub <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(5)</span></div><div class="category" data-category="UiUyMHBhY2thZ2U=">R package <span class="quarto-category-count">(2)</span></div><div class="category" data-category="YWNhZGVtaWMlMjBwdWJsaXNoaW5n">academic publishing <span class="quarto-category-count">(2)</span></div><div class="category" data-category="YXJ0">art <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YmF5ZXNpYW4=">bayesian <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29sbGFib3JhdGlvbg==">collaboration <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2l0">git <span class="quarto-category-count">(2)</span></div><div class="category" data-category="bW9kZWxpbmc=">modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="b3BlbiUyMHNjaWVuY2U=">open science <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGFja2FnZSUyMG1hbmFnZW1lbnQ=">package management <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGVlciUyMHJldmlldw==">peer review <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvZ3JhbW1pbmc=">programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvamVjdCUyMG1hbmFnZW1lbnQ=">project management <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cmVwcm9kdWNpYmlsaXR5">reproducibility <span class="quarto-category-count">(4)</span></div><div class="category" data-category="c2hlbGw=">shell <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGFyZ2V0cw==">targets <span class="quarto-category-count">(1)</span></div><div class="category" data-category="d29ya2Zsb3c=">workflow <span class="quarto-category-count">(3)</span></div></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#agents.md" id="toc-agents.md" class="nav-link active" data-scroll-target="#agents.md">AGENTS.md</a>
+  <ul class="collapse">
+  <li><a href="#repository-overview" id="toc-repository-overview" class="nav-link" data-scroll-target="#repository-overview">Repository Overview</a></li>
+  <li><a href="#key-commands" id="toc-key-commands" class="nav-link" data-scroll-target="#key-commands">Key Commands</a>
+  <ul class="collapse">
+  <li><a href="#build-and-deploy" id="toc-build-and-deploy" class="nav-link" data-scroll-target="#build-and-deploy">Build and Deploy</a></li>
+  <li><a href="#working-with-r-environment" id="toc-working-with-r-environment" class="nav-link" data-scroll-target="#working-with-r-environment">Working with R Environment</a></li>
+  <li><a href="#blog-post-management" id="toc-blog-post-management" class="nav-link" data-scroll-target="#blog-post-management">Blog Post Management</a></li>
+  </ul></li>
+  <li><a href="#architecture-and-structure" id="toc-architecture-and-structure" class="nav-link" data-scroll-target="#architecture-and-structure">Architecture and Structure</a>
+  <ul class="collapse">
+  <li><a href="#content-organization" id="toc-content-organization" class="nav-link" data-scroll-target="#content-organization">Content Organization</a></li>
+  <li><a href="#configuration-files" id="toc-configuration-files" class="nav-link" data-scroll-target="#configuration-files">Configuration Files</a></li>
+  <li><a href="#quarto-extensions" id="toc-quarto-extensions" class="nav-link" data-scroll-target="#quarto-extensions">Quarto Extensions</a></li>
+  <li><a href="#theming-and-styling" id="toc-theming-and-styling" class="nav-link" data-scroll-target="#theming-and-styling">Theming and Styling</a></li>
+  <li><a href="#build-process" id="toc-build-process" class="nav-link" data-scroll-target="#build-process">Build Process</a></li>
+  <li><a href="#r-code-in-posts" id="toc-r-code-in-posts" class="nav-link" data-scroll-target="#r-code-in-posts">R Code in Posts</a></li>
+  <li><a href="#important-files-not-to-edit" id="toc-important-files-not-to-edit" class="nav-link" data-scroll-target="#important-files-not-to-edit">Important Files Not to Edit</a></li>
+  </ul></li>
+  <li><a href="#dependencies" id="toc-dependencies" class="nav-link" data-scroll-target="#dependencies">Dependencies</a>
+  <ul class="collapse">
+  <li><a href="#required-software" id="toc-required-software" class="nav-link" data-scroll-target="#required-software">Required Software</a></li>
+  <li><a href="#key-r-packages" id="toc-key-r-packages" class="nav-link" data-scroll-target="#key-r-packages">Key R Packages</a></li>
+  </ul></li>
+  <li><a href="#special-notes" id="toc-special-notes" class="nav-link" data-scroll-target="#special-notes">Special Notes</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
 
 
 
 
+<section id="agents.md" class="level1">
+<h1>AGENTS.md</h1>
+<section id="repository-overview" class="level2">
+<h2 class="anchored" data-anchor-id="repository-overview">Repository Overview</h2>
+<p>This is a personal academic website built with Quarto, featuring publications, a CV, and a blog. The site is statically generated and deployed to GitHub Pages.</p>
+</section>
+<section id="key-commands" class="level2">
+<h2 class="anchored" data-anchor-id="key-commands">Key Commands</h2>
+<section id="build-and-deploy" class="level3">
+<h3 class="anchored" data-anchor-id="build-and-deploy">Build and Deploy</h3>
+<p>Render the website locally:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Publish to GitHub Pages.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages <span class="at">--no-prompt</span> <span class="at">--no-render</span> <span class="at">--no-browser</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="working-with-r-environment" class="level3">
+<h3 class="anchored" data-anchor-id="working-with-r-environment">Working with R Environment</h3>
+<p>This project uses <code>renv</code> for R package management. When first setting up or when dependencies change:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In R console</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">renv::restore()</span>  <span class="co"># Install packages from renv.lock</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">renv::snapshot()</span> <span class="co"># Update renv.lock after adding packages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The <code>.Rprofile</code> automatically loads the renv environment and sources all R scripts in the <code>R/</code> directory.</p>
+</section>
+<section id="blog-post-management" class="level3">
+<h3 class="anchored" data-anchor-id="blog-post-management">Blog Post Management</h3>
+<p>Create a new blog post using the shell script</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">add_new_post</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The command will prompt for input for title, subtitle and categories.</p>
+<p>This creates <code>posts/{year}/{title-slug}/index.qmd</code> with proper YAML frontmatter.</p>
+<p>Manual post creation structure: - Posts are organized by year: <code>posts/2024/</code>, <code>posts/2025/</code>, etc. - Each post is in its own folder with an <code>index.qmd</code> file - Required YAML frontmatter: <code>yaml   ---   title: ""   subtitle: ""   categories: []   date: "YYYY-MM-DD"   ---</code></p>
+</section>
+</section>
+<section id="architecture-and-structure" class="level2">
+<h2 class="anchored" data-anchor-id="architecture-and-structure">Architecture and Structure</h2>
+<section id="content-organization" class="level3">
+<h3 class="anchored" data-anchor-id="content-organization">Content Organization</h3>
+<ul>
+<li><strong><code>index.qmd</code></strong> - Homepage/about page</li>
+<li><strong><code>publications.qmd</code></strong> - Publications list with academic papers</li>
+<li><strong><code>posts.qmd</code></strong> - Blog listing page</li>
+<li><strong><code>CV/index.qmd</code></strong> - CV page that embeds <code>CV/cv.pdf</code></li>
+<li><strong><code>posts/{year}/{post-name}/index.qmd</code></strong> - Individual blog posts</li>
+<li><strong><code>R/functions.R</code></strong> - Custom R functions loaded automatically via <code>.Rprofile</code></li>
+</ul>
+</section>
+<section id="configuration-files" class="level3">
+<h3 class="anchored" data-anchor-id="configuration-files">Configuration Files</h3>
+<ul>
+<li><strong><code>_quarto.yml</code></strong> - Main Quarto project configuration
+<ul>
+<li>Defines website structure, navigation, theming</li>
+<li>Configures post-render script (<code>purge_css.sh</code>)</li>
+<li>Sets execution options (<code>freeze: auto</code>, <code>cache: true</code>)</li>
+</ul></li>
+<li><strong><code>posts/_metadata.yml</code></strong> - Default settings for all blog posts
+<ul>
+<li>Giscus comments configuration</li>
+<li>License (CC BY)</li>
+<li>Author metadata</li>
+<li>Default knitr execution options</li>
+</ul></li>
+<li><strong><code>.Rprofile</code></strong> - Loads renv and sources R scripts from <code>R/</code> directory</li>
+<li><strong><code>renv.lock</code></strong> - R package dependencies</li>
+</ul>
+</section>
+<section id="quarto-extensions" class="level3">
+<h3 class="anchored" data-anchor-id="quarto-extensions">Quarto Extensions</h3>
+<p>The site uses several Quarto extensions located in <code>_extensions/</code>: - <code>quarto-ext/fontawesome</code> - Font Awesome icons - <code>schochastics/academicons</code> - Academic icons - <code>pandoc-ext/section-bibliographies</code> - Bibliography management</p>
+</section>
+<section id="theming-and-styling" class="level3">
+<h3 class="anchored" data-anchor-id="theming-and-styling">Theming and Styling</h3>
+<ul>
+<li><strong><code>theme-dark.scss</code></strong> - Dark theme customization</li>
+<li><strong><code>styles.css</code></strong> - Custom CSS styles</li>
+<li>Base theme: Cosmo (with dark variant)</li>
+</ul>
+</section>
+<section id="build-process" class="level3">
+<h3 class="anchored" data-anchor-id="build-process">Build Process</h3>
+<ol type="1">
+<li>Quarto renders <code>.qmd</code> files to HTML</li>
+<li>Rendered output goes to <code>_site/</code></li>
+<li>Post-render script <code>purge_css.sh</code> runs (only during full project renders):
+<ul>
+<li>Purges unused CSS using purgecss</li>
+<li>Minifies JS files using uglifyjs</li>
+<li>Minifies CSS files using uglifycss</li>
+</ul></li>
+<li>Computed results are cached in <code>_freeze/</code> (controlled by <code>freeze: auto</code>)</li>
+</ol>
+</section>
+<section id="r-code-in-posts" class="level3">
+<h3 class="anchored" data-anchor-id="r-code-in-posts">R Code in Posts</h3>
+<ul>
+<li>Blog posts can contain R code chunks</li>
+<li>Execution is frozen by default (<code>freeze: true</code> in <code>posts/_metadata.yml</code>)</li>
+<li>Computed outputs are cached to avoid re-running expensive computations</li>
+<li>The <code>bmm</code> package (Bayesian Measurement Modeling) is frequently referenced in posts</li>
+</ul>
+</section>
+<section id="important-files-not-to-edit" class="level3">
+<h3 class="anchored" data-anchor-id="important-files-not-to-edit">Important Files Not to Edit</h3>
+<ul>
+<li>Files in <code>_site/</code> - Generated output, will be overwritten</li>
+<li>Files in <code>_freeze/</code> - Cached computation results</li>
+<li>Files in <code>.quarto/</code> - Quarto internal files</li>
+</ul>
+</section>
+</section>
+<section id="dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="dependencies">Dependencies</h2>
+<section id="required-software" class="level3">
+<h3 class="anchored" data-anchor-id="required-software">Required Software</h3>
+<ul>
+<li><strong>Quarto</strong> - Static site generator (installed at <code>/Users/venpopov/.local/bin/quarto</code>)</li>
+<li><strong>R</strong> - Version 4.4.2 (specified in <code>renv.lock</code>)</li>
+<li><strong>Node.js tools</strong> (for post-render script):
+<ul>
+<li><code>purgecss</code> - CSS purging</li>
+<li><code>uglifyjs</code> - JavaScript minification</li>
+<li><code>uglifycss</code> - CSS minification</li>
+</ul></li>
+</ul>
+</section>
+<section id="key-r-packages" class="level3">
+<h3 class="anchored" data-anchor-id="key-r-packages">Key R Packages</h3>
+<p>The site uses numerous R packages managed by renv. Key packages include: - Statistical/modeling packages (Stan ecosystem, brms, etc.) - Data manipulation (tidyverse packages) - Visualization (ggplot2) - See <code>renv.lock</code> for complete list</p>
+</section>
+</section>
+<section id="special-notes" class="level2">
+<h2 class="anchored" data-anchor-id="special-notes">Special Notes</h2>
+<ul>
+<li>The site is configured for deployment to <code>venpopov.com</code> (specified in <code>CNAME</code>)</li>
+<li>Google Analytics is enabled (ID in <code>_quarto.yml</code>)</li>
+<li>Blog posts support Giscus comments (GitHub discussions-based)</li>
+<li>All posts are licensed under CC BY by default</li>
+<li>The <code>.Rprofile</code> pattern of auto-sourcing R scripts means new helper functions should be added to <code>R/</code> directory</li>
+</ul>
 
 
+</section>
+</section>
 
-
-
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="b3BlbiUyMHNjaWVuY2UlMkNyZXByb2R1Y2liaWxpdHklMkNhY2FkZW1pYyUyMHB1Ymxpc2hpbmclMkMyMDI1" data-listing-date-sort="1762383600000" data-listing-file-modified-sort="1762450577821" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3428">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">Open Science needs reliable infrastructure</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">A Postmortem on the OSF Redesign Incident</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('b3BlbiUyMHNjaWVuY2U='); return false;">
-open science
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cmVwcm9kdWNpYmlsaXR5'); return false;">
-reproducibility
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('YWNhZGVtaWMlMjBwdWJsaXNoaW5n'); return false;">
-academic publishing
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNQ=='); return false;">
-2025
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">After OSF’s October 2025 redesign, I discovered that eight years of DOI-linked preprints and materials were silently hidden by an automated spam flag. What happened, how it was resolved, and what it reveals about trust in open science infrastructure.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">
-<div class="listing-date">
-Nov 6, 2025
-</div>
-<div class="listing-reading-time">
-18 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ3Byb2dyYW1taW5nJTJDMjAyNQ==" data-listing-date-sort="1740092400000" data-listing-file-modified-sort="1740157029618" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2274">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external">R love you, R hate you</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvZ3JhbW1pbmc='); return false;">
-programming
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNQ=='); return false;">
-2025
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external">I do the majority of my coding in R. I’ve grown to love the language despite many of its quirks. Perhaps this is just Stockholm Syndrome as I joked in my “Intro to programming” class recently, though I genuinely enjoy the language and its functional programming roots.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external">
-<div class="listing-date">
-Feb 21, 2025
-</div>
-<div class="listing-reading-time">
-12 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="2" data-categories="UiUyQ2FydCUyQzIwMjU=" data-listing-date-sort="1740092400000" data-listing-file-modified-sort="1770135165387" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="11" data-listing-word-count-sort="2093">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2025/arto-pollo/index.html" class="no-external">aRt-o Pollo</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2025/arto-pollo/index.html" class="no-external"></a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('YXJ0'); return false;">
-art
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNQ=='); return false;">
-2025
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2025/arto-pollo/index.html" class="no-external">Imagine a universe where light behaves differently than ours. Rather than diffusing its intensity with distance, and simply increasing it with multiple sources, light in this universe is different. When two light beams meet, their combined intensity depends on the angle between them. Right angles…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2025/arto-pollo/index.html" class="no-external">
-<div class="listing-date">
-Feb 21, 2025
-</div>
-<div class="listing-reading-time">
-11 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="3" data-categories="d29ya2Zsb3clMkNzaGVsbCUyQzIwMjQ=" data-listing-date-sort="1731798000000" data-listing-file-modified-sort="1737024149792" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1098">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">Reduce friction for creating Quarto blog posts</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">I teach myself how to code simple shell scripts to automate some annoying tasks</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('d29ya2Zsb3c='); return false;">
-workflow
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('c2hlbGw='); return false;">
-shell
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">
-2024
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">My relationship with blogging is complicated. I made my first blog about 15 years ago, fresh out of high school. WordPress was the dominant platform at the time, and my blog wasn’t anything particularly interesting - I shared some vapid attempts at poetry and short story writing, some travel logs…<sup></sup></a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">
-<div class="listing-date">
-Nov 17, 2024
-</div>
-<div class="listing-reading-time">
-6 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="4" data-categories="d29ya2Zsb3clMkNyZXByb2R1Y2liaWxpdHklMkNSJTJDZ2l0JTJDdGFyZ2V0cyUyQ3Byb2plY3QlMjBtYW5hZ2VtZW50JTJDMjAyNA==" data-listing-date-sort="1731798000000" data-listing-file-modified-sort="1736689736815" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1791">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">Rethinking my approach to computational projects and reproducibility</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">There has to be a better way</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('d29ya2Zsb3c='); return false;">
-workflow
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cmVwcm9kdWNpYmlsaXR5'); return false;">
-reproducibility
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Z2l0'); return false;">
-git
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('dGFyZ2V0cw=='); return false;">
-targets
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cHJvamVjdCUyMG1hbmFnZW1lbnQ='); return false;">
-project management
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">
-2024
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">I have to finally admit it to myself - my research workflows have been breaking down and it’s time to get serious about change. I’ve been trying to incorporate better coding practices, modern reporting pipelines, and reproducible workflows into my research projects, but it’s been a struggle. The…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">
-<div class="listing-date">
-Nov 17, 2024
-</div>
-<div class="listing-reading-time">
-9 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="5" data-categories="YWNhZGVtaWMlMjBwdWJsaXNoaW5nJTJDcGVlciUyMHJldmlldyUyQ29wZW4lMjBzY2llbmNlJTJDMjAyNA==" data-listing-date-sort="1722722400000" data-listing-file-modified-sort="1736689868094" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="357">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">Taking a stand on open peer review</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">I will no longer review for journals that do not publish reviews alongside the work</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('YWNhZGVtaWMlMjBwdWJsaXNoaW5n'); return false;">
-academic publishing
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGVlciUyMHJldmlldw=='); return false;">
-peer review
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('b3BlbiUyMHNjaWVuY2U='); return false;">
-open science
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">
-2024
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">I have spent the last few months thinking about academic publishing and the peer review system. The whole thing is rotten and no sane person would design the system we have today. Now that I find myself in a professional position where I don’t have to worry about my future, I realize I can take…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">
-<div class="listing-date">
-Aug 4, 2024
-</div>
-<div class="listing-reading-time">
-2 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="6" data-categories="UiUyQ21vZGVsaW5nJTJDYmF5ZXNpYW4lMkNSJTIwcGFja2FnZSUyQzIwMjQ=" data-listing-date-sort="1718229600000" data-listing-file-modified-sort="1738321785984" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2619">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024/introducing-bmm/index.html" class="no-external">Introducing the Bayesian Measurement Modeling R Package (bmm)</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024/introducing-bmm/index.html" class="no-external">Making Bayesian measurement modeling in psychology accessible, reliable &amp; efficient</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('bW9kZWxpbmc='); return false;">
-modeling
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('YmF5ZXNpYW4='); return false;">
-bayesian
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UiUyMHBhY2thZ2U='); return false;">
-R package
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">
-2024
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024/introducing-bmm/index.html" class="no-external">I am excited to announce the first official release of the Bayesian Measurement Modeling R package! <code>bmm</code> makes Bayesian measurement modeling in psychology accessible to all. Over the past two years, Gidon Frischkorn and I worked closely together on this package and we are thrilled to finally share…</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024/introducing-bmm/index.html" class="no-external">
-<div class="listing-date">
-Jun 13, 2024
-</div>
-<div class="listing-reading-time">
-14 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="7" data-categories="Z2l0JTJDR2l0SHViJTJDcmVwcm9kdWNpYmlsaXR5JTJDd29ya2Zsb3clMkNjb2xsYWJvcmF0aW9uJTJDMjAyNA==" data-listing-date-sort="1716501600000" data-listing-file-modified-sort="1736689458994" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="616">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024/git-local-ignore/index.html" class="no-external">Locally Ignoring Git Files Without Affecting Others’ .gitignore</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024/git-local-ignore/index.html" class="no-external">How to exclude files from version control without affecting other developers’ .gitignore configuration</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Z2l0'); return false;">
-git
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('R2l0SHVi'); return false;">
-GitHub
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cmVwcm9kdWNpYmlsaXR5'); return false;">
-reproducibility
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('d29ya2Zsb3c='); return false;">
-workflow
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('Y29sbGFib3JhdGlvbg=='); return false;">
-collaboration
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">
-2024
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024/git-local-ignore/index.html" class="no-external">I often collaborate on git projects and I find that I want to have a folder or some files stored locally in the repo but that I don’t want to be tracked by git. Obviously I could add them to .gitignore, but then I have two options:</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024/git-local-ignore/index.html" class="no-external">
-<div class="listing-date">
-May 24, 2024
-</div>
-<div class="listing-reading-time">
-4 min
-</div>
-</a>
-</div>
-</div>
-<div class="quarto-post image-right" data-index="8" data-categories="UiUyQ3JlcHJvZHVjaWJpbGl0eSUyQ3BhY2thZ2UlMjBtYW5hZ2VtZW50JTJDUiUyMHBhY2thZ2UlMkMyMDI0" data-listing-date-sort="1709420400000" data-listing-file-modified-sort="1736689476030" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1385">
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">Working with multiple versions of an R package</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">After being dissatisfied with existing solutions, I wrote a package to do that</a>
-</div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('Ug=='); return false;">
-R
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cmVwcm9kdWNpYmlsaXR5'); return false;">
-reproducibility
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('cGFja2FnZSUyMG1hbmFnZW1lbnQ='); return false;">
-package management
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('UiUyMHBhY2thZ2U='); return false;">
-R package
-</div>
-<div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">
-2024
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">Have you ever wanted to test whether your code works with multiple versions of an R package? Or compare how the behavior of certain functions has changed? There are several ways to do that, each involving a lot of setup.</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">
-<div class="listing-date">
-Mar 3, 2024
-</div>
-<div class="listing-reading-time">
-7 min
-</div>
-</a>
-</div>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
