@@ -111,7 +111,7 @@ background-color: null;
 font-style: inherit;">"httpgd@2.0.2"</span>)</span></code></pre></div>
 <p>Works.</p>
 <p>Why am I doing this manually? Isn’t this <em>exactly</em> what <code>renv</code> is supposed to manage for me?</p>
-<p>At this point I start wondering whether this has something to do with Quarto. Some posts use post-specific packages declared via <code>renv::use("packagename@version")</code>, as recommended in the documentation. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.</p>
+<p>At this point I start wondering whether this has something to do with Quarto. <a href="https://github.com/venpopov/venpopov.com/blob/main/posts/2025/arto-pollo/index.qmd">Some posts</a> use post-specific packages declared via <code>renv::use("packagename@version")</code>, <a href="https://rstudio.github.io/renv/articles/use.html">as recommended in the documentation</a>. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.</p>
 <p>One last attempt:</p>
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">renv<span class="sc" style="color: #5E5E5E;
 background-color: null;
