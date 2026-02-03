@@ -1,0 +1,150 @@
+---
+title: "Package management and reproducibility are a nightmare"
+subtitle: "I continue my love-hate relationship with R, renv and Quarto"
+categories: [R,  R package,  2026,  package management,  reproducibility,  workflow,  2026]
+date: "2026-02-03"
+---
+
+I try my best. [I really do.](https://venpopov.com/posts/2024/reproducibility-is-hard/)
+
+I use `renv` for package management. My blog is built with Quarto. I use caching and freezing so posts don’t get recomputed every time. I hadn’t touched the blog in a few months. Today, I just wanted to fix a couple of typos on my publications page. Two minutes of work. Run `quarto render`. Done.
+
+Except, of course, not done.
+
+I open the project and `renv` tells me the project is out of sync. Cannot render because package Rmarkdown is missing. Fine. I run `renv::restore()`, whose entire purpose is to restore the package environment to its previous state.
+
+It immediately fails while trying to install **Matrix** from source.
+
+I’ve never had that problem before. A bit of googling reveals that installing Matrix requires a Fortran compiler (???). The official instructions are here: [https://mac.r-project.org/tools/](https://mac.r-project.org/tools/). I do not remember ever needing this in the past. I try to force `renv` to use binaries instead of building from source. That also fails.
+
+Alright. Fine. I install a Fortran compiler. Matrix installs successfully.
+
+One minute later, `renv::restore()` fails again—this time because it can’t install **stringi**. The error message is completely opaque. I paste it into an AI, which helpfully explains:
+
+> “This error occurs because of a conflict between the modern `[[noreturn]]` attribute in R 4.5 and an older `NORET` declaration within the `stringi` package, specifically on ARM64 macOS.”
+
+Jesus fucking christ.
+
+Yes, I updated R last month from 4.4.2 to 4.5. And now one of the most fundamental string manipulation packages in the entire R ecosystem—on which half the world depends—can’t be installed?
+
+Okay. Fine. Surely I can just install a newer version of `stringi`. I stop the restore process and run:
+
+```r
+renv::install("stringi")
+```
+
+That works.
+
+But now I have a problem: if I run `renv::restore()` again, it will just try to install the *older* version and fail all over again. So I need to snapshot the current state.
+
+I run `renv::snapshot()`, and it tells me:
+
+```plain
+The following required packages are not installed:
+- ambient
+- bmm
+- fields
+- ggdark
+- ggplot2
+- here
+- httpgd
+- kableExtra
+- patchwork
+- rmarkdown
+- tidyr
+- viridis
+- wesanderson
+Packages must first be installed before renv can snapshot them.
+```
+
+Why are they not installed? I’m on the same machine. Same project. I haven’t changed anything.
+
+Oh. Right. I updated R. Since R is a global installation, `renv` considers this a fresh library and wants everything reinstalled.
+
+Fine. I choose option 2: *install the packages, then snapshot*.
+
+Everything installs—except **ggdark**.
+
+```plain
+Error: package 'ggdark' is not available
+```
+
+What.
+
+A quick google search leads me to CRAN, which cheerfully explains:
+
+```plain
+Package ‘ggdark’ was removed from the CRAN repository.
+Formerly available versions can be obtained from the archive.
+Archived on 2025-11-07 as issues were not corrected despite reminders.
+```
+
+Oh for fuck’s sake.
+
+I recognize this exact message. It recently bit me with another ggplot utility package, **gghalves**. ggplot just went through a major version bump to v4, and it broke a bunch of extension packages. If the maintainer doesn’t fix things quickly enough, CRAN just removes the package.
+
+Unfortunately, R’s entire package ecosystem is built on the assumption that every package should work with the *latest version of every other package*. That assumption collapses completely the moment you care about reproducibility.
+
+The whole point of `renv` is that I’ve already specified which versions of `ggplot2` *and* `ggdark` this project used. When I chose “install the packages” during snapshotting, I assumed `renv` would install the versions recorded in the lockfile.
+
+But something clearly didn’t work.
+
+What exactly failed?
+
+* Did `renv` try to download the correct version of `ggdark`, but CRAN refused because it’s archived?
+* Or did `renv` ignore the lockfile at that point and try to install the latest version instead?
+
+CRAN does link to the archived sources, so in principle the old version exists. But apparently not in a way that `renv` can use automatically.
+
+I snapshot without installing the missing packages. That technically works, but I’m stuck with an inconsistent environment.
+
+I’m not even *using* ggplot v4. This isn’t a usage problem. It’s an infrastructure problem: R’s dependency system forces compatibility with the present, and fights you when you try to live in the past.
+
+Fine. I try installing from the archive manually:
+
+```r
+renv::install("ggdark@0.2.1")
+```
+
+That works.
+
+I try `renv::snapshot()` again.
+
+Now it fails on **httpgd**.
+
+Same story. Package removed from CRAN. Archived. The version in my lockfile is `httpgd@2.0.2`.
+
+```r
+renv::install("httpgd@2.0.2")
+```
+
+Works.
+
+Why am I doing this manually? Isn’t this *exactly* what `renv` is supposed to manage for me?
+
+At this point I start wondering whether this has something to do with Quarto. Some posts use post-specific packages declared via `renv::use("packagename@version")`, as recommended in the documentation. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.
+
+One last attempt:
+
+```r
+renv::snapshot()
+```
+
+Finally:
+
+```plain
+renv::status()
+No issues found -- the project is in a consistent state.
+```
+
+What time is it?
+
+Two hours have passed. I wanted to fix two typos.
+
+I run `quarto render`.
+
+Hallelujah—it works.
+
+I need a drink.
+
+Never mind. I forgot I don’t drink.

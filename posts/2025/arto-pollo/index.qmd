@@ -119,10 +119,10 @@ theme_set(
 
 What things do we need for the simplest possible simulation?
 
-- two fixed points A and B for our light sources
-- a way to calculate the angle formed at any other point X where beams from A and B intersect - a way to convert this angle into an intensity value 
-- calculate the intensity for many different points in the plane 
-- visualize the result
+-   two fixed points A and B for our light sources
+-   a way to calculate the angle formed at any other point X where beams from A and B intersect - a way to convert this angle into an intensity value
+-   calculate the intensity for many different points in the plane
+-   visualize the result
 
 Here are some basic functions to do this:
 
