@@ -17,7 +17,140 @@
 <width>144</width>
 </image>
 <generator>quarto-1.6.40</generator>
-<lastBuildDate>Wed, 05 Nov 2025 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 02 Feb 2026 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Package management and reproducibility are a nightmare</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I try my best. <a href="https://venpopov.com/posts/2024/reproducibility-is-hard/">I really do.</a></p>
+<p>I use <code>renv</code> for package management. My blog is built with Quarto. I use caching and freezing so posts don’t get recomputed every time. I hadn’t touched the blog in a few months. Today, I just wanted to fix a couple of typos on my publications page. Two minutes of work. Run <code>quarto render</code>. Done.</p>
+<p>Except, of course, not done.</p>
+<p>I open the project and <code>renv</code> tells me the project is out of sync. Cannot render because package Rmarkdown is missing. Fine. I run <code>renv::restore()</code>, whose entire purpose is to restore the package environment to its previous state.</p>
+<p>It immediately fails while trying to install <strong>Matrix</strong> from source.</p>
+<p>I’ve never had that problem before. A bit of googling reveals that installing Matrix requires a Fortran compiler (???). The official instructions are here: <a href="https://mac.r-project.org/tools/">https://mac.r-project.org/tools/</a>. I do not remember ever needing this in the past. I try to force <code>renv</code> to use binaries instead of building from source. That also fails.</p>
+<p>Alright. Fine. I install a Fortran compiler. Matrix installs successfully.</p>
+<p>One minute later, <code>renv::restore()</code> fails again—this time because it can’t install <strong>stringi</strong>. The error message is completely opaque. I paste it into an AI, which helpfully explains:</p>
+<blockquote class="blockquote">
+<p>“This error occurs because of a conflict between the modern <code>[[noreturn]]</code> attribute in R 4.5 and an older <code>NORET</code> declaration within the <code>stringi</code> package, specifically on ARM64 macOS.”</p>
+</blockquote>
+<p>Jesus fucking christ.</p>
+<p>Yes, I updated R last month from 4.4.2 to 4.5. And now one of the most fundamental string manipulation packages in the entire R ecosystem—on which half the world depends—can’t be installed?</p>
+<p>Okay. Fine. Surely I can just install a newer version of <code>stringi</code>. I stop the restore process and run:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">renv<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"stringi"</span>)</span></code></pre></div>
+<p>That works.</p>
+<p>But now I have a problem: if I run <code>renv::restore()</code> again, it will just try to install the <em>older</em> version and fail all over again. So I need to snapshot the current state.</p>
+<p>I run <code>renv::snapshot()</code>, and it tells me:</p>
+<pre class="plain"><code>The following required packages are not installed:
+- ambient
+- bmm
+- fields
+- ggdark
+- ggplot2
+- here
+- httpgd
+- kableExtra
+- patchwork
+- rmarkdown
+- tidyr
+- viridis
+- wesanderson
+Packages must first be installed before renv can snapshot them.</code></pre>
+<p>Why are they not installed? I’m on the same machine. Same project. I haven’t changed anything.</p>
+<p>Oh. Right. I updated R. Since R is a global installation, <code>renv</code> considers this a fresh library and wants everything reinstalled.</p>
+<p>Fine. I choose option 2: <em>install the packages, then snapshot</em>.</p>
+<p>Everything installs—except <strong>ggdark</strong>.</p>
+<pre class="plain"><code>Error: package 'ggdark' is not available</code></pre>
+<p>What.</p>
+<p>A quick google search leads me to CRAN, which cheerfully explains:</p>
+<pre class="plain"><code>Package ‘ggdark’ was removed from the CRAN repository.
+Formerly available versions can be obtained from the archive.
+Archived on 2025-11-07 as issues were not corrected despite reminders.</code></pre>
+<p>Oh for fuck’s sake.</p>
+<p>I recognize this exact message. It recently bit me with another ggplot utility package, <strong>gghalves</strong>. ggplot just went through a major version bump to v4, and it broke a bunch of extension packages. If the maintainer doesn’t fix things quickly enough, CRAN just removes the package.</p>
+<p>Unfortunately, R’s entire package ecosystem is built on the assumption that every package should work with the <em>latest version of every other package</em>. That assumption collapses completely the moment you care about reproducibility.</p>
+<p>The whole point of <code>renv</code> is that I’ve already specified which versions of <code>ggplot2</code> <em>and</em> <code>ggdark</code> this project used. When I chose “install the packages” during snapshotting, I assumed <code>renv</code> would install the versions recorded in the lockfile.</p>
+<p>But something clearly didn’t work.</p>
+<p>What exactly failed?</p>
+<ul>
+<li>Did <code>renv</code> try to download the correct version of <code>ggdark</code>, but CRAN refused because it’s archived?</li>
+<li>Or did <code>renv</code> ignore the lockfile at that point and try to install the latest version instead?</li>
+</ul>
+<p>CRAN does link to the archived sources, so in principle the old version exists. But apparently not in a way that <code>renv</code> can use automatically.</p>
+<p>I snapshot without installing the missing packages. That technically works, but I’m stuck with an inconsistent environment.</p>
+<p>I’m not even <em>using</em> ggplot v4. This isn’t a usage problem. It’s an infrastructure problem: R’s dependency system forces compatibility with the present, and fights you when you try to live in the past.</p>
+<p>Fine. I try installing from the archive manually:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">renv<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ggdark@0.2.1"</span>)</span></code></pre></div>
+<p>That works.</p>
+<p>I try <code>renv::snapshot()</code> again.</p>
+<p>Now it fails on <strong>httpgd</strong>.</p>
+<p>Same story. Package removed from CRAN. Archived. The version in my lockfile is <code>httpgd@2.0.2</code>.</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">renv<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"httpgd@2.0.2"</span>)</span></code></pre></div>
+<p>Works.</p>
+<p>Why am I doing this manually? Isn’t this <em>exactly</em> what <code>renv</code> is supposed to manage for me?</p>
+<p>At this point I start wondering whether this has something to do with Quarto. Some posts use post-specific packages declared via <code>renv::use("packagename@version")</code>, as recommended in the documentation. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.</p>
+<p>One last attempt:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">renv<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">snapshot</span>()</span></code></pre></div>
+<p>Finally:</p>
+<pre class="plain"><code>renv::status()
+No issues found -- the project is in a consistent state.</code></pre>
+<p>What time is it?</p>
+<p>Two hours have passed. I wanted to fix two typos.</p>
+<p>I run <code>quarto render</code>.</p>
+<p>Hallelujah—it works.</p>
+<p>I need a drink.</p>
+<p>Never mind. I forgot I don’t drink.</p>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2026,
+  author = {Popov, Vencislav},
+  title = {Package Management and Reproducibility Are a Nightmare},
+  date = {2026-02-03},
+  url = {https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2026" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2026. <span>“Package Management and Reproducibility
+Are a Nightmare.”</span> February 3, 2026. <a href="https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/">https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/</a>.
+</div></div></section></div> ]]></description>
+  <category>R</category>
+  <category>R package</category>
+  <category>2026</category>
+  <category>package management</category>
+  <category>reproducibility</category>
+  <category>workflow</category>
+  <category>2026</category>
+  <guid>https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/</guid>
+  <pubDate>Mon, 02 Feb 2026 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Open Science needs reliable infrastructure</title>
   <dc:creator>Vencislav Popov</dc:creator>
