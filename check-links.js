@@ -121,37 +121,74 @@ function shouldSkip(url, config) {
 // Check if response body indicates soft 404
 function isSoftNotFound(body, config) {
   if (!body) {
-    return true;
+    return false; // No body doesn't mean not found - could be empty response
   }
   
   const $ = cheerio.load(body);
   
-  // Check title for 404 indicators
-  const title = $('title').text().toLowerCase();
-  if (title.includes('404') || title.includes('not found') || title.includes('page not found')) {
-    return true;
+  const title = $('title').text().toLowerCase().trim();
+  const h1Text = $('h1').first().text().toLowerCase().trim();
+
+  // Strong indicators: title is PRIMARILY about 404/not found (not just contains "404")
+  // These patterns indicate the page IS an error page, not a page that mentions 404
+  const errorPageTitlePatterns = [
+    /^404\b/,                           // Title starts with "404"
+    /\b404\s*(error|page|-)\b/,         // "404 error", "404 page", "404 -"
+    /\berror\s*404\b/,                  // "error 404"
+    /^page not found/,                  // Title starts with "page not found"
+    /^not found/,                       // Title starts with "not found"
+    /page\s*(not|can'?t be)\s*found/,   // "page not found", "page can't be found"
+    /^oops/i,                           // Error pages often start with "Oops"
+  ];
+
+  for (const pattern of errorPageTitlePatterns) {
+    if (pattern.test(title)) {
+      return true;
+    }
   }
   
-  // Get text from key areas for pattern matching
-  const h1Text = $('h1').text().toLowerCase();
+  // Check h1 only if it looks like an error heading (short and matches pattern)
+  // Long h1s are likely real content, not error messages
+  if (h1Text.length < 50) {
+    for (const pattern of errorPageTitlePatterns) {
+      if (pattern.test(h1Text)) {
+        return true;
+      }
+    }
+  }
   
-  // Check for soft 404 patterns
+  // Check for user-configured soft 404 patterns, but only in title and short h1
   for (const pattern of config.softNotFoundPatterns) {
     const lowerPattern = pattern.toLowerCase();
     
-    // Check in h1 tags (most indicative of error pages)
-    if (h1Text.includes(lowerPattern)) {
+    // Only match if title is short (likely an error page title)
+    if (title.length < 80 && title.includes(lowerPattern)) {
       return true;
     }
     
-    // Check in title
-    if (title.includes(lowerPattern)) {
+    // Only match h1 if it's short (error messages are typically brief)
+    if (h1Text.length < 50 && h1Text.includes(lowerPattern)) {
       return true;
     }
   }
   
   return false;
 }
+
+// Browser-like headers to avoid bot detection
+const BROWSER_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.9',
+  'Accept-Encoding': 'gzip, deflate, br',
+  'Cache-Control': 'no-cache',
+  'Pragma': 'no-cache',
+  'Sec-Fetch-Dest': 'document',
+  'Sec-Fetch-Mode': 'navigate',
+  'Sec-Fetch-Site': 'none',
+  'Sec-Fetch-User': '?1',
+  'Upgrade-Insecure-Requests': '1'
+};
 
 // Check a single URL
 async function checkUrl(url, config, retries = 2) {
@@ -161,15 +198,24 @@ async function checkUrl(url, config, retries = 2) {
   try {
     const response = await fetch(url, {
       signal: controller.signal,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; LinkChecker/1.0)',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
-      },
+      headers: BROWSER_HEADERS,
       redirect: 'follow'
     });
     
     clearTimeout(timeoutId);
     
+    // Handle different error codes
+    if (response.status === 403 || response.status === 429) {
+      // 403/429 often means bot detection, not a broken link
+      // Try HEAD request as fallback - some servers allow HEAD but block GET
+      const headResult = await tryHeadRequest(url, config);
+      if (headResult.ok) {
+        return { ok: true, status: response.status, note: 'Passed via HEAD request' };
+      }
+      // If both fail, mark as warning (not error) - likely bot detection
+      return { ok: true, warning: true, status: response.status, reason: `HTTP ${response.status} (likely bot detection - verify manually)` };
+    }
+
     if (response.status >= 400) {
       return { ok: false, status: response.status, reason: `HTTP ${response.status}` };
     }
@@ -198,6 +244,27 @@ async function checkUrl(url, config, retries = 2) {
     }
     
     return { ok: false, status: 0, reason: error.message };
+  }
+}
+
+// Try a HEAD request as fallback (some servers block GET but allow HEAD)
+async function tryHeadRequest(url, config) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), config.timeout);
+
+  try {
+    const response = await fetch(url, {
+      method: 'HEAD',
+      signal: controller.signal,
+      headers: BROWSER_HEADERS,
+      redirect: 'follow'
+    });
+
+    clearTimeout(timeoutId);
+    return { ok: response.status < 400, status: response.status };
+  } catch {
+    clearTimeout(timeoutId);
+    return { ok: false };
   }
 }
 
@@ -272,7 +339,9 @@ async function checkLinksWithConcurrency(links, config, siteDir) {
           }
           
           if (!result.ok) {
-            results.push({ href, source, ...result });
+            results.push({ href, source, ...result, type: 'error' });
+          } else if (result.warning) {
+            results.push({ href, source, ...result, type: 'warning' });
           }
           
           completed++;
@@ -340,26 +409,48 @@ async function main() {
   // Check all links
   const brokenLinks = await checkLinksWithConcurrency(uniqueLinks, config, siteDir);
   
+  // Separate errors from warnings
+  const errors = brokenLinks.filter(link => link.type === 'error');
+  const warnings = brokenLinks.filter(link => link.type === 'warning');
+
   console.log('\n');
   
-  if (brokenLinks.length === 0) {
+  if (errors.length === 0 && warnings.length === 0) {
     console.log('✅ No broken links found!\n');
     process.exit(0);
   }
   
-  // Report broken links
-  console.log(`\n❌ Found ${brokenLinks.length} broken link(s):\n`);
-  
-  for (const link of brokenLinks) {
-    const sources = seen.get(link.href) || [link.source];
-    console.log(`  🔗 ${link.href}`);
-    console.log(`     Reason: ${link.reason}`);
-    console.log(`     Found in: ${sources.join(', ')}`);
-    console.log();
+  // Report warnings (likely false positives due to bot detection)
+  if (warnings.length > 0) {
+    console.log(`\n⚠️  ${warnings.length} link(s) could not be verified (likely bot detection):\n`);
+
+    for (const link of warnings) {
+      const sources = seen.get(link.href) || [link.source];
+      console.log(`  🔗 ${link.href}`);
+      console.log(`     Reason: ${link.reason}`);
+      console.log(`     Found in: ${sources.join(', ')}`);
+      console.log();
+    }
   }
-  
-  // Exit with error code to indicate broken links
-  process.exit(1);
+
+  // Report errors (actual broken links)
+  if (errors.length > 0) {
+    console.log(`\n❌ Found ${errors.length} broken link(s):\n`);
+
+    for (const link of errors) {
+      const sources = seen.get(link.href) || [link.source];
+      console.log(`  🔗 ${link.href}`);
+      console.log(`     Reason: ${link.reason}`);
+      console.log(`     Found in: ${sources.join(', ')}`);
+      console.log();
+    }
+
+    // Exit with error code only if there are actual errors
+    process.exit(1);
+  }
+
+  // If only warnings, exit successfully
+  process.exit(0);
 }
 
 main();

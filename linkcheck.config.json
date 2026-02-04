@@ -6,16 +6,23 @@
     "^mailto:",
     "^tel:",
     "^javascript:",
-    "^#"
+    "^#",
+    "^vscode-webview:"
   ],
   "skipDomains": [],
   "softNotFoundPatterns": [
     "page not found",
-    "404",
-    "not found",
-    "does not exist",
-    "no longer available",
+    "page doesn't exist",
+    "page does not exist",
+    "this page isn't available",
+    "this page is no longer available",
+    "sorry, we couldn't find",
+    "the page you requested",
+    "the page you were looking for",
+    "we can't find the page",
+    "could not be found",
+    "doesn't exist",
     "has been removed",
-    "this page doesn't exist"
+    "has been deleted"
   ]
 }

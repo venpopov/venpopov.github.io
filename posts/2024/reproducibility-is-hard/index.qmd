@@ -25,7 +25,7 @@ The painful truth is that proper computational skills are rarely taught in acade
 
 Maybe I’m exaggerating a bit, but the reality is that as my career has progressed, my projects have grown in number and complexity, and it’s become more and more frustrating to keep track of everything. My existing workflow sat squarely in the middle of ["the reproducibility iceberg"](https://raps-with-r.dev/part2_intro.html#the-reproducibility-iceberg) - better than most, but I was starting to feel cold.
 
-Thankfully, while formal education in this area still lags behind, the online landscape is now rich with [resources](https://github.com/venpopov/reproducible-research). [Over the last year](https://venpopov.github.io/ltmTimeBenefit/), I've been trying to incorporate [better coding practices](https://adv-r.hadley.nz/fp.html), [Quarto](https://quarto.org/) websites reporting for projects, and [renv](https://rstudio.github.io/renv/) for package management. It's been an uphill battle, consuming a lot of time and energy.
+Thankfully, while formal education in this area still lags behind, the online landscape is now rich with [resources](https://github.com/venpopov/reproducible-research). [Over the last year](https://venpopov.github.io/ltm-time-benefit/), I've been trying to incorporate [better coding practices](https://adv-r.hadley.nz/fp.html), [Quarto](https://quarto.org/) websites reporting for projects, and [renv](https://rstudio.github.io/renv/) for package management. It's been an uphill battle, consuming a lot of time and energy.
 
 ## The Tension Between Efficiency and Reproducibility
 
@@ -43,7 +43,7 @@ Why did this happen? There are many culprits, but part of it is that while I cod
 
 ![What a mess...](what-a-mess.png)
 
-To avoid scenarios exactly like this, in the last six months I've been experimenting with [the targets package](https://books.ropensci.org/targets/). Targets is a pipeline toolkit for R that helps you manage the dependencies between your scripts and data objects. It's a bit like [make](https://en.wikipedia.org/wiki/Make_(software)) for R, but with a lot of bells and whistles. I even implemented it for [a couple of other projects](https://github.com/venpopov/ltmTimeBenefit).
+To avoid scenarios exactly like this, in the last six months I've been experimenting with [the targets package](https://books.ropensci.org/targets/). Targets is a pipeline toolkit for R that helps you manage the dependencies between your scripts and data objects. It's a bit like [make](https://en.wikipedia.org/wiki/Make_(software)) for R, but with a lot of bells and whistles. I even implemented it for [a couple of other projects](https://venpopov.github.io/ltm-time-benefit/).
 
 When combined with `renv` for package management, and `Quarto` for reporting, it comes close to what I imagine as a nearly ideal scenario: A self-contained research website, with all the code, data, and results in one place, and a clear, reproducible workflow that can be run on any machine. A modern reporting pipeline that is both transparent and efficient.
 
@@ -63,7 +63,7 @@ Part of this is the nature of the beast - research projects are by definition mo
 
 ## The Signal-to-Noise Ratio
 
-But even if all the quirks were ironed out, and the process streamlined, another issue, that I rarely see discussed, is just how much more "irrelevant" artefacts are produced in the codebase. When I look [at my best attempts to implement the full workflow](https://github.com/venpopov/ltmTimeBenefit), I am a bit paralized by the sheer amount of files and code in my repositories that is not directly related to the substance of the research. There are layers upon layers of abstraction, scaffolding, configuration files, and helper functions that are just necessary for the workflow to function.
+But even if all the quirks were ironed out, and the process streamlined, another issue, that I rarely see discussed, is just how much more "irrelevant" artefacts are produced in the codebase. When I look [at my best attempts to implement the full workflow](https://venpopov.github.io/ltm-time-benefit/), I am a bit paralized by the sheer amount of files and code in my repositories that is not directly related to the substance of the research. There are layers upon layers of abstraction, scaffolding, configuration files, and helper functions that are just necessary for the workflow to function.
 
 ![It's a lot...](its-a-lot.png)
 

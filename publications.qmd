@@ -49,7 +49,7 @@ Vogt, K., Ibinson, J., Smith, C., Citro, A., Norton, C., Karim, H., **Popov, V.*
 
 2020
 
-**Popov, V.** & Reder, L. (2020). Greater discrimination difficulty during perceptual learning leads to stronger and more distinct representations. *Psychonomic Bulletin & Review.* Advance Online Publication. [\[PDF\]](https://venpopov.com/papers/popov_reder_similarity_pbr2020.pdf) [\[Data & Code\]](https://github.com/venpopov/similarity-discrimination-learning)
+**Popov, V.** & Reder, L. (2020). Greater discrimination difficulty during perceptual learning leads to stronger and more distinct representations. *Psychonomic Bulletin & Review.* Advance Online Publication. [\[PDF\]](https://venpopov.com/papers/popov_reder_similarity_PBR2020.pdf) [\[Data & Code\]](https://github.com/venpopov/similarity-discrimination-learning)
 
 \
 
@@ -69,7 +69,7 @@ Vassileva, J., Psedarska, E., Yankov, G., Bozgunov, K., **Popov, V**. & Vasile
 
 2018
 
-[**Popov, V.\***]{.underline}, Ostarek, M.\*, & Tenison, C. (2018). Practices and Pitfalls in Inferring Neural Representations. *NeuroImage, 174,* 340-351. [\[PDF\]](https://venpopov.com/papers/popov-ostarek-tenison-decoding-nimg2017.pdf) [\[Preprint\]](https://www.biorxiv.org/content/early/2017/10/16/141283) [\[Code\]](https://github.com/venpopov/inferential_pitfalls)
+[**Popov, V.\***]{.underline}, Ostarek, M.\*, & Tenison, C. (2018). Practices and Pitfalls in Inferring Neural Representations. *NeuroImage, 174,* 340-351. [\[PDF\]](https://venpopov.com/papers/popov-ostarek-tenison-nimg2018.pdf) [\[Preprint\]](https://www.biorxiv.org/content/early/2017/10/16/141283) [\[Code\]](https://github.com/venpopov/inferential_pitfalls)
 
 \
 
@@ -89,7 +89,7 @@ Reder, L. M., Liu, X. L., Keinath, A., & **Popov, V.** (2016). Building knowle
 
 2015
 
-**Popov, V.** & Hristova, P. (2015). Unintentional and efficient relational priming. *Memory & Cognition, 46*(6), 866-878. [\[PDF\]](popov_hristova_relational_priming_published_2015.pdf)
+**Popov, V.** & Hristova, P. (2015). Unintentional and efficient relational priming. *Memory & Cognition, 46*(6), 866-878. [\[PDF\]](https://venpopov.com/papers/popov_hristova_relational_priming_published_2015.pdf)
 :::
 
 ## Refereed full conference papers
@@ -129,7 +129,7 @@ Zhang, Q.\*, **Popov, V.\*** (co-first authors), Koch, G., Halloway, R. & Cout
 
 \
 
-[**Popov, V.**]{.underline}, Psederska, E., Peneva, E., Bozgunov, K., Vasilev, G., Nedelchev, D., & Vassileva, J. (2016). Psychometric Characteristics of the Bulgarian Version of the Toronto Alexithymia Scale (TAS-20). *Psychological Research, 19*(2), 25-42 (in Bulgarian) [[**PDF**]{.underline}](https://venpopov.com/papers/popov-tas-bai-pr2016.pdf?pdf=popov-tas-2016)
+[**Popov, V.**]{.underline}, Psederska, E., Peneva, E., Bozgunov, K., Vasilev, G., Nedelchev, D., & Vassileva, J. (2016). Psychometric Characteristics of the Bulgarian Version of the Toronto Alexithymia Scale (TAS-20). *Psychological Research, 19*(2), 25-42 (in Bulgarian)
 
 \
 
@@ -137,7 +137,7 @@ Nedelchev, D., [**Popov, V.**]{.underline}, Psedarska, E., Bozgunov, K., Vasile
 
 2015
 
-**Popov, V.**, Bozgunov, K., Vasilev, G., & Vassileva, J. (2015). Psychometric Characteristics of the Bulgarian Version of Levenson’s Self-report Psychopathy Scale. *Bulgarian Journal of Psychology, 1-4*, 253-278 (in Bulgarian) [[**PDF**]{.underline}](https://venpopov.com/papers/popov-lsrp-bai-bjp2016.pdf?pdf=popov-lsrp-2016)
+**Popov, V.**, Bozgunov, K., Vasilev, G., & Vassileva, J. (2015). Psychometric Characteristics of the Bulgarian Version of Levenson's Self-report Psychopathy Scale. *Bulgarian Journal of Psychology, 1-4*, 253-278 (in Bulgarian)
 :::
 
 ## Book chapters

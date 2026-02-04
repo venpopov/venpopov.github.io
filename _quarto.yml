@@ -32,8 +32,8 @@ website:
             text: bmm (Bayesian Measurement Modeling
           - href: https://venpopov.github.io/chkptstanr/index.html
             text: chkptstanr (Checkpointing for Stan)
-          - href: https://venpopov.github.io/Vmisc/index.html
-            text: Vmisc (Miscellaneous R Functions)
+          # - href: https://venpopov.github.io/Vmisc/index.html
+          #   text: Vmisc (Miscellaneous R Functions)
       - href: posts.qmd
         text: Blog
   draft-mode: unlinked
