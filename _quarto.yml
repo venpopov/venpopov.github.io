@@ -46,9 +46,6 @@ format:
     toc: true
     highlight-style: monokai
 
-
-editor: visual
-
 execute: 
   freeze: auto
   cache: true
