@@ -33,7 +33,7 @@
 <p>Except, of course, not done.</p>
 <p>I open the project and <code>renv</code> tells me the project is out of sync. Cannot render because package Rmarkdown is missing. Fine. I run <code>renv::restore()</code>, whose entire purpose is to restore the package environment to its previous state.</p>
 <p>It immediately fails while trying to install <strong>Matrix</strong> from source.</p>
-<p>I’ve never had that problem before. A bit of googling reveals that installing Matrix requires a Fortran compiler (???). The official instructions are here: <a href="https://mac.r-project.org/tools/">https://mac.r-project.org/tools/</a>. I do not remember ever needing this in the past. I try to force <code>renv</code> to use binaries instead of building from source. That also fails.</p>
+<p>I’ve never had that problem before. A bit of googling reveals that installing Matrix requires a Fortran compiler (???). The official instructions are here: <a href="https://mac.r-project.org/tools/" class="uri">https://mac.r-project.org/tools/</a>. I do not remember ever needing this in the past. I try to force <code>renv</code> to use binaries instead of building from source. That also fails.</p>
 <p>Alright. Fine. I install a Fortran compiler. Matrix installs successfully.</p>
 <p>One minute later, <code>renv::restore()</code> fails again—this time because it can’t install <strong>stringi</strong>. The error message is completely opaque. I paste it into an AI, which helpfully explains:</p>
 <blockquote class="blockquote">
