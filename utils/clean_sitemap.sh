@@ -1,7 +1,12 @@
 #!/bin/bash
 # Clean up sitemap URLs to use canonical (clean) URLs instead of index.html
 
-SITEMAP="_site/sitemap.xml"
+# Get the directory where this script is located (utils/)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root directory (parent of utils/)
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+SITEMAP="$PROJECT_ROOT/_site/sitemap.xml"
 
 if [ -f "$SITEMAP" ]; then
     echo "Cleaning sitemap URLs..."

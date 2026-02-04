@@ -21,10 +21,10 @@ quarto publish gh-pages --no-prompt --no-render --no-browser
 
 This project uses npm for Node.js package management (CSS/JS minification tools). When first setting up:
 ```bash
-npm install
+cd utils && npm install
 ```
 
-This installs `purgecss`, `uglify-js`, and `uglifycss` locally. The `purge_css.sh` script will auto-install these if `node_modules/` doesn't exist.
+This installs `purgecss`, `uglify-js`, and `uglifycss` locally in `utils/`. The `utils/purge_css.sh` script will auto-install these if `utils/node_modules/` doesn't exist.
 
 ### Working with R Environment
 
@@ -76,7 +76,7 @@ Manual post creation structure:
 
 - **`_quarto.yml`** - Main Quarto project configuration
   - Defines website structure, navigation, theming
-  - Configures post-render script (`purge_css.sh`)
+  - Configures post-render scripts (`utils/purge_css.sh`, `utils/clean_sitemap.sh`, `utils/check_links.sh`)
   - Sets execution options (`freeze: auto`, `cache: true`)
 - **`posts/_metadata.yml`** - Default settings for all blog posts
   - Giscus comments configuration
@@ -95,18 +95,18 @@ The site uses several Quarto extensions located in `_extensions/`:
 
 ### Theming and Styling
 
-- **`theme-dark.scss`** - Dark theme customization
-- **`styles.css`** - Custom CSS styles
+- **`utils/theme-dark.scss`** - Dark theme customization
+- **`utils/styles.css`** - Custom CSS styles
 - Base theme: Cosmo (with dark variant)
 
 ### Build Process
 
 1. Quarto renders `.qmd` files to HTML
 2. Rendered output goes to `_site/`
-3. Post-render script `purge_css.sh` runs (only during full project renders):
-   - Purges unused CSS using purgecss
-   - Minifies JS files using uglifyjs
-   - Minifies CSS files using uglifycss
+3. Post-render scripts in `utils/` run (only during full project renders):
+   - `purge_css.sh`: Purges unused CSS using purgecss, minifies JS/CSS
+   - `clean_sitemap.sh`: Cleans sitemap URLs
+   - `check_links.sh`: Checks for broken links
 4. Computed results are cached in `_freeze/` (controlled by `freeze: auto`)
 
 ### R Code in Posts
@@ -130,14 +130,14 @@ The site uses several Quarto extensions located in `_extensions/`:
 - **R** - Version 4.4.2 (specified in `renv.lock`)
 - **Node.js** - Required for CSS/JS minification tools
 
-### Node.js Packages (managed via package.json)
+### Node.js Packages (managed via utils/package.json)
 
-Installed locally via `npm install`:
+Installed locally via `cd utils && npm install`:
 - `purgecss` - CSS purging (removes unused CSS)
 - `uglify-js` - JavaScript minification
 - `uglifycss` - CSS minification
 
-These are defined in `package.json` as devDependencies and used by `purge_css.sh`.
+These are defined in `utils/package.json` as devDependencies and used by `utils/purge_css.sh`.
 
 ### Key R Packages
 

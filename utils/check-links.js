@@ -360,7 +360,9 @@ async function checkLinksWithConcurrency(links, config, siteDir) {
 // Main function
 async function main() {
   const config = loadConfig();
-  const siteDir = path.resolve(config.siteDir);
+  // Resolve siteDir relative to the project root (parent of utils/ where this script lives)
+  const projectRoot = path.resolve(__dirname, '..');
+  const siteDir = path.resolve(projectRoot, config.siteDir);
   
   console.log(`\n🔍 Checking links in ${siteDir}...\n`);
   

@@ -5,8 +5,10 @@
 #     exit
 # fi
 
-# Get the directory where this script is located
+# Get the directory where this script is located (utils/)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root directory (parent of utils/)
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 # Check if node_modules exists, if not run npm install
 if [[ ! -d "$SCRIPT_DIR/node_modules" ]]; then
@@ -22,16 +24,16 @@ UGLIFYCSS="$SCRIPT_DIR/node_modules/.bin/uglifycss"
 echo "$(date +'%Y-%m-%dT%H:%M:%S') - $0 - CSS purge and minification..."
 
 # See: https://purgecss.com/CLI.html
-mkdir -p ./temp_purgecss
-find ./_site -type f -name "*.css" \
+mkdir -p "$PROJECT_ROOT/temp_purgecss"
+find "$PROJECT_ROOT/_site" -type f -name "*.css" \
     -exec echo {} \; \
-    -exec "$PURGECSS" --css {} --content "./_site/**/*.js" "./_site/**/*.html" -o ./temp_purgecss \; \
-    -exec bash -c ' mv "./temp_purgecss/`basename {}`" "`dirname {}`" ' \;
-rmdir ./temp_purgecss
+    -exec "$PURGECSS" --css {} --content "$PROJECT_ROOT/_site/**/*.js" "$PROJECT_ROOT/_site/**/*.html" -o "$PROJECT_ROOT/temp_purgecss" \; \
+    -exec bash -c ' mv "'"$PROJECT_ROOT"'/temp_purgecss/`basename {}`" "`dirname {}`" ' \;
+rmdir "$PROJECT_ROOT/temp_purgecss"
 
 # See: https://github.com/mishoo/UglifyJS
 # minification of JS files
-find ./_site -type f \
+find "$PROJECT_ROOT/_site" -type f \
     -name "*.js" ! -name "*.min.*" ! -name "vfs_fonts*" \
     -exec echo {} \; \
     -exec "$UGLIFYJS" -o {}.min {} \; \
@@ -39,7 +41,7 @@ find ./_site -type f \
     -exec mv {}.min {} \;
 
 # minification of CSS files
-find ./_site -type f \
+find "$PROJECT_ROOT/_site" -type f \
     -name "*.css" ! -name "*.min.*" \
     -exec echo {} \; \
     -exec "$UGLIFYCSS" --output {}.min {} \; \

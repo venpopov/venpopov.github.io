@@ -5,13 +5,15 @@
 # It's designed to be run before `quarto publish` to catch dead links early.
 #
 # Usage: 
-#   ./check_links.sh             # Run standalone (no prompt on errors)
-#   ./check_links.sh --pipeline  # Run as part of build pipeline (prompts on errors)
-#   ./check_links.sh --skip      # Skip the check and proceed
+#   ./utils/check_links.sh             # Run standalone (no prompt on errors)
+#   ./utils/check_links.sh --pipeline  # Run as part of build pipeline (prompts on errors)
+#   ./utils/check_links.sh --skip      # Skip the check and proceed
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get the project root directory (parent of utils/)
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 PIPELINE_MODE=false
 
 # Parse flags
@@ -35,8 +37,8 @@ else
     SITE_DIR="_site"
 fi
 
-# Check if site directory exists
-if [[ ! -d "${SCRIPT_DIR}/${SITE_DIR}" ]]; then
+# Check if site directory exists (relative to project root)
+if [[ ! -d "${PROJECT_ROOT}/${SITE_DIR}" ]]; then
     echo "⚠️  No ${SITE_DIR} directory found. Run 'quarto render' first."
     exit 1
 fi

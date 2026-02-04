@@ -4,13 +4,13 @@ After cloning the repository:
 
 ```bash
 # Install Node.js dependencies (CSS/JS minification tools)
-npm install
+cd utils && npm install
 
 # Install R packages (in R console)
 renv::restore()
 ```
 
-The `purge_css.sh` script will auto-install npm dependencies if `node_modules/` doesn't exist.
+The `utils/purge_css.sh` script will auto-install npm dependencies if `utils/node_modules/` doesn't exist.
 
 ## How to update the website
 
@@ -24,14 +24,14 @@ quarto render && update_website
 
 ### Dead link checker
 
-The `check_links.sh` script scans all rendered HTML files in `_site/` for broken links. It checks:
+The `utils/check_links.sh` script scans all rendered HTML files in `_site/` for broken links. It checks:
 - External links (404 errors, timeouts, connection failures)
 - Soft 404s (pages that return 200 but show "not found" content)
 - Local file references
 
 If broken links are found, you'll be prompted whether to continue publishing or stop to fix them.
 
-**Configuration:** Edit `linkcheck.config.json` to customize:
+**Configuration:** Edit `utils/linkcheck.config.json` to customize:
 - `siteDir`: Directory to scan (default: `_site`)
 - `concurrency`: Number of parallel requests (default: 20)
 - `timeout`: Request timeout in milliseconds (default: 10000)
@@ -39,7 +39,7 @@ If broken links are found, you'll be prompted whether to continue publishing or 
 - `skipDomains`: Domains to skip checking
 - `softNotFoundPatterns`: Patterns that indicate soft 404 pages
 
-**Skip the check:** Use `./check_links.sh --skip` to skip link checking.
+**Skip the check:** Use `./utils/check_links.sh --skip` to skip link checking.
 
 It is included to run automatically after `quarto render` in the `_quarto.yml` config file.
 
