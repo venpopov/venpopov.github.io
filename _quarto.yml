@@ -4,6 +4,7 @@ project:
     - "papers/*.pdf"
   post-render: 
     - ./purge_css.sh
+    - ./check_links.sh
 
 website:
   title: "Ven Popov"
