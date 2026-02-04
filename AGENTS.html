@@ -154,10 +154,6 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
     <a class="dropdown-item" href="https://venpopov.github.io/chkptstanr/index.html">
  <span class="dropdown-text">chkptstanr (Checkpointing for Stan)</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="https://venpopov.github.io/Vmisc/index.html">
- <span class="dropdown-text">Vmisc (Miscellaneous R Functions)</span></a>
-  </li>  
     </ul>
   </li>
   <li class="nav-item">
@@ -187,6 +183,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
   <li><a href="#key-commands" id="toc-key-commands" class="nav-link" data-scroll-target="#key-commands">Key Commands</a>
   <ul class="collapse">
   <li><a href="#build-and-deploy" id="toc-build-and-deploy" class="nav-link" data-scroll-target="#build-and-deploy">Build and Deploy</a></li>
+  <li><a href="#working-with-node.js-dependencies" id="toc-working-with-node.js-dependencies" class="nav-link" data-scroll-target="#working-with-node.js-dependencies">Working with Node.js Dependencies</a></li>
   <li><a href="#working-with-r-environment" id="toc-working-with-r-environment" class="nav-link" data-scroll-target="#working-with-r-environment">Working with R Environment</a></li>
   <li><a href="#blog-post-management" id="toc-blog-post-management" class="nav-link" data-scroll-target="#blog-post-management">Blog Post Management</a></li>
   </ul></li>
@@ -203,6 +200,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
   <li><a href="#dependencies" id="toc-dependencies" class="nav-link" data-scroll-target="#dependencies">Dependencies</a>
   <ul class="collapse">
   <li><a href="#required-software" id="toc-required-software" class="nav-link" data-scroll-target="#required-software">Required Software</a></li>
+  <li><a href="#node.js-packages-managed-via-package.json" id="toc-node.js-packages-managed-via-package.json" class="nav-link" data-scroll-target="#node.js-packages-managed-via-package.json">Node.js Packages (managed via package.json)</a></li>
   <li><a href="#key-r-packages" id="toc-key-r-packages" class="nav-link" data-scroll-target="#key-r-packages">Key R Packages</a></li>
   </ul></li>
   <li><a href="#special-notes" id="toc-special-notes" class="nav-link" data-scroll-target="#special-notes">Special Notes</a></li>
@@ -231,18 +229,24 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <p>Publish to GitHub Pages.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages <span class="at">--no-prompt</span> <span class="at">--no-render</span> <span class="at">--no-browser</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+<section id="working-with-node.js-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="working-with-node.js-dependencies">Working with Node.js Dependencies</h3>
+<p>This project uses npm for Node.js package management (CSS/JS minification tools). When first setting up:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This installs <code>purgecss</code>, <code>uglify-js</code>, and <code>uglifycss</code> locally. The <code>purge_css.sh</code> script will auto-install these if <code>node_modules/</code> doesn’t exist.</p>
+</section>
 <section id="working-with-r-environment" class="level3">
 <h3 class="anchored" data-anchor-id="working-with-r-environment">Working with R Environment</h3>
 <p>This project uses <code>renv</code> for R package management. When first setting up or when dependencies change:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In R console</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">renv::restore()</span>  <span class="co"># Install packages from renv.lock</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">renv::snapshot()</span> <span class="co"># Update renv.lock after adding packages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In R console</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">renv::restore()</span>  <span class="co"># Install packages from renv.lock</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">renv::snapshot()</span> <span class="co"># Update renv.lock after adding packages</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The <code>.Rprofile</code> automatically loads the renv environment and sources all R scripts in the <code>R/</code> directory.</p>
 </section>
 <section id="blog-post-management" class="level3">
 <h3 class="anchored" data-anchor-id="blog-post-management">Blog Post Management</h3>
 <p>Create a new blog post using the shell script</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">add_new_post</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">add_new_post</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>The command will prompt for input for title, subtitle and categories.</p>
 <p>This creates <code>posts/{year}/{title-slug}/index.qmd</code> with proper YAML frontmatter.</p>
 <p>Manual post creation structure: - Posts are organized by year: <code>posts/2024/</code>, <code>posts/2025/</code>, etc. - Each post is in its own folder with an <code>index.qmd</code> file - Required YAML frontmatter: <code>yaml   ---   title: ""   subtitle: ""   categories: []   date: "YYYY-MM-DD"   ---</code></p>
@@ -332,13 +336,13 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <ul>
 <li><strong>Quarto</strong> - Static site generator (installed at <code>/Users/venpopov/.local/bin/quarto</code>)</li>
 <li><strong>R</strong> - Version 4.4.2 (specified in <code>renv.lock</code>)</li>
-<li><strong>Node.js tools</strong> (for post-render script):
-<ul>
-<li><code>purgecss</code> - CSS purging</li>
-<li><code>uglifyjs</code> - JavaScript minification</li>
-<li><code>uglifycss</code> - CSS minification</li>
-</ul></li>
+<li><strong>Node.js</strong> - Required for CSS/JS minification tools</li>
 </ul>
+</section>
+<section id="node.js-packages-managed-via-package.json" class="level3">
+<h3 class="anchored" data-anchor-id="node.js-packages-managed-via-package.json">Node.js Packages (managed via package.json)</h3>
+<p>Installed locally via <code>npm install</code>: - <code>purgecss</code> - CSS purging (removes unused CSS) - <code>uglify-js</code> - JavaScript minification - <code>uglifycss</code> - CSS minification</p>
+<p>These are defined in <code>package.json</code> as devDependencies and used by <code>purge_css.sh</code>.</p>
 </section>
 <section id="key-r-packages" class="level3">
 <h3 class="anchored" data-anchor-id="key-r-packages">Key R Packages</h3>

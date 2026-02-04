@@ -126,10 +126,6 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
     <a class="dropdown-item" href="https://venpopov.github.io/chkptstanr/index.html">
  <span class="dropdown-text">chkptstanr (Checkpointing for Stan)</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="https://venpopov.github.io/Vmisc/index.html">
- <span class="dropdown-text">Vmisc (Miscellaneous R Functions)</span></a>
-  </li>  
     </ul>
   </li>
   <li class="nav-item">
@@ -228,7 +224,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <p>The painful truth is that proper computational skills are rarely taught in academic programs (at least in psychology). Many of us are self-taught, each with our own quirky ways of doing things. Tools and processes that are standard fare in software development are often foreign to us. So, we muddle through, doing the best we can with what we have. My use of GitHub was a glorified Dropbox, and my coding practices, if you could call them that, were a mishmash of concepts I picked up from various tutorials and blog posts. It mostly worked, but even now I am barely able to reproduce my own work from a few years ago. Broken package dependencies, uncertain code order, and the utter lack of systematic documentation have made my old projects a nightmare to revisit.</p>
 <p><img src="gandalf.png" class="img-fluid"></p>
 <p>Maybe I’m exaggerating a bit, but the reality is that as my career has progressed, my projects have grown in number and complexity, and it’s become more and more frustrating to keep track of everything. My existing workflow sat squarely in the middle of <a href="https://raps-with-r.dev/part2_intro.html#the-reproducibility-iceberg">“the reproducibility iceberg”</a> - better than most, but I was starting to feel cold.</p>
-<p>Thankfully, while formal education in this area still lags behind, the online landscape is now rich with <a href="https://github.com/venpopov/reproducible-research">resources</a>. <a href="https://venpopov.github.io/ltmTimeBenefit/">Over the last year</a>, I’ve been trying to incorporate <a href="https://adv-r.hadley.nz/fp.html">better coding practices</a>, <a href="https://quarto.org/">Quarto</a> websites reporting for projects, and <a href="https://rstudio.github.io/renv/">renv</a> for package management. It’s been an uphill battle, consuming a lot of time and energy.</p>
+<p>Thankfully, while formal education in this area still lags behind, the online landscape is now rich with <a href="https://github.com/venpopov/reproducible-research">resources</a>. <a href="https://venpopov.github.io/ltm-time-benefit/">Over the last year</a>, I’ve been trying to incorporate <a href="https://adv-r.hadley.nz/fp.html">better coding practices</a>, <a href="https://quarto.org/">Quarto</a> websites reporting for projects, and <a href="https://rstudio.github.io/renv/">renv</a> for package management. It’s been an uphill battle, consuming a lot of time and energy.</p>
 </section>
 <section id="the-tension-between-efficiency-and-reproducibility" class="level2">
 <h2 class="anchored" data-anchor-id="the-tension-between-efficiency-and-reproducibility">The Tension Between Efficiency and Reproducibility</h2>
@@ -246,7 +242,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <figcaption>What a mess…</figcaption>
 </figure>
 </div>
-<p>To avoid scenarios exactly like this, in the last six months I’ve been experimenting with <a href="https://books.ropensci.org/targets/">the targets package</a>. Targets is a pipeline toolkit for R that helps you manage the dependencies between your scripts and data objects. It’s a bit like <a href="https://en.wikipedia.org/wiki/Make_(software)">make</a> for R, but with a lot of bells and whistles. I even implemented it for <a href="https://github.com/venpopov/ltmTimeBenefit">a couple of other projects</a>.</p>
+<p>To avoid scenarios exactly like this, in the last six months I’ve been experimenting with <a href="https://books.ropensci.org/targets/">the targets package</a>. Targets is a pipeline toolkit for R that helps you manage the dependencies between your scripts and data objects. It’s a bit like <a href="https://en.wikipedia.org/wiki/Make_(software)">make</a> for R, but with a lot of bells and whistles. I even implemented it for <a href="https://venpopov.github.io/ltm-time-benefit/">a couple of other projects</a>.</p>
 <p>When combined with <code>renv</code> for package management, and <code>Quarto</code> for reporting, it comes close to what I imagine as a nearly ideal scenario: A self-contained research website, with all the code, data, and results in one place, and a clear, reproducible workflow that can be run on any machine. A modern reporting pipeline that is both transparent and efficient.</p>
 </section>
 <section id="the-complexity-conundrum" class="level2">
@@ -260,7 +256,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 </section>
 <section id="the-signal-to-noise-ratio" class="level2">
 <h2 class="anchored" data-anchor-id="the-signal-to-noise-ratio">The Signal-to-Noise Ratio</h2>
-<p>But even if all the quirks were ironed out, and the process streamlined, another issue, that I rarely see discussed, is just how much more “irrelevant” artefacts are produced in the codebase. When I look <a href="https://github.com/venpopov/ltmTimeBenefit">at my best attempts to implement the full workflow</a>, I am a bit paralized by the sheer amount of files and code in my repositories that is not directly related to the substance of the research. There are layers upon layers of abstraction, scaffolding, configuration files, and helper functions that are just necessary for the workflow to function.</p>
+<p>But even if all the quirks were ironed out, and the process streamlined, another issue, that I rarely see discussed, is just how much more “irrelevant” artefacts are produced in the codebase. When I look <a href="https://venpopov.github.io/ltm-time-benefit/">at my best attempts to implement the full workflow</a>, I am a bit paralized by the sheer amount of files and code in my repositories that is not directly related to the substance of the research. There are layers upon layers of abstraction, scaffolding, configuration files, and helper functions that are just necessary for the workflow to function.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="its-a-lot.png" class="img-fluid figure-img"></p>
