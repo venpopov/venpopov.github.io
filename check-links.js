@@ -120,16 +120,11 @@ function shouldSkip(url, config) {
 
 // Check if response body indicates soft 404
 function isSoftNotFound(body, config) {
-  if (!body || body.length < 100) {
-    // Suspiciously short content
+  if (!body) {
     return true;
   }
   
-  const lowerBody = body.toLowerCase();
   const $ = cheerio.load(body);
-  
-  // Get text content for pattern matching
-  const textContent = $('body').text().toLowerCase();
   
   // Check title for 404 indicators
   const title = $('title').text().toLowerCase();
@@ -137,19 +132,20 @@ function isSoftNotFound(body, config) {
     return true;
   }
   
-  // Check for soft 404 patterns in body
+  // Get text from key areas for pattern matching
+  const h1Text = $('h1').text().toLowerCase();
+  
+  // Check for soft 404 patterns
   for (const pattern of config.softNotFoundPatterns) {
-    // Create a more specific pattern to avoid false positives
-    const regex = new RegExp(`\\b${pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    const lowerPattern = pattern.toLowerCase();
     
-    // Check in h1 tags (most indicative)
-    const h1Text = $('h1').text().toLowerCase();
-    if (regex.test(h1Text)) {
+    // Check in h1 tags (most indicative of error pages)
+    if (h1Text.includes(lowerPattern)) {
       return true;
     }
     
     // Check in title
-    if (regex.test(title)) {
+    if (title.includes(lowerPattern)) {
       return true;
     }
   }
