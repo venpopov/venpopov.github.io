@@ -18,9 +18,17 @@ if [[ "$1" == "--skip" ]]; then
     exit 0
 fi
 
-# Check if _site exists
-if [[ ! -d "${SCRIPT_DIR}/_site" ]]; then
-    echo "⚠️  No _site directory found. Run 'quarto render' first."
+# Read siteDir from config file
+CONFIG_FILE="${SCRIPT_DIR}/linkcheck.config.json"
+if [[ -f "${CONFIG_FILE}" ]]; then
+    SITE_DIR=$(node -e "console.log(JSON.parse(require('fs').readFileSync('${CONFIG_FILE}', 'utf8')).siteDir || '_site')")
+else
+    SITE_DIR="_site"
+fi
+
+# Check if site directory exists
+if [[ ! -d "${SCRIPT_DIR}/${SITE_DIR}" ]]; then
+    echo "⚠️  No ${SITE_DIR} directory found. Run 'quarto render' first."
     exit 1
 fi
 
