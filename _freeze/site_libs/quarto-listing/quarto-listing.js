@@ -208,7 +208,7 @@ function activateCategory(category) {
 
   // Activate this category
   const categoryEl = window.document.querySelector(
-    `.quarto-listing-category .category[data-category='${category}']`
+    `.quarto-listing-category .category[data-category='${category}'`
   );
   if (categoryEl) {
     categoryEl.classList.add("active");
