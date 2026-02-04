@@ -3,7 +3,7 @@ title: Curriculum vitæ
 date: 2024-03-03
 title-block-banner: true
 engine: knitr
-freeze: false
+freeze: auto
 cv:
   pdf: "cv.pdf"
 ---
