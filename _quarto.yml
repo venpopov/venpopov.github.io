@@ -46,6 +46,7 @@ format:
     css: styles.css
     toc: true
     highlight-style: monokai
+    canonical-url: true
 
 execute: 
   freeze: auto
