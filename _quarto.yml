@@ -46,7 +46,7 @@ format:
     css: styles.css
     toc: true
     highlight-style: monokai
-    include-after-body: fix-quarto-listing.html
+    include-after-body: fix-quarto-listing-patch.html
 
 execute: 
   freeze: auto

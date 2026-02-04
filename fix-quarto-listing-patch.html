@@ -1,0 +1,117 @@
+<script>
+// Fix for Quarto listing category selector bug
+// This patches the category click handlers to use a corrected selector
+// that includes the missing closing bracket in the CSS attribute selector
+
+(function() {
+  'use strict';
+  
+  // Function to filter listing by category (copied from quarto-listing.js)
+  function filterListingCategory(category) {
+    const listingIds = Object.keys(window["quarto-listings"] || {});
+    for (const listingId of listingIds) {
+      const list = window["quarto-listings"][listingId];
+      if (list) {
+        if (category === "") {
+          list.filter();
+        } else {
+          list.filter(function (item) {
+            const itemValues = item.values();
+            if (itemValues.categories !== null) {
+              const categories = itemValues.categories.split(",");
+              return categories.includes(category);
+            } else {
+              return false;
+            }
+          });
+        }
+      }
+    }
+  }
+  
+  // Function to set category hash (copied from quarto-listing.js)
+  function setCategoryHash(category) {
+    const currentUrl = new URL(window.location);
+    const hash = currentUrl.hash ? currentUrl.hash.slice(1) : '';
+    const hashObj = {};
+    if (hash) {
+      const pairs = hash.split('&');
+      pairs.forEach(pair => {
+        const [key, value] = pair.split('=');
+        if (key && value) {
+          hashObj[key] = decodeURIComponent(value);
+        }
+      });
+    }
+    hashObj.category = category;
+    const newHash = Object.keys(hashObj)
+      .filter(key => hashObj[key] !== '')
+      .map(key => `${key}=${hashObj[key]}`)
+      .join('&');
+    window.history.pushState(null, null, newHash ? `#${newHash}` : window.location.pathname);
+  }
+  
+  // FIXED version of activateCategory with correct selector
+  function activateCategoryFixed(category) {
+    // Deactivate existing categories
+    const activeEls = window.document.querySelectorAll(
+      ".quarto-listing-category .category.active"
+    );
+    for (const activeEl of activeEls) {
+      activeEl.classList.remove("active");
+    }
+
+    // Activate this category - FIXED: Added missing closing bracket ]
+    const categoryEl = window.document.querySelector(
+      `.quarto-listing-category .category[data-category='${category}']`
+    );
+    if (categoryEl) {
+      categoryEl.classList.add("active");
+    }
+
+    // Filter the listings to this category
+    filterListingCategory(category);
+  }
+  
+  // Re-attach click handlers with the fixed function
+  function applyFix() {
+    // Attach click handlers to categories
+    const categoryEls = window.document.querySelectorAll(
+      ".quarto-listing-category .category"
+    );
+    
+    for (const categoryEl of categoryEls) {
+      const category = categoryEl.getAttribute("data-category");
+      // Remove any existing onclick handler and add our fixed one
+      categoryEl.onclick = null;
+      categoryEl.onclick = () => {
+        activateCategoryFixed(category);
+        setCategoryHash(category);
+      };
+    }
+    
+    // Attach click handler to category title
+    const categoryTitleEls = window.document.querySelectorAll(
+      ".quarto-listing-category-title"
+    );
+    for (const categoryTitleEl of categoryTitleEls) {
+      categoryTitleEl.onclick = null;
+      categoryTitleEl.onclick = () => {
+        activateCategoryFixed("");
+        setCategoryHash("");
+      };
+    }
+  }
+  
+  // Wait for both DOM and quarto-listing to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      // Give quarto-listing.js time to attach its handlers, then replace them
+      setTimeout(applyFix, 100);
+    });
+  } else {
+    // DOM already loaded
+    setTimeout(applyFix, 100);
+  }
+})();
+</script>
