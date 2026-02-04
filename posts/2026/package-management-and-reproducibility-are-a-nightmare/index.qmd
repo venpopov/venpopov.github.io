@@ -15,7 +15,7 @@ I open the project and `renv` tells me the project is out of sync. Cannot render
 
 It immediately fails while trying to install **Matrix** from source.
 
-I’ve never had that problem before. A bit of googling reveals that installing Matrix requires a Fortran compiler (???). The official instructions are here: [https://mac.r-project.org/tools/](https://mac.r-project.org/tools/). I do not remember ever needing this in the past. I try to force `renv` to use binaries instead of building from source. That also fails.
+I’ve never had that problem before. A bit of googling reveals that installing Matrix requires a Fortran compiler (???). The official instructions are here: <https://mac.r-project.org/tools/>. I do not remember ever needing this in the past. I try to force `renv` to use binaries instead of building from source. That also fails.
 
 Alright. Fine. I install a Fortran compiler. Matrix installs successfully.
 
@@ -29,7 +29,7 @@ Yes, I updated R last month from 4.4.2 to 4.5. And now one of the most fundament
 
 Okay. Fine. Surely I can just install a newer version of `stringi`. I stop the restore process and run:
 
-```r
+``` r
 renv::install("stringi")
 ```
 
@@ -39,7 +39,7 @@ But now I have a problem: if I run `renv::restore()` again, it will just try to 
 
 I run `renv::snapshot()`, and it tells me:
 
-```plain
+``` plain
 The following required packages are not installed:
 - ambient
 - bmm
@@ -65,7 +65,7 @@ Fine. I choose option 2: *install the packages, then snapshot*.
 
 Everything installs—except **ggdark**.
 
-```plain
+``` plain
 Error: package 'ggdark' is not available
 ```
 
@@ -73,7 +73,7 @@ What.
 
 A quick google search leads me to CRAN, which cheerfully explains:
 
-```plain
+``` plain
 Package ‘ggdark’ was removed from the CRAN repository.
 Formerly available versions can be obtained from the archive.
 Archived on 2025-11-07 as issues were not corrected despite reminders.
@@ -91,8 +91,8 @@ But something clearly didn’t work.
 
 What exactly failed?
 
-* Did `renv` try to download the correct version of `ggdark`, but CRAN refused because it’s archived?
-* Or did `renv` ignore the lockfile at that point and try to install the latest version instead?
+-   Did `renv` try to download the correct version of `ggdark`, but CRAN refused because it’s archived?
+-   Or did `renv` ignore the lockfile at that point and try to install the latest version instead?
 
 CRAN does link to the archived sources, so in principle the old version exists. But apparently not in a way that `renv` can use automatically.
 
@@ -102,7 +102,7 @@ I’m not even *using* ggplot v4. This isn’t a usage problem. It’s an infras
 
 Fine. I try installing from the archive manually:
 
-```r
+``` r
 renv::install("ggdark@0.2.1")
 ```
 
@@ -114,7 +114,7 @@ Now it fails on **httpgd**.
 
 Same story. Package removed from CRAN. Archived. The version in my lockfile is `httpgd@2.0.2`.
 
-```r
+``` r
 renv::install("httpgd@2.0.2")
 ```
 
@@ -126,13 +126,13 @@ At this point I start wondering whether this has something to do with Quarto. [S
 
 One last attempt:
 
-```r
+``` r
 renv::snapshot()
 ```
 
 Finally:
 
-```plain
+``` plain
 renv::status()
 No issues found -- the project is in a consistent state.
 ```
