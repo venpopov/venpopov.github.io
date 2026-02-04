@@ -1,0 +1,13 @@
+{
+  "name": "venpopov-website",
+  "version": "1.0.0",
+  "description": "Personal website utilities",
+  "type": "module",
+  "scripts": {
+    "check-links": "node check-links.js"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "node-fetch": "^3.3.2"
+  }
+}
