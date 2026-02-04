@@ -3,7 +3,7 @@
 The website is generated using Quarto. After making any changes, run the following command to update the html files, check for dead links, and publish to github pages:
 
 ``` bash
-quarto render && ./check_links.sh && update_website
+quarto render && update_website
 ```
 
 `update_website` is an alias for `quarto publish gh-pages --no-prompt --no-render --no-browser` defined in .zshrc [my dotfiles](https://github.com/venpopov/.dotfiles)
@@ -26,6 +26,8 @@ If broken links are found, you'll be prompted whether to continue publishing or 
 - `softNotFoundPatterns`: Patterns that indicate soft 404 pages
 
 **Skip the check:** Use `./check_links.sh --skip` to skip link checking.
+
+It is included to run automatically after `quarto render` in the `_quarto.yml` config file.
 
 ## How to add a new blog post
 
