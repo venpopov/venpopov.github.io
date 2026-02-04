@@ -2,8 +2,13 @@ project:
   type: website
   resources:
     - "papers/*.pdf"
+  render:
+    - "!AGENTS.md"
+    - "*.qmd"
+    - "**/*.qmd"
   post-render: 
     - ./purge_css.sh
+    - ./clean_sitemap.sh
     - ./check_links.sh --pipeline
 
 website:
