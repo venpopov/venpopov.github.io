@@ -17,6 +17,15 @@ Publish to GitHub Pages.
 ```bash
 quarto publish gh-pages --no-prompt --no-render --no-browser
 ```
+### Working with Node.js Dependencies
+
+This project uses npm for Node.js package management (CSS/JS minification tools). When first setting up:
+```bash
+npm install
+```
+
+This installs `purgecss`, `uglify-js`, and `uglifycss` locally. The `purge_css.sh` script will auto-install these if `node_modules/` doesn't exist.
+
 ### Working with R Environment
 
 This project uses `renv` for R package management. When first setting up or when dependencies change:
@@ -119,10 +128,16 @@ The site uses several Quarto extensions located in `_extensions/`:
 
 - **Quarto** - Static site generator (installed at `/Users/venpopov/.local/bin/quarto`)
 - **R** - Version 4.4.2 (specified in `renv.lock`)
-- **Node.js tools** (for post-render script):
-  - `purgecss` - CSS purging
-  - `uglifyjs` - JavaScript minification
-  - `uglifycss` - CSS minification
+- **Node.js** - Required for CSS/JS minification tools
+
+### Node.js Packages (managed via package.json)
+
+Installed locally via `npm install`:
+- `purgecss` - CSS purging (removes unused CSS)
+- `uglify-js` - JavaScript minification
+- `uglifycss` - CSS minification
+
+These are defined in `package.json` as devDependencies and used by `purge_css.sh`.
 
 ### Key R Packages
 

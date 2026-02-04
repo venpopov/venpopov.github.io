@@ -1,3 +1,17 @@
+## Initial Setup (New Machine)
+
+After cloning the repository:
+
+```bash
+# Install Node.js dependencies (CSS/JS minification tools)
+npm install
+
+# Install R packages (in R console)
+renv::restore()
+```
+
+The `purge_css.sh` script will auto-install npm dependencies if `node_modules/` doesn't exist.
+
 ## How to update the website
 
 The website is generated using Quarto. After making any changes, run the following command to update the html files, check for dead links, and publish to github pages:

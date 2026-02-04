@@ -4,10 +4,17 @@
   "description": "Personal website utilities",
   "type": "module",
   "scripts": {
-    "check-links": "node check-links.js"
+    "check-links": "node check-links.js",
+    "purge-css": "./purge_css.sh",
+    "setup": "npm install"
   },
   "dependencies": {
     "cheerio": "^1.0.0",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "purgecss": "^6.0.0",
+    "uglify-js": "^3.17.4",
+    "uglifycss": "^0.0.29"
   }
 }
