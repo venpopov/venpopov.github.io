@@ -1,0 +1,21 @@
+{
+  "siteDir": "_site",
+  "concurrency": 20,
+  "timeout": 10000,
+  "excludePatterns": [
+    "^mailto:",
+    "^tel:",
+    "^javascript:",
+    "^#"
+  ],
+  "skipDomains": [],
+  "softNotFoundPatterns": [
+    "page not found",
+    "404",
+    "not found",
+    "does not exist",
+    "no longer available",
+    "has been removed",
+    "this page doesn't exist"
+  ]
+}

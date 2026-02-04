@@ -1,12 +1,31 @@
 ## How to update the website
 
-The website is generated using Quarto. After making any changes, run the following command to update the html files and publish to github pages:
+The website is generated using Quarto. After making any changes, run the following command to update the html files, check for dead links, and publish to github pages:
 
 ``` bash
-quarto render && update_website
+quarto render && ./check_links.sh && update_website
 ```
 
 `update_website` is an alias for `quarto publish gh-pages --no-prompt --no-render --no-browser` defined in .zshrc [my dotfiles](https://github.com/venpopov/.dotfiles)
+
+### Dead link checker
+
+The `check_links.sh` script scans all rendered HTML files in `_site/` for broken links. It checks:
+- External links (404 errors, timeouts, connection failures)
+- Soft 404s (pages that return 200 but show "not found" content)
+- Local file references
+
+If broken links are found, you'll be prompted whether to continue publishing or stop to fix them.
+
+**Configuration:** Edit `linkcheck.config.json` to customize:
+- `siteDir`: Directory to scan (default: `_site`)
+- `concurrency`: Number of parallel requests (default: 20)
+- `timeout`: Request timeout in milliseconds (default: 10000)
+- `excludePatterns`: URL patterns to skip (mailto:, tel:, etc.)
+- `skipDomains`: Domains to skip checking
+- `softNotFoundPatterns`: Patterns that indicate soft 404 pages
+
+**Skip the check:** Use `./check_links.sh --skip` to skip link checking.
 
 ## How to add a new blog post
 

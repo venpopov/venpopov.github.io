@@ -7,5 +7,7 @@
 _site
 .vscode
 *.html
+node_modules
+package-lock.json
 
 /.quarto/
