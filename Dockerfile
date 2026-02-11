@@ -37,9 +37,27 @@ COPY renv/activate.R renv/activate.R
 
 # Install renv and restore packages to a global cache
 # Using --vanilla to skip .Rprofile which requires packages not yet available
+# RENV_PATHS_CACHE stores installed packages in a fixed location
 ENV RENV_PATHS_CACHE=/renv/cache
-RUN R --vanilla -e "install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))" \
-  && R --vanilla -e "renv::consent(provided = TRUE); renv::restore()"
+
+# Use Posit Package Manager for pre-compiled Linux binaries
+ENV RENV_CONFIG_PPM_ENABLED=TRUE
+ENV RENV_CONFIG_PPM_URL=https://packagemanager.posit.co/cran/__linux__/noble/latest
+
+# Step 1: Install renv from PPM
+RUN R --vanilla -e "install.packages('renv', repos = 'https://packagemanager.posit.co/cran/__linux__/noble/latest')"
+
+# Step 2: Pre-install Stan ecosystem dev packages from r-universe binaries
+# These dev packages have broken source tarballs and must be installed as binaries
+RUN R --vanilla -e "\
+  install.packages( \
+  c('StanHeaders', 'rstan', 'rstantools', 'bayesplot', 'loo', 'posterior', 'cmdstanr'), \
+  repos = 'https://stan-dev.r-universe.dev' \
+  ) \
+  "
+
+# Step 3: Restore remaining packages via renv (PPM provides binaries for CRAN packages)
+RUN R --vanilla -e "renv::consent(provided = TRUE); renv::restore()"
 
 # Copy Node.js package files and install
 COPY utils/package.json utils/package.json
