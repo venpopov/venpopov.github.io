@@ -47,17 +47,14 @@ ENV RENV_CONFIG_PPM_URL=https://packagemanager.posit.co/cran/__linux__/noble/lat
 # Step 1: Install renv from PPM
 RUN R --vanilla -e "install.packages('renv', repos = 'https://packagemanager.posit.co/cran/__linux__/noble/latest')"
 
-# Step 2: Pre-install Stan ecosystem dev packages from r-universe binaries
-# These dev packages have broken source tarballs and must be installed as binaries
+# Step 2: Restore packages via renv, excluding Stan dev packages (broken source tarballs)
+# Then install Stan packages from r-universe binaries into the renv library
 RUN R --vanilla -e "\
-  install.packages( \
-  c('StanHeaders', 'rstan', 'rstantools', 'bayesplot', 'loo', 'posterior', 'cmdstanr'), \
-  repos = 'https://stan-dev.r-universe.dev' \
-  ) \
+  renv::consent(provided = TRUE); \
+  stan_pkgs <- c('StanHeaders', 'rstan', 'rstantools', 'bayesplot', 'loo', 'posterior', 'cmdstanr'); \
+  renv::restore(exclude = stan_pkgs); \
+  install.packages(stan_pkgs, repos = 'https://stan-dev.r-universe.dev', lib = .libPaths()[1]) \
   "
-
-# Step 3: Restore remaining packages via renv (PPM provides binaries for CRAN packages)
-RUN R --vanilla -e "renv::consent(provided = TRUE); renv::restore()"
 
 # Copy Node.js package files and install
 COPY utils/package.json utils/package.json
