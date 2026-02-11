@@ -122,7 +122,7 @@ Works.
 
 Why am I doing this manually? Isn’t this *exactly* what `renv` is supposed to manage for me?
 
-At this point I start wondering whether this has something to do with Quarto. [Some posts](https://github.com/venpopov/venpopov.com/blob/main/posts/2025/arto-pollo/index.qmd) use post-specific packages declared via `renv::use("packagename@version")`, [as recommended in the documentation](https://rstudio.github.io/renv/articles/use.html). Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.
+At this point I start wondering whether this has something to do with Quarto. [Some posts](https://github.com/venpopov/venpopov.github.io/blob/main/posts/2025/arto-pollo/index.qmd) use post-specific packages declared via `renv::use("packagename@version")`, [as recommended in the documentation](https://rstudio.github.io/renv/articles/use.html). Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.
 
 One last attempt:
 
