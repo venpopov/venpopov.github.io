@@ -459,7 +459,7 @@ Archived on 2025-11-07 as issues were not corrected despite reminders.</code></p
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">install</span>(<span class="st">"httpgd@2.0.2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Works.</p>
 <p>Why am I doing this manually? Isn’t this <em>exactly</em> what <code>renv</code> is supposed to manage for me?</p>
-<p>At this point I start wondering whether this has something to do with Quarto. <a href="https://github.com/venpopov/venpopov.com/blob/main/posts/2025/arto-pollo/index.qmd">Some posts</a> use post-specific packages declared via <code>renv::use("packagename@version")</code>, <a href="https://rstudio.github.io/renv/articles/use.html">as recommended in the documentation</a>. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.</p>
+<p>At this point I start wondering whether this has something to do with Quarto. <a href="https://github.com/venpopov/venpopov.github.io/blob/main/posts/2025/arto-pollo/index.qmd">Some posts</a> use post-specific packages declared via <code>renv::use("packagename@version")</code>, <a href="https://rstudio.github.io/renv/articles/use.html">as recommended in the documentation</a>. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.</p>
 <p>One last attempt:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Finally:</p>
@@ -914,7 +914,7 @@ Are a Nightmare.”</span> February 3, 2026. <a href="https://venpopov.com/posts
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
     script.async = true;
-    script.dataset.repo = "venpopov/venpopov.com";
+    script.dataset.repo = "venpopov/venpopov.github.io";
     script.dataset.repoId = "R_kgDOMLn9zg";
     script.dataset.category = "Blog discussions";
     script.dataset.categoryId = "DIC_kwDOMLn9zs4CgNPC";
