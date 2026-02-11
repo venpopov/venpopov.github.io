@@ -1,4 +1,6 @@
-rprofile::load()
+if (requireNamespace("rprofile", quietly = TRUE)) {
+  rprofile::load()
+}
 
 local({
   scripts <- list.files("R", pattern = "\\.R$", full.names = TRUE)

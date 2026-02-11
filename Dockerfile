@@ -31,14 +31,15 @@ RUN curl -LO https://github.com/quarto-dev/quarto-cli/releases/download/v${QUART
 # Set working directory
 WORKDIR /workspace
 
-# Copy renv files
+# Copy renv files (not .Rprofile — it loads packages/scripts not available at build time)
 COPY renv.lock renv.lock
-COPY .Rprofile .Rprofile
 COPY renv/activate.R renv/activate.R
 
-# Install renv and restore packages
-RUN R -e "install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))" \
-  && R -e "renv::restore()"
+# Install renv and restore packages to a global cache
+# Using --vanilla to skip .Rprofile which requires packages not yet available
+ENV RENV_PATHS_CACHE=/renv/cache
+RUN R --vanilla -e "install.packages('renv', repos = c(CRAN = 'https://cloud.r-project.org'))" \
+  && R --vanilla -e "renv::consent(provided = TRUE); renv::restore()"
 
 # Copy Node.js package files and install
 COPY utils/package.json utils/package.json

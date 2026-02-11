@@ -3,6 +3,10 @@ name: Publish to GitHub Pages
 on:
   push:
     branches: [main]
+  workflow_run:
+    workflows: ["Build Container Image"]
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
 
 # Sets permissions for GitHub Pages deployment
@@ -10,6 +14,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  packages: read
 
 # Allow only one concurrent deployment
 concurrency:
@@ -19,6 +24,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Skip if triggered by workflow_run that failed
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     container:
       image: ghcr.io/${{ github.repository }}/builder:latest
       credentials:
@@ -29,7 +36,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Render site
-        run: quarto render
+        run: |
+          # Use renv cache from the container
+          export RENV_PATHS_CACHE=/renv/cache
+          quarto render
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
