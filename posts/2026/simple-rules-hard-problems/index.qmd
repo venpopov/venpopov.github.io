@@ -17,7 +17,7 @@ And that experience, is what pushed me into a broader line of thought: what are 
 
 Whatever the ontological status of mathematical objects ultimately is, Platonic, fictionalist, structuralist, model-theoretic, "just" patterns in computation, we can say a few things with relative certainty. One of them is that mathematical objects and structures are essentially relational. They do not have meaningful properties in isolation. Their "properties" are about the role they play inside a system: how they behave under defined operations, and what they entail when they interact with other objects.
 
-### Meaning without pointing
+## Meaning without pointing
 
 > A mathematical object is what it does inside a system of relations and operations
 
@@ -33,7 +33,7 @@ The symbols 1, 2, 3, … only mean something, i.e., have properties, once we def
 
 The point is not that "definitions matter." That's trivial. The point is that mathematical meaning is operational and relational. It lives in what the symbol lets you do and what it forces to be true.
 
-### A seemingly silly object called a bazz
+## A seemingly silly object called a bazz
 
 To make this feel less like a slogan, let's take a deliberately silly example.
 
@@ -94,7 +94,7 @@ At the same time, some questions you're tempted to ask are not merely unanswered
 
 This is a genuine constraint on cognition: we naturally reach for metaphors that feel meaningful, and those metaphors can be helpful, but they can also generate pseudo-questions that the formal structure does not support. And I think this distinction between what the system actually says, what it implies, and what our metaphors tempt us to ask is one of the most useful lenses I've found for thinking about mathematics.
 
-### The integers as a deceptively "thin" interface
+## The integers as a deceptively "thin" interface
 
 Now we can return to the question that started all of this.
 
