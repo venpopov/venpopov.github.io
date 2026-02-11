@@ -16,13 +16,188 @@
 <height>144</height>
 <width>144</width>
 </image>
-<generator>quarto-1.6.40</generator>
-<lastBuildDate>Mon, 02 Feb 2026 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.8.27</generator>
+<lastBuildDate>Tue, 10 Feb 2026 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Simple rules, hard problems and the emergence of meaning in mathematics</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2026/simple-rules-hard-problems/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<p>I watched <a href="https://youtu.be/8hcSMV6DQ9A?si=mII8aWJjCsS2iM2T">another video</a> about the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a> last week. Thanks, algorithm. I don’t even know why I do this to myself. It reliably produces the same mixture of fascination and irritation: the rules are tiny, the behavior is bizarre, and my mind insists that the whole thing should be graspable in some clean way, and then fails to grasp it.</p>
+<p>This is not a crank post. It’s barely even about Collatz, which was merely a trigger. And yet, as in many number theory questions, whatever the answer is, there surely is one. The system is fully specified. Either every starting value eventually reaches 1, or some don’t. Either there is a nontrivial cycle, or there isn’t. Whether we can find a proof is a separate question.</p>
+<p>Of course, Kurt Gödel is always waiting like an ominous gargoyle to tell us that some things are undecidable (relative to some standard axiom systems). But even if that were the case for Collatz, there is still a fact of the matter: within whatever framework you pick, the statement is either provable, disprovable, or independent. In any case, it’s not like the conjecture floats in some metaphysical fog. It is determined by properties of the positive integers, together with the transition rule.</p>
+<p>What interests me, though, is less the conjecture itself than what it does to my head. It’s a very peculiar experience: the sense that something is so “obviously constrained” and yet infuriatingly inacessible and hard. I don’t mean “hard” as in “requires 200 pages of technical machinery.” I mean hard as in: I repeatedly form ideas that feel coherent and so obviously about to crack the problem once and for all; and then they of course evaporate or lead to the same dead ends.</p>
+<p>And that experience, is what pushed me into a broader line of thought: what are mathematical objects, what does it mean for them to have properties, and what does it feel like (cognitively) to search for structure in a system when you don’t yet have the right concepts to see it? What does it mean to understand something that by some accounts doesn’t really exist?</p>
+<p>Whatever the ontological status of mathematical objects ultimately is, Platonic, fictionalist, structuralist, model-theoretic, “just” patterns in computation, we can say a few things with relative certainty. One of them is that mathematical objects and structures are essentially relational. They do not have meaningful properties in isolation. Their “properties” are about the role they play inside a system: how they behave under defined operations, and what they entail when they interact with other objects.</p>
+<section id="meaning-without-pointing" class="level3">
+<h3 class="anchored" data-anchor-id="meaning-without-pointing">Meaning without pointing</h3>
+<blockquote class="blockquote">
+<p>A mathematical object is what it does inside a system of relations and operations</p>
+</blockquote>
+<p>Human language lets us form grammatically clean statements that carry no content. I can say “X is roupy” just as easily as I can say “2 is even.” But unless “roupy” connects to something, I haven’t said anything.</p>
+<p>If I define “roupy” as “paternally upy,” I haven’t fixed the problem. I’ve just stepped one move deeper into a dictionary loop. The words fit together, but nothing constrains anything.</p>
+<p>With everyday words, we eventually escape this loop by pointing to the world. Some terms get grounded in perception and action. Even if definitions remain fuzzy, there’s friction: you can be wrong about what “red” applies to, and the world pushes back.</p>
+<p>Mathematics doesn’t get this kind of grounding, at least not in the same direct way. The mathematician isn’t allowed to point at “two-ness” floating in the air. The only thing left is this: a property of X becomes meaningful only insofar as it connects X to other objects through formal operations and relations. In other words: if the definition doesn’t place X in a structure, it’s not doing anything.</p>
+<p>The symbols 1, 2, 3, … only mean something, i.e., have properties, once we define operations and rules: Peano’s axioms, or Church numerals, or a set-theoretic construction. Only within such a system does the statement “6 is divisible by 2” have content, because “divisible by 2” can be unpacked and checked under the representation you’re using. It defines a relation between objects of the same class (6 and 2) and the outcome of an operation involving them (like “remainder 0”).</p>
+<p>The point is not that “definitions matter.” That’s trivial. The point is that mathematical meaning is operational and relational. It lives in what the symbol lets you do and what it forces to be true.</p>
+</section>
+<section id="a-seemingly-silly-object-called-a-bazz" class="level3">
+<h3 class="anchored" data-anchor-id="a-seemingly-silly-object-called-a-bazz">A seemingly silly object called a bazz</h3>
+<p>To make this feel less like a slogan, let’s take a deliberately silly example.</p>
+<p>Imagine an object called a <em>bazz</em>. It interacts with <em>pins</em>. There are three operations:</p>
+<ul>
+<li><strong>kuua</strong> takes a pin and a bazz and returns a bazz</li>
+<li><strong>ouz</strong> takes a bazz and returns a bazz plus a pin</li>
+<li><strong>heff</strong> takes a bazz and returns a pin</li>
+</ul>
+<p>Also:</p>
+<ul>
+<li>you can always <strong>fish</strong> a bazz from the void</li>
+<li>you can ask a bazz whether it is a <strong>jazz</strong>, and it must answer by nodding or shaking</li>
+</ul>
+<p>And bazzes satisfy these rules:</p>
+<ol type="1">
+<li><p>If you kuua a bazz with a pin and then immediately ouz it, you get the original bazz and pin back.</p></li>
+<li><p>If you heff a bazz after kuua-ing it with a pin, you get back that pin – and if you then ouz the bazz, you mysteriously get another free copy of the same pin and the original bazz.</p></li>
+<li><p>A freshly fished void bazz always nods when asked if it is a jazz. After kuaa-ing it with a pin it shakes, and once it shakes, it keeps shaking.</p></li>
+</ol>
+<p>It sounds like nonsense (it is), but it is also just a <a href="https://en.wikipedia.org/wiki/Abstract_data_type">stack, an Abstract Data Type</a>, in disguise: push(), pop(), peek(), create(), isEmpty():</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Bazz operation</th>
+<th>Stack operation</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>kuua</strong>(pin, bazz)</td>
+<td>push(item, stack)</td>
+<td>Add a pin to the bazz</td>
+</tr>
+<tr class="even">
+<td><strong>ouz</strong>(bazz)</td>
+<td>pop(stack)</td>
+<td>Remove and return the top pin</td>
+</tr>
+<tr class="odd">
+<td><strong>heff</strong>(bazz)</td>
+<td>peek(stack)</td>
+<td>View the top pin without removing it</td>
+</tr>
+<tr class="even">
+<td><strong>fish</strong>()</td>
+<td>create()</td>
+<td>Make a new empty bazz/stack</td>
+</tr>
+<tr class="odd">
+<td>is <strong>jazz</strong>?</td>
+<td>isEmpty()</td>
+<td>Check if the bazz/stack has no pins</td>
+</tr>
+</tbody>
+</table>
+<p>While the third column of this table clearly articulates the <em>intended</em> effect of the operation, it is nothing more than a “design specification”: what we want it to do and mean. It is the equational rules that endow the system with these behaviors:</p>
+<ol type="1">
+<li><p><code>ouz(kuua(p, b)) = (b, p)</code> — If you push a pin onto a bazz and immediately pop, you get back the original bazz and the pin</p></li>
+<li><p><code>heff(kuua(p, b)) = p</code> — If you peek at a bazz after pushing a pin, you see that pin</p></li>
+<li><p><code>jazz(fish()) = true</code> — A freshly created bazz is empty</p></li>
+<li><p><code>jazz(kuua(p, b)) = false</code> — Any bazz with at least one pin is not empty</p></li>
+</ol>
+<p>That’s it - the system is fully specified, regardless of the symbols we use, and the helpful descriptions we attach them and to the rules that govern them. Notice that nothing above ever specifies anything about the internal mechanism of any operation; what is more, it doesn’t even specify the outcome of individual operations, except for what <em>type</em> of object it returns. It only specifies how the behavior of some rules affects others.</p>
+<p>What I like about this example is how it separates three things that we often blur together:</p>
+<ol type="1">
+<li><p><strong>The interface:</strong> the operations you’re allowed to do.</p></li>
+<li><p><strong>The axioms:</strong> the laws those operations must satisfy.</p></li>
+<li><p><strong>The interpretation:</strong> the story we tell ourselves (“it stores things,” “it has an inside,” “it grows,” etc.).</p></li>
+</ol>
+<p>The axioms never say “last-in-first-out.”, “inside.”, nor “storage.” And yet if you take the rules seriously, you can prove an emergent structural truth, a consequence that wasn’t spelled out:</p>
+<blockquote class="blockquote">
+<p>If you kuua ten pins in a row and then repeatedly ouz, you recover the pins in reverse order.</p>
+</blockquote>
+<p>At the same time, some questions you’re tempted to ask are not merely unanswered; they’re not even well-formed in the language of the system. For example: “what happens to the pins inside the bazz?” There is no “inside” predicate. That question sneaks in an external metaphor (containers, interiors) that the abstract description never granted you.</p>
+<p>This is a genuine constraint on cognition: we naturally reach for metaphors that feel meaningful, and those metaphors can be helpful, but they can also generate pseudo-questions that the formal structure does not support. And I think this distinction between what the system actually says, what it implies, and what our metaphors tempt us to ask is one of the most useful lenses I’ve found for thinking about mathematics.</p>
+</section>
+<section id="the-integers-as-a-deceptively-thin-interface" class="level3">
+<h3 class="anchored" data-anchor-id="the-integers-as-a-deceptively-thin-interface">The integers as a deceptively “thin” interface</h3>
+<p>Now we can return to the question that started all of this.</p>
+<p>If mathematical objects are defined by their role in a web of relations, and if that web contains emergent structure that may be deeply non-obvious, then we can ask:</p>
+<p>Is there some deep structural relation among the integers that we have simply not yet uncovered? A structure that plays little to no role in most of our everyday experience with numbers, a structure we cannot currently “see,” but that must be there – because the truth of these edge-case statements depends on it.</p>
+<p>Think about how many of the hardest problems in mathematics are absurdly simple statements about the most elementary object imaginable: the counting numbers.</p>
+<p>One apple, two apples, three apples. Each of my three kids can have one. If the dog steals one, I either have to cut them or only give apples to two kids. Or my husband and I can enjoy them ourselves. This is the mental world in which the natural numbers first appear: a thin, practical sequence. Knots on a rope.</p>
+<p>Then you learn that primes are numbers divisible only by themselves and 1. Simple definition. A few steps from axioms to an algorithm. Not useful for most of human history; then suddenly the foundation of modern cryptography. And Euclid proves, 2300 years ago, that you’ll never find the biggest prime. There will always be another. Infinitely many.</p>
+<p>But then you hit questions that look just as simple and fall off a cliff:</p>
+<ul>
+<li>Are there infinitely many twin primes? Unknown.</li>
+<li>Is every even number the sum of two primes? Unknown.</li>
+<li>Does the rule “if (x) is even, divide by 2; otherwise multiply by 3 and add 1” always reach 1? Unknown.</li>
+</ul>
+<p>Before you take these questions seriously, it feels like there is almost no structure to whole numbers at all. They feel like the least interesting object: a mere successor relation repeated forever. And yet the true structure runs deep, as deep as mathematical structures go, and contains relations that feel completely disconnected from the “one apple, two apples” story.</p>
+<p>Quadratic reciprocity. p-adics. Modular forms. The list goes on.</p>
+<p>And this is the part that always hits me with the same weird emotion: these consequences were “there” long before we had names for them, as certainly in 100,000 BC when the first humans were learning to count as it is today in number theory textbooks. We just didn’t know it. It still feels like an utter miracle that such complexity was hiding there as an inevitable consequence of logic and formal rules.</p>
+<p>We know for sure that even extremely sophisticated facts about integers (like Fermat’s Last Theorem) ultimately derive from whatever basic axioms you accept. They have to. There is no other source of truth available. Yet finding that path took centuries and some of the best minds in history.</p>
+<p>It seems that so much of the complexity arises because the interaction between addition (linear structure) and multiplication (multiplicative/prime structure) is surprisingly “thick.” Most of the deep mysteries in number theory, live exactly in the friction between these two operations. And still, unless you really think about it, on the surface there appears to be nothing particularly interesting about this interaction. Multiplication distributes over addition. They feel separable, almost independent, and yet that feeling is completely misleading.</p>
+</section>
+<section id="what-collatz-does-to-my-mind" class="level2">
+<h2 class="anchored" data-anchor-id="what-collatz-does-to-my-mind">What Collatz does to my mind</h2>
+<p>This is where Collatz comes back in, not as the main topic, but as a trigger.</p>
+<p>The thing I find psychologically striking is that the Collatz rule has a certain interface-thinness to it. It’s made of the simplest arithmetic operations imaginable (parity, division by 2, multiplication, addition). And yet whatever global behavior it has is not something I can see directly from those operations in the way I can see, say, why a stack is last-in-first-out once I have the right lens.</p>
+<p>When I tried to think seriously about it last year, the recurring experience was this:</p>
+<ul>
+<li>I’d have an idea that felt like it captured the behavior</li>
+<li>it would feel obviously promising for a few minutes</li>
+<li>and then, as soon as I tried to formalize it, the idea would dissolve into fog</li>
+</ul>
+<p>The dissolving is the interesting part. It’s like my mind keeps proposing consequences or candidate invariants that are almost_meaningful. And then I discover they’re not stable under the operations, or not expressible in the right language, or they fail on some annoying corner case that I can’t rule out. Or most commonly, just lead me to a gaping hole between the properties of numbers I think are relevant to the problem, and how the numbers acted in this system.</p>
+<p>This feels, to me, like a lesson about cognition as much as about mathematics. And it also makes me appreciate what fundamental mathematical progress often is: not “more cleverness,” but deep and novel structural insight - discovering the right language, the right predicates, invariants, decompositions, and abstractions in which the problem becomes legible.</p>
+</section>
+<section id="final-notes" class="level2">
+<h2 class="anchored" data-anchor-id="final-notes">Final notes</h2>
+<p>I wasted a month of my life on Collatz last year, despite reading all the jokes and warnings. Never again, at least not in that mode.</p>
+<p>But I don’t regret the detour entirely, because it pushed me to think about the gap between a formal specification and the space of meanings we think we’re entitled to attach to it.</p>
+<p>The bazz story is a toy version of this. A few equational laws define an interface. From that interface, real structure follows by logical consequence. At the same time, many of the questions that feel most natural (“what’s inside?” “where do the pins go?”) are not deep mysteries, but category errors.</p>
+<p>Something similar happens, I think, whenever we look at an austere set of rules like arithmetic, a dynamical map, a formal grammar, rewriting rules, celluar automata, and then try to reason about it with mental imagery that isn’t actually tied to the operations. We drift toward stories, we drift toward pictures, we drift toward “it must behave like…” And sometimes those stories guide discovery. But sometimes they generate pseudo-problems and pseudo-solutions: things that feel meaningful only because we imported them.</p>
+<p>So for me the interesting thing about Collatz is not the conjecture itself. It’s what it highlights about mathematical meaning. If meaning is relational, constituted by inferential role inside a structure, then “understanding” is about having the right conceptual vocabulary. The vocabulary in which statements become connected to consequences you can control.</p>
+<p>And that vocabulary is not guaranteed to sit near the surface of the original definition. Sometimes it’s ridiculously far away. The integers are the canonical example: successor and induction look like a thin interface, and yet the emergent structure is vast, deep and even today poorly understood. The fact that we needed centuries to discover much of that structure for one of the most fundamental everyday concepts is evidence that the inferential consequences of even a small axiomatic core can be profoundly non-obvious.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2026,
+  author = {Popov, Vencislav},
+  title = {Simple Rules, Hard Problems and the Emergence of Meaning in
+    Mathematics},
+  date = {2026-02-11},
+  url = {https://venpopov.com/posts/2026/simple-rules-hard-problems/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2026" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2026. <span>“Simple Rules, Hard Problems and the
+Emergence of Meaning in Mathematics.”</span> February 11, 2026. <a href="https://venpopov.com/posts/2026/simple-rules-hard-problems/">https://venpopov.com/posts/2026/simple-rules-hard-problems/</a>.
+</div></div></section></div> ]]></description>
+  <category>math</category>
+  <category>philosophy</category>
+  <category>emergence</category>
+  <category>essay</category>
+  <category>meaning</category>
+  <category>structure</category>
+  <category>2026</category>
+  <guid>https://venpopov.com/posts/2026/simple-rules-hard-problems/</guid>
+  <pubDate>Tue, 10 Feb 2026 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Package management and reproducibility are a nightmare</title>
   <dc:creator>Vencislav Popov</dc:creator>
   <link>https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -42,13 +217,13 @@
 <p>Jesus fucking christ.</p>
 <p>Yes, I updated R last month from 4.4.2 to 4.5. And now one of the most fundamental string manipulation packages in the entire R ecosystem—on which half the world depends—can’t be installed?</p>
 <p>Okay. Fine. Surely I can just install a newer version of <code>stringi</code>. I stop the restore process and run:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">renv<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">renv<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"stringi"</span>)</span></code></pre></div>
+font-style: inherit;">"stringi"</span>)</span></code></pre></div></div>
 <p>That works.</p>
 <p>But now I have a problem: if I run <code>renv::restore()</code> again, it will just try to install the <em>older</em> version and fail all over again. So I need to snapshot the current state.</p>
 <p>I run <code>renv::snapshot()</code>, and it tells me:</p>
@@ -91,33 +266,33 @@ Archived on 2025-11-07 as issues were not corrected despite reminders.</code></p
 <p>I snapshot without installing the missing packages. That technically works, but I’m stuck with an inconsistent environment.</p>
 <p>I’m not even <em>using</em> ggplot v4. This isn’t a usage problem. It’s an infrastructure problem: R’s dependency system forces compatibility with the present, and fights you when you try to live in the past.</p>
 <p>Fine. I try installing from the archive manually:</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">renv<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">renv<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"ggdark@0.2.1"</span>)</span></code></pre></div>
+font-style: inherit;">"ggdark@0.2.1"</span>)</span></code></pre></div></div>
 <p>That works.</p>
 <p>I try <code>renv::snapshot()</code> again.</p>
 <p>Now it fails on <strong>httpgd</strong>.</p>
 <p>Same story. Package removed from CRAN. Archived. The version in my lockfile is <code>httpgd@2.0.2</code>.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">renv<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">renv<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"httpgd@2.0.2"</span>)</span></code></pre></div>
+font-style: inherit;">"httpgd@2.0.2"</span>)</span></code></pre></div></div>
 <p>Works.</p>
 <p>Why am I doing this manually? Isn’t this <em>exactly</em> what <code>renv</code> is supposed to manage for me?</p>
 <p>At this point I start wondering whether this has something to do with Quarto. <a href="https://github.com/venpopov/venpopov.com/blob/main/posts/2025/arto-pollo/index.qmd">Some posts</a> use post-specific packages declared via <code>renv::use("packagename@version")</code>, <a href="https://rstudio.github.io/renv/articles/use.html">as recommended in the documentation</a>. Maybe those dependencies don’t fully participate in the main restore/snapshot logic? Maybe I’ve built myself a beautiful little Rube Goldberg machine of reproducibility.</p>
 <p>One last attempt:</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">renv<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">renv<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">snapshot</span>()</span></code></pre></div>
+font-style: inherit;">snapshot</span>()</span></code></pre></div></div>
 <p>Finally:</p>
 <pre class="plain"><code>renv::status()
 No issues found -- the project is in a consistent state.</code></pre>
@@ -156,6 +331,7 @@ Are a Nightmare.”</span> February 3, 2026. <a href="https://venpopov.com/posts
   <dc:creator>Vencislav Popov</dc:creator>
   <link>https://venpopov.com/posts/2025/open-science-needs-reliable-infrastructure/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -220,7 +396,7 @@ Are a Nightmare.”</span> February 3, 2026. <a href="https://venpopov.com/posts
 <li>The error appeared for every preprint and dataset linked to my name — including one uploaded by a colleague just four days earlier.</li>
 <li>Even Google Scholar links that had functioned for years now led to “Resource deleted” errors:</li>
 </ul>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
 background-color: null;
@@ -267,7 +443,7 @@ background-color: null;
 font-weight: bold;
 font-style: inherit;">null</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">}</span></span></code></pre></div>
+font-style: inherit;">}</span></span></code></pre></div></div>
 <p>Most worrisome of all - the “blackout” included files linked in published journal articles and materials for projects currently under &nbsp;peer review.</p>
 <p>I reported the issue to OSF support with screenshots and links, expecting acknowledgment that something had gone wrong with the migration:</p>
 <blockquote class="blockquote">
@@ -429,12 +605,13 @@ Infrastructure.”</span> November 6, 2025. <a href="https://venpopov.com/posts/
 
 
 
+
 <p>Imagine a universe where light behaves differently than ours. Rather than diffusing its intensity with distance, and simply increasing it with multiple sources, light in this universe is different. When two light beams meet, their combined intensity depends on the angle between them. Right angles are the best - when two light beams meet at a point perpendicularly, they have the highest possible intensity at that point. As the angle becomes smaller or bigger than 90 degrees (pi/2 radians), the intensity becomes weaker.</p>
 <p>Why would you imagine such a thing? I don’t know why I wonder about such things, but I often do. As an example, I drew the image below while thinking about this - we have two “suns”, the red dots are 90 degree intersections, the blue points are intersections with a smaller angle.</p>
 <p><img src="https://venpopov.com/posts/2025/arto-pollo/two-source-rays.png" class="img-fluid"></p>
 <p>Drawing can only get me so far, but this is an easy enough simulation to do in R, and the results are pretty, especially when we change some of those initial assumptions. I’ve long been a fan of Danielle Navarro’s <a href="https://art-from-code.netlify.app/">approach to generative art</a>, and it has been years since I dipped my toes in these waters, so here goes nothing. This post will be light on details, but hopefully it makes sense. Let’s explore how this imaginary physics creates some beautiful patterns.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(ggplot2)</span>
 <span id="cb1-2"><span class="fu" style="color: #4758AB;
@@ -490,7 +667,7 @@ background-color: null;
 font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"#1F1F1F"</span>))</span>
-<span id="cb1-15">)</span></code></pre></div>
+<span id="cb1-15">)</span></code></pre></div></div>
 </div>
 <p>What things do we need for the simplest possible simulation?</p>
 <ul>
@@ -501,7 +678,7 @@ font-style: inherit;">"#1F1F1F"</span>))</span>
 </ul>
 <p>Here are some basic functions to do this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#' Calculates the angle formed by AX and BX</span></span>
 <span id="cb2-2"><span class="co" style="color: #5E5E5E;
@@ -698,11 +875,11 @@ font-style: inherit;">angle</span>(x, source1, source2)</span>
 <span id="cb2-41">  <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">angle_transform_fun</span>(theta)</span>
-<span id="cb2-42">}</span></code></pre></div>
+<span id="cb2-42">}</span></code></pre></div></div>
 </div>
 <p>With these functions in hand we can play around. We need two sources:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">A <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">A <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -721,11 +898,11 @@ font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>)</span></code></pre></div>
+font-style: inherit;">0</span>)</span></code></pre></div></div>
 </div>
 <p>Just as an illustration, the maximum intensity should be at point (0, 1) which forms a right angle. The minimum intensity should be at any point on the AB line, e.g.&nbsp;(0, 0) as it forms a 180 degree angle:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">intensity</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -733,11 +910,11 @@ font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">1</span>), A, B)</span></code></pre></div>
+font-style: inherit;">1</span>), A, B)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">intensity</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -745,14 +922,14 @@ font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0</span>), A, B)</span></code></pre></div>
+font-style: inherit;">0</span>), A, B)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
 </div>
 <p>Now we need a grid of points where their beams will intersect:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">grid <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">grid <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -783,11 +960,11 @@ background-color: null;
 font-style: inherit;">2</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.01</span>)</span>
-<span id="cb8-4">)</span></code></pre></div>
+<span id="cb8-4">)</span></code></pre></div></div>
 </div>
 <p>and evaluate their intensity:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">grid<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">grid<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>intensity1 <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -833,7 +1010,7 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">256</span>))</span></code></pre></div>
+font-style: inherit;">256</span>))</span></code></pre></div></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -844,7 +1021,7 @@ font-style: inherit;">256</span>))</span></code></pre></div>
 </div>
 <p>That’s kinda cool. Mostly what I expected, but it’s pretty. We can try a few more color schemes and plot settings. To make things a bit easier, I want to simultaneously plot multiple versions with different binning granularities:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">plot3s <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1">plot3s <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -921,11 +1098,11 @@ background-color: null;
 font-style: inherit;">+</span> p2 <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">+</span> p3</span>
-<span id="cb10-13">}</span></code></pre></div>
+<span id="cb10-13">}</span></code></pre></div></div>
 </div>
 <p>For example with out original palette we get:</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">plot3s</span>(main_plot, viridis<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -933,7 +1110,7 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">256</span>))</span></code></pre></div>
+font-style: inherit;">256</span>))</span></code></pre></div></div>
 <div class="cell-output-display page-columns page-full">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
@@ -945,7 +1122,7 @@ font-style: inherit;">256</span>))</span></code></pre></div>
 <p>With the binned version on the left, I notice something that wasn’t as obvious in the smooth one: there is more than one circle! In fact, all points that form the same angle with A and B lie on a circle. This wasn’t immediately obvious to me, but I eventually remembered the <a href="https://www.wikiwand.com/en/articles/Inscribed_angle">inscribed angle theorem</a> from high school geometry. This theorem is a more general case of the well-known Thales’ theorem, which states that all points on a circle form 90-degree angles with any diameter line of the circle. The resulting figure also represents one half of what is known as the <a href="https://www.wikiwand.com/en/articles/Apollonian_circles">Apollonian circles</a>. This realization led me down a Wikipedia rabbit hole, where I read more about alternative coordinate systems like the <a href="https://www.wikiwand.com/en/articles/Bipolar_coordinates">bipolar coordinate system</a>. At first glance, it seems esoteric and pointless, but it turns out it can <a href="https://arc.net/l/quote/jfwaoyhl">simplify many problems</a> that are otherwise too complicated to compute in standard Cartesian coordinate systems.</p>
 <p>Anyway, let’s go on with making pretty variations on this theme.</p>
 <div class="cell page-columns page-full" data-layout-align="ce#| nter">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">plot3s</span>(main_plot, <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -975,7 +1152,7 @@ font-style: inherit;">plot3s</span>(main_plot, <span class="fu" style="color: #4
 background-color: null;
 font-style: inherit;">wes_palette</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Royal1"</span>))</span></code></pre></div>
+font-style: inherit;">"Royal1"</span>))</span></code></pre></div></div>
 <div class="cell-output-display page-columns page-full">
 <div class="quarto-figure quarto-figure-ce#| nter page-columns page-full">
 <figure class="figure page-columns page-full">
@@ -1000,7 +1177,7 @@ font-style: inherit;">"Royal1"</span>))</span></code></pre></div>
 </div>
 <p>Alright, how about we add some correlated noise for variety?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">gaussian_kernel <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">gaussian_kernel <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1205,11 +1382,11 @@ font-style: inherit;">kernel =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">gaussian_kernel</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">10</span>))</span></code></pre></div>
+font-style: inherit;">10</span>))</span></code></pre></div></div>
 </div>
 <p>Now won’t you look at that!</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">grid<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">grid<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>intensity2 <span class="ot" style="color: #003B4F;
 background-color: null;
@@ -1293,7 +1470,7 @@ font-style: inherit;">plot3s</span>(noise_plot, <span class="fu" style="color: #
 background-color: null;
 font-style: inherit;">wes_palette</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Royal1"</span>))</span></code></pre></div>
+font-style: inherit;">"Royal1"</span>))</span></code></pre></div></div>
 <div class="cell-output-display page-columns page-full">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
@@ -1325,7 +1502,7 @@ font-style: inherit;">"Royal1"</span>))</span></code></pre></div>
 </div>
 <p>Alright, one last one. Instead of clamping the intensity to be a linear function of how much the angle deviates from 90 degrees, let’s introduce some oscillations. We’ll also use a larger range of x and y coordinates.</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">nonlinear_intensity <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">nonlinear_intensity <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1519,7 +1696,7 @@ font-style: inherit;">plot3s</span>(noise_plot_nl, <span class="fu" style="color
 background-color: null;
 font-style: inherit;">grey.colors</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2</span>))</span></code></pre></div>
+font-style: inherit;">2</span>))</span></code></pre></div></div>
 <div class="cell-output-display page-columns page-full">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
@@ -1551,7 +1728,7 @@ font-style: inherit;">2</span>))</span></code></pre></div>
 </div>
 <p>Last one, for real this time:</p>
 <div class="cell page-columns page-full" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;"># Generate and smooth directional noise</span></span>
 <span id="cb16-2">grid_size <span class="ot" style="color: #003B4F;
@@ -1720,7 +1897,7 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">inferno</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">256</span>))</span></code></pre></div>
+font-style: inherit;">256</span>))</span></code></pre></div></div>
 <div class="cell-output-display page-columns page-full">
 <div class="quarto-figure quarto-figure-center page-columns page-full">
 <figure class="figure page-columns page-full">
@@ -1759,13 +1936,14 @@ Popov, Vencislav. 2025. <span>“aRt-o Pollo.”</span> February 21, 2025.
 
 
 
+
 <p>I do the majority of my coding in R. I’ve grown to love the language despite many of its quirks. Perhaps this is just Stockholm Syndrome as I joked in my “Intro to programming” class recently, though I genuinely enjoy the language and its functional programming roots.</p>
 <p>That said, there are things that are objectively bad about it, with defaults that no sane person would choose. The more time I spend writing code for packages rather than data analysis, the more I’ve grown annoyed at how much extra work you need to do to avoid perplexing bugs and behavior. This is partly a weakness of dynamically typed languages - rather than depending on type-checking built into the language, you need to program defensively and explicitly handle user-input and whether it is what you expect it to be (see excellent discussions <a href="https://blog.r-hub.io/2022/03/10/input-checking/#checking-function-inputs-using-r-packages">here</a> and <a href="https://blog.djnavarro.net/posts/2023-08-08_being-assertive/#just-assertr-carr">here</a>). It’s a problem important enough that it has led to the proliferation of many packages that aim to assist you with it - e.g.&nbsp;<a href="https://mllg.github.io/checkmate/articles/checkmate.html">checkmate</a>, <a href="https://github.com/smbache/ensurer">ensurer</a>, <a href="https://github.com/gastonstat/tester">tester</a>, <a href="https://cran.r-project.org/web/packages/assertive/index.html">assertive</a>, <a href="https://docs.ropensci.org/assertr/index.html">assertr</a>. But another part is just due to some genuinely weird choices built in many of R’s base functions.</p>
 <section id="a-case-of-bait-and-switch" class="level3">
 <h3 class="anchored" data-anchor-id="a-case-of-bait-and-switch">A case of bait and switch</h3>
 <p>Here’s a simple case which recently led to a head-scratcher of a bug in our <a href="../../2024/introducing-bmm">bmm package</a>. Consider a simple a function which gives a different greeting depending on a language parameter:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">greeting <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">greeting <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1838,11 +2016,11 @@ background-color: null;
 font-style: inherit;">\n</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span>
-<span id="cb1-10">}</span></code></pre></div>
+<span id="cb1-10">}</span></code></pre></div></div>
 </div>
 <p>Simple enough, right?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">greeting</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1851,11 +2029,11 @@ background-color: null;
 font-style: inherit;">"german"</span>)</span>
 <span id="cb2-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div>
+font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div></div>
 </div>
 <p>Currently, you will get weird errors with non-character input if you don’t properly check that the language argument is a character or that it is a valid choice. But at least the user will get an error:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">greeting</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1874,11 +2052,11 @@ background-color: null;
 font-style: inherit;">"japanese"</span>)</span>
 <span id="cb3-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Error in greeting("Ven", "japanese"): object 'out' not found</span></span></code></pre></div>
+font-style: inherit;">#&gt; Error in greeting("Ven", "japanese"): object 'out' not found</span></span></code></pre></div></div>
 </div>
 <p>Ok, maybe a little confusing for the user who doesn’t know how the function is implemented (“object ‘out’ not found? What is object ‘out’?”), but fine. You can <em>and should</em> go the extra mile and validate the input, but let’s keep going. Now, if you had many different language options, you might decide to use a more efficient <code>switch</code> statement instead of an if/else structure:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">greeting2 <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">greeting2 <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1927,11 +2105,11 @@ background-color: null;
 font-style: inherit;">\n</span><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"</span>)</span>
-<span id="cb4-8">}</span></code></pre></div>
+<span id="cb4-8">}</span></code></pre></div></div>
 </div>
 <p>Our <code>switch</code> handles 3 explicitly defined cases, just like the if/else version, so unless you read the documentation, or have been already burnt by this, you might expect that this should fail:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">greeting2</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1940,11 +2118,11 @@ background-color: null;
 font-style: inherit;">2</span>)</span>
 <span id="cb5-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div>
+font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div></div>
 </div>
 <p>Oh, it runs! Ok, so even though we have explicitly defined the cases by name, switch tries to be clever and interpret integer input as a case selection. Not only that, but it will try really hard to make the input an integer if it can. The following makes no sense as a language selector, but R happily forces 2.8 into an integer sleeve and greets us again:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">greeting2</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -1953,11 +2131,11 @@ background-color: null;
 font-style: inherit;">2.8</span>)</span>
 <span id="cb6-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div>
+font-style: inherit;">#&gt; Hallo Ven! Was für ein toller Tag!</span></span></code></pre></div></div>
 </div>
 <p>Fine, it’s strange, but who in their right mind will try to pass numeric values for a language variable? Maybe no one on purpose, but some things in R are (sometimes) secretly integers. Namely, factors. Consider this - we have some <code>data.frame</code> with names and language preferences of users, the latter of which is coded as a factor variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">users <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">users <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2000,11 +2178,11 @@ background-color: null;
 font-style: inherit;">#&gt; 2  Gidon    german</span></span>
 <span id="cb7-10"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; 3 Chenyu   chinese</span></span></code></pre></div>
+font-style: inherit;">#&gt; 3 Chenyu   chinese</span></span></code></pre></div></div>
 </div>
 <p>If we were to use our if/else-based greeting function to greet each user, everything works as we would expect:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">purrr<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">purrr<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2017,11 +2195,11 @@ background-color: null;
 font-style: inherit;">#&gt; Hallo Gidon! Was für ein toller Tag! </span></span>
 <span id="cb8-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; 嗨 Chenyu! 多么美好的一天</span></span></code></pre></div>
+font-style: inherit;">#&gt; 嗨 Chenyu! 多么美好的一天</span></span></code></pre></div></div>
 </div>
 <p>What about the greeting2, which uses <code>switch</code> to determine which greeting to use?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">purrr<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">purrr<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2034,11 +2212,11 @@ background-color: null;
 font-style: inherit;">#&gt; Здравей Gidon! Какъв страхотен ден!</span></span>
 <span id="cb9-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Hallo Chenyu! Was für ein toller Tag!</span></span></code></pre></div>
+font-style: inherit;">#&gt; Hallo Chenyu! Was für ein toller Tag!</span></span></code></pre></div></div>
 </div>
 <p>What the hell? Well, I cheated a bit and hid the warning R helpfully gave us (naughty!). Here is the output again without suppressing the warning:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb10-1">purrr<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb10-1">purrr<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2069,11 +2247,11 @@ background-color: null;
 font-style: inherit;">#&gt;  Consider using 'switch(as.character( * ), ...)' instead.</span></span>
 <span id="cb10-10"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Hallo Chenyu! Was für ein toller Tag!</span></span></code></pre></div>
+font-style: inherit;">#&gt; Hallo Chenyu! Was für ein toller Tag!</span></span></code></pre></div></div>
 </div>
 <p>Ah, that explains it (although doesn’t excuse it). When a factor variable is passed to a switch statement, the variable is treated as an integer. By default factor levels are ordered alphabetically, which we can see if we examine our <code>language</code> factor structure:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">users<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">users<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>language</span>
 <span id="cb11-2"><span class="co" style="color: #5E5E5E;
@@ -2089,7 +2267,7 @@ background-color: null;
 font-style: inherit;">$</span>language)</span>
 <span id="cb11-5"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt;  Factor w/ 3 levels "bulgarian","chinese",..: 1 3 2</span></span></code></pre></div>
+font-style: inherit;">#&gt;  Factor w/ 3 levels "bulgarian","chinese",..: 1 3 2</span></span></code></pre></div></div>
 </div>
 <p>So Gidon gets greeted in Bulgarian, because his “german” language is coded as 3 in the factor variable, and the third check in <code>switch</code> corresponds to “bulgarian”. The documentation (<code>?switch</code>) helpfully explains that</p>
 <blockquote class="blockquote">
@@ -2109,7 +2287,7 @@ font-style: inherit;">#&gt;  Factor w/ 3 levels "bulgarian","chinese",..: 1 3 2<
 <p>We do, but here’s the kicker - R <em>loves</em> to turn character vectors into factors. So much so that disabling such behavior was one of the main motivation behind the development of <code>tibbles.</code> Until R4.0.0, whenever you used a function like <code>read.csv()</code> to read a file as a data.frame, R by default <a href="https://blog.r-project.org/2020/02/16/stringsasfactors/">converted character columns to factors</a>. Thankfully now this default has been reversed, but here’s the deal - NOT EVERYWHERE!</p>
 <p>One place which I never knew R created factors out of character vectors is <code>expand.grid</code>. Expand.grid is a commonly used function to get a data.frame with all combinations of several variables, which is useful for running models with orthogonality manipulated conditions. E.g.:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">conditions <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">conditions <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2169,11 +2347,11 @@ background-color: null;
 font-style: inherit;">#&gt; 7     1      ss     softmax</span></span>
 <span id="cb12-15"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; 8   100      ss     softmax</span></span></code></pre></div>
+font-style: inherit;">#&gt; 8   100      ss     softmax</span></span></code></pre></div></div>
 </div>
 <p>Can you tell that version and choice_rule are factors? I’ve used <code>expand.grid</code> for years without knowing that default behavior of expand.grid, and it’s partly that standard data.frame print method does not differentiate character and factor columns in any way. You can see that indeed we have factors underneath by using <code>str</code> for more details:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">str</span>(conditions, <span class="at" style="color: #657422;
 background-color: null;
@@ -2191,11 +2369,11 @@ background-color: null;
 font-style: inherit;">#&gt;  $ version    : Factor w/ 2 levels "cs","ss": 1 1 2 2 1 1 2 2</span></span>
 <span id="cb13-5"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt;  $ choice_rule: Factor w/ 2 levels "simple","softmax": 1 1 1 1 2 2 2 2</span></span></code></pre></div>
+font-style: inherit;">#&gt;  $ choice_rule: Factor w/ 2 levels "simple","softmax": 1 1 1 1 2 2 2 2</span></span></code></pre></div></div>
 </div>
 <p>You can examine the documentation, or directly check with <code>formals</code> that expand.grid, just like <code>read.csv</code> has a argument <code>stringsAsFactors</code>, which defaults to TRUE:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">formals</span>(expand.grid)</span>
 <span id="cb14-2"><span class="co" style="color: #5E5E5E;
@@ -2221,11 +2399,11 @@ background-color: null;
 font-style: inherit;">#&gt; $stringsAsFactors</span></span>
 <span id="cb14-9"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; [1] TRUE</span></span></code></pre></div>
+font-style: inherit;">#&gt; [1] TRUE</span></span></code></pre></div></div>
 </div>
 <p>Wait, but didn’t I just write that R4.0.0 solves the problem? As of R4.4.2, it only does that for <code>read.table</code> and <code>data.frame</code>, but not <code>expand.grid</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">version<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1">version<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>version.string</span>
 <span id="cb15-2"><span class="co" style="color: #5E5E5E;
@@ -2263,11 +2441,11 @@ background-color: null;
 font-style: inherit;">#&gt; $stringsAsFactors</span></span>
 <span id="cb15-11"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; [1] TRUE</span></span></code></pre></div>
+font-style: inherit;">#&gt; [1] TRUE</span></span></code></pre></div></div>
 </div>
 <p>You can of course change that by being explicit about not wanting factors, or use <code>tidyr::expand_grid</code> alternative instead:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">expand.grid</span>(</span>
 <span id="cb16-2">  <span class="at" style="color: #657422;
@@ -2372,7 +2550,7 @@ background-color: null;
 font-style: inherit;">#&gt;  $ version    : chr [1:8] "cs" "cs" "ss" "ss" ...</span></span>
 <span id="cb16-20"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt;  $ choice_rule: chr [1:8] "simple" "softmax" "simple" "softmax" ...</span></span></code></pre></div>
+font-style: inherit;">#&gt;  $ choice_rule: chr [1:8] "simple" "softmax" "simple" "softmax" ...</span></span></code></pre></div></div>
 </div>
 </section>
 <section id="consistency-is-important" class="level2">
@@ -2380,7 +2558,7 @@ font-style: inherit;">#&gt;  $ choice_rule: chr [1:8] "simple" "softmax" "simple
 <p>Consistency is a loaded term. Whether two things are consistent or not necessarily depends on context and goals. One could go on and on about consistent naming styles, consistent argument order, consistent default behaviors, etc. At its core the problem with inconsistent design choices in a programming language is that it makes it very difficult, if not impossible, to build an accurate mental model of how the language works. It’s more than a bit ironic when programming languages, which are supposed to be the precise counterpart of natural languages, become a similar tangled mess of exceptions you need to learn by heart, just like irregular verbs in English.</p>
 <p>The main example of this post concerns the concept of <a href="https://www.google.com/search?q=control+of+flow&amp;sourceid=chrome&amp;ie=UTF-8">control flow</a> in programming. Both if/else statements and case/switch statements aim to accomplish the same goal - to execute different parts of a program depending on a prespecified condition. One would expect that logical comparisons would work the same between those two constructs, but as this example has illustrated, they do not in R. Sometimes complex examples obscure the core problems, so let’s present it at it’s simplest form:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">x <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1">x <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2441,7 +2619,7 @@ background-color: null;
 font-style: inherit;">#&gt;  Consider using 'switch(as.character( * ), ...)' instead.</span></span>
 <span id="cb17-13"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; [1] "I choose violence"</span></span></code></pre></div>
+font-style: inherit;">#&gt; [1] "I choose violence"</span></span></code></pre></div></div>
 </div>
 <div style="text-align: center">
 <div class="quarto-figure quarto-figure-center">
@@ -2460,7 +2638,7 @@ font-style: inherit;">#&gt; [1] "I choose violence"</span></span></code></pre></
 <h2 class="anchored" data-anchor-id="what-now">What now?</h2>
 <p>First, of course, is for me to sit down and do the annoying grunt work of going through all user-facing functions and ensuring that we test and validate every input. There’s a ton of ways to do it, either with vanilla R and custom functions (<code>stopifnot</code> and <code>match.arg</code> are your friends), or with the help of some validation packages I listed earlier. Then add more unit tests about edge cases to make sure things like this don’t happen. And so on… We have done this for a lot of our existing code, but as this example taught me, it’s easy to forget - and sometimes easy to not know.</p>
 <p>Long-term, however, I’m becoming more and more interested in programming languages that use a strong static type system. I’ve long taught that static typing is simply annoying - as a <a href="../../2024/reproducibility-is-hard">self-taught</a> programmer, I haven’t had the benefit of learning things “the right way”. Over the last few months I’ve started digging deeper into programming as a core skill, exploring various languages and resources. I’m growing more and more attuned to the virtues of good type systems, for many other reasons. I’m sure another post on this topic is incoming at some time. In the meantime:</p>
-<div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="cf" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><span class="cf" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">if</span> (language <span class="sc" style="color: #5E5E5E;
@@ -2473,7 +2651,7 @@ background-color: null;
 font-style: inherit;">stopifnot</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">inputs_are_carefully_validated</span>())</span>
-<span id="cb18-3">}</span></code></pre></div>
+<span id="cb18-3">}</span></code></pre></div></div>
 
 
 </section>
@@ -2505,6 +2683,7 @@ Popov, Vencislav. 2025. <span>“R Love You, R Hate You.”</span> February
 
 
 
+
 <p>My relationship with blogging is complicated. I made my first blog about 15 years ago, fresh out of high school. WordPress was the dominant platform at the time, and my blog wasn’t anything particularly interesting - I shared some vapid attempts at poetry and short story writing, some travel logs, and a mish-mash of other topics<sup>1</sup>.</p>
 <p>I have never liked WordPress, for mostly the same reasons that I don’t like most software - I found every action incredibly cumbersome. Shortly thereafter I joined Facebook and Twitter, two platforms I no longer use, and most of my writing took on the “micro-blogging” nature that social media lends itself to so easily. I’ve always suspected that one of the reasons social media blew up was that it made it so easy to write, share, and follow content. At some point during my PhD (circa 2017), I created another WordPress blog, out of a desire to write longer pieces on more technical topics. That blog was again short-lived and the reason was simple - I wanted to write about programming, data analysis, and R, to share computational insights, but WordPress was a poor medium for it. At the time I was just starting to get enamored with literate programming (Jupyter notebooks were hot off the press), and the ease with which I could create computational writing contrasted starkly with the difficulty of sharing such writing on the internet.</p>
 <p>Last year I discovered Quarto and I immediately became excited by the possibilities. I rebuilt my personal website with it and set up this blog to go with it. I expected to post a lot more often than I have done in reality. There are many reasons for this - from starting a new tenured position, to being a typical overworked, overextended, and overcommitted academic.</p>
@@ -2522,7 +2701,7 @@ Popov, Vencislav. 2025. <span>“R Love You, R Hate You.”</span> February
 <h2 class="anchored" data-anchor-id="a-bash-script-for-automating-post-creation">A bash script for automating post creation</h2>
 <p>The problem was that aside from some basic commands, my bash knowledge is quite limited. So I figured this was an opportunity to put Github Copilot to the test. I use Visual Studio Code as my IDE, and have setup my website repository as a workspace. I already had a markdown document that describes in plain language the steps I need to do when creating new blog posts<sup>2</sup>. So could the built-in Copilot in VSCode write me a bash script just by being told to implement the steps I’ve described in my little instruction manual?</p>
 <p>It worked flawlessly, and this code was the result after a few iterations:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#!/bin/bash</span></span>
 <span id="cb1-2"></span>
@@ -2819,15 +2998,15 @@ font-style: inherit;">"</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">$post_dir</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">/index.qmd"</span></span></code></pre></div>
+font-style: inherit;">/index.qmd"</span></span></code></pre></div></div>
 <p>I saved this code in a file <code>new_blog_post</code> and Copilot instructed me that I can make it executable from the command line by first setting file permission via:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">chmod</span> +x new_blog_post</span></code></pre></div>
+font-style: inherit;">chmod</span> +x new_blog_post</span></code></pre></div></div>
 <p>I saved this file in a directory on my path, so now when I want to create a new blog post, I simply open a terminal and type</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">new_blog_post</span></span></code></pre></div>
+font-style: inherit;">new_blog_post</span></span></code></pre></div></div>
 <p>This prompts me to enter a title for the post, a subtitle and some tags, then creates all the necessary boilerplate and opens the file in VSCode for editing. In fact, I used it to make this very post, and for example, here is the terminal output from it</p>
 <p><img src="https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/images/paste-1.png" class="img-fluid"></p>
 <p>Neat. Will this help me post more often? Time will tell.</p>
@@ -2868,6 +3047,7 @@ Posts.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/red
   <dc:creator>Vencislav Popov</dc:creator>
   <link>https://venpopov.com/posts/2024/reproducibility-is-hard/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -2970,6 +3150,7 @@ Projects and Reproducibility.”</span> November 17, 2024. <a href="https://venp
 
 
 
+
 <p>I have spent the last few months thinking about academic publishing and the peer review system. The whole thing is rotten and no sane person would design the system we have today. Now that I find myself in a professional position where I don’t have to worry about my future, I realize I can take actions to help dismantle this system. In other words, I can finally afford to act on my principles (as absurd as that sounds).</p>
 <p>I am not yet ready to share the full extent of what this entails, and I plan a longer post about the future of academic publishing. But last week was the first time I took action consistent with these principles, specifically my belief that all peer review should be open, published alongside the work it reviews. I received a standard review request from a respected APA journal, and this was my response:</p>
 <blockquote class="blockquote">
@@ -3013,14 +3194,15 @@ Review.”</span> August 4, 2024. <a href="https://venpopov.com/posts/2024/takin
 
 
 
+
 <p>I am excited to announce the first official release of the <a href="https://cran.r-project.org/web/packages/bmm/index.html">Bayesian Measurement Modeling R package</a>! <code>bmm</code> makes Bayesian measurement modeling in psychology accessible to all. Over the past two years, <a href="https://www.gfrischkorn.org">Gidon Frischkorn</a> and I worked closely together on this package and we are thrilled to finally share it with the world.</p>
 <p>Aside from the final result, this collaboration was the most fun I’ve had doing research in a long time. I stopped counting how many days we started a random unplanned coffee chat and to suddenly realize that it’s been three hours of intense problem-solving, only because one of us was actually late for a real meeting. <code>bmm</code> is truly both of our baby (only slightly older that Gidon’s soon-to-be second flesh-and-blood daughter!) and we hope it will make fitting Bayesian measurement models easier, more reliable, and more efficient for everyone.</p>
 <p>You can find detailed documentation, tutorials and examples on the <a href="https://venpopov.github.io/bmm/index.html">package website</a>. You can install <code>bmm</code> from CRAN as follows:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"bmm"</span>)</span></code></pre></div>
+font-style: inherit;">"bmm"</span>)</span></code></pre></div></div>
 <section id="what-is-bmm-for" class="level2">
 <h2 class="anchored" data-anchor-id="what-is-bmm-for">What is bmm for?</h2>
 <p><code>bmm</code> provides a simple and intuitive interface for fitting measurement models in psychology using Bayesian methods. It is designed to be accessible to researchers with little to no experience with Bayesian statistics or cognitive modeling. If you know how to fit a mixed-effects regression model in R, you already know nearly everything you need to fit a measurement model with <code>bmm</code>.</p>
@@ -3038,9 +3220,6 @@ font-style: inherit;">"bmm"</span>)</span></code></pre></div>
 </section>
 <section id="the-challenges-of-measurement-modeling" class="level2">
 <h2 class="anchored" data-anchor-id="the-challenges-of-measurement-modeling">The challenges of measurement modeling</h2>
-<div>
-
-</div>
 <div class="quarto-layout-panel" data-layout="[[70,30],[100]]">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 70.0%;justify-content: flex-start;">
@@ -3091,7 +3270,7 @@ font-style: inherit;">"bmm"</span>)</span></code></pre></div>
 </div>
 </div></div><p>Assume you want to fit the <a href="https://venpopov.github.io/bmm/articles/bmm_imm.html">Interference Measurement Model (IMM)</a><span class="citation" data-cites="oberauer2017">(Oberauer et al. 2017)</span> to your data. For convenience, we have included the data from this study in the <code>bmm</code> package, so we can use it directly and fit the model to it. The IMM model attributes errors to different sources of activation in memory: target features, non-target features, the spacial distance between them, and random noise<sup>1</sup>.</p>
 <p>Before we go into the different parts, here is the entire code that you would need to fit the IMM model to the data. Yes, it’s that simple:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(bmm)</span>
 <span id="cb2-2"></span>
@@ -3234,7 +3413,7 @@ background-color: null;
 font-style: inherit;">cores =</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">4</span></span>
-<span id="cb2-30">)</span></code></pre></div>
+<span id="cb2-30">)</span></code></pre></div></div>
 <p>Let’s take a brief look at the data we are working with. In this case, the dependent variable is <code>dev_rad</code> - the deviation of the response from the target color (in radians). <code>col_nt1</code> to <code>col_nt7</code>are the colors of the non-target items which were studied but are not being tested (coded relative to the target). Finally, <code>dist_nt1</code> to <code>dist_nt7</code> are the spatial distances of the non-target items from the target item, and <code>set_size</code> is the number of items in the display.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -3420,7 +3599,7 @@ font-style: inherit;">4</span></span>
 <h3 class="anchored" data-anchor-id="specify-the-model">1) Specify the model</h3>
 <p>First, set up the <code>bmmodel</code> object to specify which variables in your data contain information about the identity of the target and non-target features, the distances between them, and the set size of the display. For the IMM model, this would look like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">imm_model <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">imm_model <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3455,7 +3634,7 @@ background-color: null;
 font-style: inherit;">regex =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span></span>
-<span id="cb3-8">)</span></code></pre></div>
+<span id="cb3-8">)</span></code></pre></div></div>
 </div>
 <p>Here we used the <code>regex</code> option to specify that columns which begin with <code>col_nt</code> and <code>dist_nt</code> should be treated as non-target features and distances, respectively. This is useful when you have multiple non-target features and distances in your data (instead of enumerating them all).</p>
 </section>
@@ -3463,7 +3642,7 @@ font-style: inherit;">TRUE</span></span>
 <h3 class="anchored" data-anchor-id="specify-the-regression-formula-for-the-model-parameters">2) Specify the regression formula for the model parameters</h3>
 <p>Second, specify how the parameters of the model should vary over different conditions. A list of all model parameters and their meaning is saved in the model object and can be accessed using the <code>parameters</code> element.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1">imm_model<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-overflow-wrap code-with-copy"><code class="sourceCode r"><span id="cb4-1">imm_model<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">$</span>parameters</span>
 <span id="cb4-2"><span class="co" style="color: #5E5E5E;
@@ -3507,11 +3686,11 @@ background-color: null;
 font-style: inherit;">#&gt; $s</span></span>
 <span id="cb4-15"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; [1] "Spatial similarity gradient"</span></span></code></pre></div>
+font-style: inherit;">#&gt; [1] "Spatial similarity gradient"</span></span></code></pre></div></div>
 </div>
 <p>Using this information, we can set up the <code>bmmformula</code> for the different model parameters. Let’s say we want to first get an idea how all parameters vary across set_size:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">imm_formula <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">imm_formula <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3576,7 +3755,7 @@ background-color: null;
 font-style: inherit;">+</span> set_size <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|</span> ID)</span>
-<span id="cb5-6">)</span></code></pre></div>
+<span id="cb5-6">)</span></code></pre></div></div>
 </div>
 <p>The <code>bmmformula</code> object is closely aligned with the <code>brmsformula</code> syntax and allows for an easy specification of grouped effects. In this case, we assume random effects for all parameters over the <code>ID</code> variable, thus implementing a hierarchical model estimating individual differences in all parameters across the different set sizes.</p>
 <div class="callout callout-style-simple callout-tip callout-titled">
@@ -3585,7 +3764,7 @@ font-style: inherit;">|</span> ID)</span>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Take a closer look at the formula object.
+<span class="screen-reader-only">Tip</span>Take a closer look at the formula object.
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -3596,7 +3775,7 @@ Take a closer look at the formula object.
 <section id="fit-the-model" class="level3">
 <h3 class="anchored" data-anchor-id="fit-the-model">3) Fit the model</h3>
 <p>Finally, we only need to call the <code>bmm</code> function to estimate the model. For this, we pass the data the specified <code>bmmodel</code> and <code>bmmformula</code> to the function. In addition, we can pass additional options to the function to customize sampling (<code>warmup</code>, <code>iter</code>, <code>chains</code>, <code>cores</code>), save the fitted model object (<code>file</code>), or choose the backend the model should be estimated with.</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">imm_fit <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">imm_fit <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -3646,7 +3825,7 @@ background-color: null;
 font-style: inherit;">file =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"imm_fit"</span></span>
-<span id="cb6-15">)</span></code></pre></div>
+<span id="cb6-15">)</span></code></pre></div></div>
 <p>The <code>bmm</code> package is closely integrated with <code>brms</code>, the leading R package for Bayesian Regression Models. This allows you to use almost any post-processing and inference method implemented for <code>brms</code> models with the measurement models implemented in <code>bmm</code></p>
 <p>You can find more detailed introductions into the different model currently implemented in <code>bmm</code> on the <a href="https://venpopov.github.io/bmm/articles/index.html">package website</a>. And we have also written a <a href="https://osf.io/preprints/psyarxiv/umt57">tutorial paper</a> that explains more details about the implementation of several measurement models, and how to specify <code>bmmodels</code> in different experimental settings.</p>
 </section>
@@ -3697,11 +3876,11 @@ font-style: inherit;">"imm_fit"</span></span>
 </ul>
 <p>If you have suggestions for models that should be added to the package, feel free to create an issue on <a href="https://github.com/venpopov/bmm/">GitHub</a>. Ideally this should describe the model, point towards literature that gives details on the model, and if possible link to code that has already implemented the model.</p>
 <p>Given the dynamic nature the <code>bmm</code> package is currently in, you can always view the latest list of supported models by running:</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">bmm<span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">bmm<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">supported_models</span>()</span></code></pre></div>
+font-style: inherit;">supported_models</span>()</span></code></pre></div></div>
 <p>So stay tuned for updates and new models! We hope you will find the <code>bmm</code> package useful and will try fitting one of the already available models to your data. We appreciate all feedback and hope that the <code>bmm</code> package will make the use of measurement models easier for everybody.</p>
 <!-- ::: {.callout-tip appearance="simple"} -->
 
@@ -3750,6 +3929,7 @@ Modeling R Package (Bmm).”</span> June 13, 2024. <a href="https://venpopov.com
 
 
 
+
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
 <p>I often collaborate on git projects and I find that I want to have a folder or some files stored locally in the repo but that I don’t want to be tracked by git. Obviously I could add them to .gitignore, but then I have two options:</p>
@@ -3766,19 +3946,19 @@ Modeling R Package (Bmm).”</span> June 13, 2024. <a href="https://venpopov.com
 <section id="if-the-file-is-not-yet-tracked-by-git-new-file" class="level3">
 <h3 class="anchored" data-anchor-id="if-the-file-is-not-yet-tracked-by-git-new-file">If the file is not yet tracked by git (new file)</h3>
 <p>If this is a new file that is yet untracked by git, you can just add it to the local <code>.git/info/exclude file</code>. This file is not tracked by git and is specific to your local repo. You can add the file to this file and it will be ignored by git. This follows the same syntax as the <code>.gitignore</code> file. You can do this manually by opening the file and adding the file path to it, or you can do it with the following command:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"&lt;file&gt;"</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;&gt;</span> .git/info/exclude</span></code></pre></div>
+font-style: inherit;">&gt;&gt;</span> .git/info/exclude</span></code></pre></div></div>
 <p>where <code>&lt;file&gt;</code> is the path to the file you want to exclude.</p>
 </section>
 <section id="if-the-file-is-already-tracked-by-git" class="level3">
 <h3 class="anchored" data-anchor-id="if-the-file-is-already-tracked-by-git">If the file is already tracked by git</h3>
 <p>In addition to adding the file to the local <code>.git/info/exclude</code> file, you also need to remove the file from the git index. This can be done with the following command:</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> update-index <span class="at" style="color: #657422;
 background-color: null;
@@ -3786,9 +3966,9 @@ font-style: inherit;">--skip-worktree</span> <span class="op" style="color: #5E5
 background-color: null;
 font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
 <p>if you change your mind and want to track this file, you can do so with the following command:</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> update-index <span class="at" style="color: #657422;
 background-color: null;
@@ -3796,13 +3976,13 @@ font-style: inherit;">--no-skip-worktree</span> <span class="op" style="color: #
 background-color: null;
 font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
 </section>
 </section>
 <section id="define-an-alias-for-easy-access" class="level2">
 <h2 class="anchored" data-anchor-id="define-an-alias-for-easy-access">Define an alias for easy access</h2>
 <p>I find that I use this command often enough to warrant an alias. You can run the <a href="https://stackoverflow.com/a/39086325/3556519">following commands to add an alias to your git configuration</a>:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> config <span class="at" style="color: #657422;
 background-color: null;
@@ -3822,9 +4002,9 @@ font-style: inherit;">git</span> config <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">--global</span> alias.ignored <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'git ls-files -v | grep "^S"'</span></span></code></pre></div>
+font-style: inherit;">'git ls-files -v | grep "^S"'</span></span></code></pre></div></div>
 <p>and then you can use the following commands to ignore and unignore files:</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">git</span> ignore <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -3837,30 +4017,30 @@ font-style: inherit;">git</span> unignore <span class="op" style="color: #5E5E5E
 background-color: null;
 font-style: inherit;">&lt;</span>file<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;</span></span></code></pre></div>
+font-style: inherit;">&gt;</span></span></code></pre></div></div>
 </section>
 <section id="putting-it-all-together-an-example" class="level2">
 <h2 class="anchored" data-anchor-id="putting-it-all-together-an-example">Putting it all together (an example)</h2>
 <p>Let’s say I want to contribute code to an R package which is developed on GitHub. I can fork the repo and clone it to my local machine. The package has an .Rprofile file which overwrites my user configuration. I have a bunch of convenience configurations in my user .Rprofile which I want to use when working on this project. I can add the following lines to the project .Rprofile to source my user .Rprofile:</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">try</span>(rprofile<span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">load</span>())</span></code></pre></div>
+font-style: inherit;">load</span>())</span></code></pre></div></div>
 <p>I can then add the project .Rprofile to the local <code>.git/info/exclude</code> file:</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="bu" style="color: null;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">".Rprofile"</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&gt;&gt;</span> .git/info/exclude</span></code></pre></div>
+font-style: inherit;">&gt;&gt;</span> .git/info/exclude</span></code></pre></div></div>
 <p>and finally tell git to ignore the file locally (assuming I already have the alias defined):</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">git</span> ignore .Rprofile</span></code></pre></div>
+font-style: inherit;">git</span> ignore .Rprofile</span></code></pre></div></div>
 
 
 </section>
@@ -3897,13 +4077,14 @@ Affecting Others’ .gitignore.”</span> May 24, 2024. <a href="https://venpopo
 
 
 
+
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
 <p>Have you ever wanted to test whether your code works with multiple versions of an R package? Or compare how the behavior of certain functions has changed? There are several ways to do that, each involving a lot of setup.</p>
 <section id="base-r" class="level3">
 <h3 class="anchored" data-anchor-id="base-r">Base R</h3>
 <p>The way to work with different package versions in base R requires you to manually specify a folder in which to install each version. Let’s assume your current version of the package <code>stringr</code> is 1.4.0, and you want to install separately the latest version (as of the time of this writing, 1.5.1). The following will install <code>stringr</code> in a folder <code>stringr-new</code> in your user home folder:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dir.create</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3916,19 +4097,19 @@ font-style: inherit;">'stringr'</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lib =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
+font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div></div>
 <p>Afterwards, you can load the default package with</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(stringr)</span></code></pre></div>
+font-style: inherit;">library</span>(stringr)</span></code></pre></div></div>
 <p>and the new version with</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(stringr, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lib.loc =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
+font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div></div>
 <p>A few issues with this approach:</p>
 <ul>
 <li>You have to manually specify the folder for each version. And remember what it was when you want to use it again.</li>
@@ -3941,7 +4122,7 @@ font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
 <section id="remotesinstall_version" class="level3">
 <h3 class="anchored" data-anchor-id="remotesinstall_version">remotes::install_version</h3>
 <p>We can augment the base R approach with the <code>remotes</code> package, which provides the <code>install_version</code> function. This function allows you to install a specific version of a package from CRAN. The following will install <code>stringr</code> version 1.5.1 in a folder <code>stringr-new</code> in your user home folder:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">dir.create</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3960,7 +4141,7 @@ font-style: inherit;">'1.5.1'</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">lib =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
+font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div></div>
 <p>Loading the packages is the same as before. This approach solves the issue of having to download and install a specific version of a package from CRAN. However, it does not solve the other issues.</p>
 </section>
 <section id="renv" class="level3">
@@ -3971,7 +4152,7 @@ font-style: inherit;">"~/stringr-new"</span>)</span></code></pre></div>
 <section id="introducing-vmisc-pkg_vload" class="level2">
 <h2 class="anchored" data-anchor-id="introducing-vmisc-pkg_vload">Introducing <code>Vmisc</code>: pkg_vload()</h2>
 <p>I was dissatisfied with the existing solutions, so I wrote a package to do that. The <code>Vmisc</code> package provides the <code>pkg_vload</code> function, which allows you to load a specific version of a package, or to install it if it is not already installed. You can start by installing and loading the package:</p>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">install.packages</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -3984,22 +4165,22 @@ background-color: null;
 font-style: inherit;">'https://popov-lab.r-universe.dev'</span>))</span>
 <span id="cb5-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(Vmisc)</span></code></pre></div>
+font-style: inherit;">library</span>(Vmisc)</span></code></pre></div></div>
 <p>The function <code>pkg_vload</code> combines the functionality of library(), remotes::install_version(), and dir.create(), and it also allows you to list as many packages as you want. The simplest option, for everyday use, is to specify just the package names, as you would with library():</p>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">pkg_vload</span>(stringr, dplyr, ggplot2)</span></code></pre></div>
+font-style: inherit;">pkg_vload</span>(stringr, dplyr, ggplot2)</span></code></pre></div></div>
 <p>If you already have the package installed, it will load the default version. If you don’t, it will install the latest version from CRAN in the default library. This use case is identical to <code>xfun::pkg_load()</code>, but there is some added functionality for handling different versions of a package.</p>
 <p>To load a specific version, you can specify the version argument:</p>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pkg_vload</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">stringr</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'1.5.1'</span>), dplyr, ggplot2)</span></code></pre></div>
+font-style: inherit;">'1.5.1'</span>), dplyr, ggplot2)</span></code></pre></div></div>
 <p>The function expects a call to the package name, followed by the version in parentheses. It will also recognize if the version you specified is already installed. For example, if you already have <code>stringr</code> version 1.5.1 installed the good old way, it will load it from the default library. And you will see the following output:</p>
-<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#&gt; Loading required package: stringr</span></span>
 <span id="cb8-2"><span class="co" style="color: #5E5E5E;
@@ -4010,17 +4191,17 @@ background-color: null;
 font-style: inherit;">#&gt; Attaching package: ‘dplyr’</span></span>
 <span id="cb8-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Attaching package: ‘ggplot2’</span></span></code></pre></div>
+font-style: inherit;">#&gt; Attaching package: ‘ggplot2’</span></span></code></pre></div></div>
 <p>But let’s say we want to install version 1.0.0 of stringr. We can do that with the following:</p>
-<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pkg_vload</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">stringr</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'1.0.0'</span>))</span></code></pre></div>
+font-style: inherit;">'1.0.0'</span>))</span></code></pre></div></div>
 <p>which results in</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">#&gt; Downloading package from url: https://cran.rstudio.com//src/contrib/Archive/stringr/stringr_1.0.0.tar.gz</span></span>
 <span id="cb10-2"><span class="co" style="color: #5E5E5E;
@@ -4040,9 +4221,9 @@ background-color: null;
 font-style: inherit;">#&gt; * DONE (stringr)</span></span>
 <span id="cb10-7"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Loading required package: stringr</span></span></code></pre></div>
+font-style: inherit;">#&gt; Loading required package: stringr</span></span></code></pre></div></div>
 <p>pkg_vload has created a folder <code>stringr-1.0.0</code> in the default library path, installed the package there, and loaded it from there. The following two folders now coexist:</p>
-<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">dirs <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">dirs <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -4063,9 +4244,9 @@ background-color: null;
 font-style: inherit;">#&gt; [1] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr"</span></span>
 <span id="cb11-4"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; [2] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr-1.0.0"</span></span></code></pre></div>
+font-style: inherit;">#&gt; [2] "C:/Users/vepopo/AppData/Local/R/win-library/4.3/stringr-1.0.0"</span></span></code></pre></div></div>
 <p><code>pkg_vload(stringr('1.0.0'))</code> not only installed the package but also loaded it. If you restart your session, you can load either versions by simply using <code>pkg_vload(stringr)</code> or <code>pkg_vload(stringr('1.0.0'))</code>.</p>
-<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pkg_vload</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -4078,7 +4259,7 @@ font-style: inherit;"># for version 1.0.0</span></span>
 background-color: null;
 font-style: inherit;">pkg_vload</span>(stringr) <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"># for the default version</span></span></code></pre></div>
+font-style: inherit;"># for the default version</span></span></code></pre></div></div>
 <p>Benefits of using <code>pkg_vload</code>:</p>
 <ul>
 <li>vectorized: you can load multiple packages at once</li>
@@ -4091,7 +4272,7 @@ font-style: inherit;"># for the default version</span></span></code></pre></div>
 <section id="switching-the-default-version-of-a-package" class="level2">
 <h2 class="anchored" data-anchor-id="switching-the-default-version-of-a-package">Switching the default version of a package</h2>
 <p>The <code>Vmisc</code> package also provides a function to switch the default version of a package. For example, if you have versions 1.0.0 and 1.5.1 of <code>stringr</code> installed, and you want to make 1.0.0 the default, you can do that with the following:</p>
-<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pkg_switch_default</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4103,9 +4284,9 @@ background-color: null;
 font-style: inherit;">#&gt; The default version of stringr has been switched to 1.0.0. The previous default version has been renamed to stringr-1.5.1</span></span>
 <span id="cb13-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Please restart R to complete the process.</span></span></code></pre></div>
+font-style: inherit;">#&gt; Please restart R to complete the process.</span></span></code></pre></div></div>
 <p>What this will do is rename the folder <code>stringr</code> to <code>stringr-1.5.1</code> and <code>stringr-1.0.0</code> to <code>stringr</code>. After you restart your session, <code>pkg_vload(stringr)</code> or even just <code>library(stringr)</code> will load version 1.0.0. You can also switch back to the default version with:</p>
-<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pkg_switch_default</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4117,7 +4298,7 @@ background-color: null;
 font-style: inherit;">#&gt; The default version of stringr has been switched to 1.5.1. The previous default version has been renamed to stringr-1.0.0</span></span>
 <span id="cb14-3"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; Please restart R to complete the process.</span></span></code></pre></div>
+font-style: inherit;">#&gt; Please restart R to complete the process.</span></span></code></pre></div></div>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
@@ -4126,7 +4307,7 @@ font-style: inherit;">#&gt; Please restart R to complete the process.</span></sp
 <section id="bonus-finding-all-global-options-used-by-a-package" class="level2">
 <h2 class="anchored" data-anchor-id="bonus-finding-all-global-options-used-by-a-package">Bonus: finding all global options used by a package</h2>
 <p>The <code>Vmisc</code> package also provides a function to find all global options used by a package. These are options you can set via <code>options()</code>, but they are rarely well documented in the package documentation. The function <code>packageOptions</code> will list all global options used by a package, and their default values. For example, to find all global options used by the <code>brms</code> package, you can use the following:</p>
-<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">packageOptions</span>(<span class="st" style="color: #20794D;
 background-color: null;
@@ -4185,7 +4366,7 @@ background-color: null;
 font-style: inherit;">#&gt; brms.short_summary   :  FALSE </span></span>
 <span id="cb15-20"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">#&gt; .brmsfit_version     :  NULL </span></span></code></pre></div>
+font-style: inherit;">#&gt; .brmsfit_version     :  NULL </span></span></code></pre></div></div>
 <p>The function is experimental - it scrapes the source code of the package to find mentions of getOption(‘something’, default = something). It also does not provide documentation. But I found it useful for reminding myself of the options I can set for a package, and their default values.</p>
 
 

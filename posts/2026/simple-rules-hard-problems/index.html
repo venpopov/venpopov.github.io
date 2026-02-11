@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Vencislav Popov">
-<meta name="dcterms.date" content="2024-04-14">
+<meta name="dcterms.date" content="2026-02-11">
 
-<title>Reproducible research with R, Quarto, renv and GitHub – Ven Popov</title>
+<title>Simple rules, hard problems and the emergence of meaning in mathematics – Ven Popov</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,41 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -106,19 +71,18 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
         background: #eeeeee;
       }
 </style>
-<meta name="quarto:status" content="draft">
 
 
 <link rel="stylesheet" href="../../../utils/styles.css">
-<meta property="og:title" content="Reproducible research with R, Quarto, renv and GitHub – Ven Popov">
-<meta property="og:description" content="TODO">
-<meta property="og:image" content="https://venpopov.com/posts/2024/reproducible-r-projects/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
+<meta property="og:title" content="Simple rules, hard problems and the emergence of meaning in mathematics – Ven Popov">
+<meta property="og:description" content="Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.">
+<meta property="og:image" content="https://venpopov.com/posts/2026/simple-rules-hard-problems/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta property="og:site_name" content="Ven Popov">
-<meta name="twitter:title" content="Reproducible research with R, Quarto, renv and GitHub – Ven Popov">
-<meta name="twitter:description" content="TODO">
-<meta name="twitter:image" content="https://venpopov.com/posts/2024/reproducible-r-projects/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
+<meta name="twitter:title" content="Simple rules, hard problems and the emergence of meaning in mathematics – Ven Popov">
+<meta name="twitter:description" content="Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.">
+<meta name="twitter:image" content="https://venpopov.com/posts/2026/simple-rules-hard-problems/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg==">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://venpopov.com/posts/2024/reproducible-r-projects/">
+<link rel="canonical" href="https://venpopov.com/posts/2026/simple-rules-hard-problems/">
 </head>
 
 <body class="floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
@@ -284,7 +248,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -344,12 +308,15 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Reproducible research with R, Quarto, renv and GitHub</h1>
-            <p class="subtitle lead">TODO</p>
+      <h1 class="title">Simple rules, hard problems and the emergence of meaning in mathematics</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">R</div>
-                <div class="quarto-category">quarto</div>
-                <div class="quarto-category">reproducibility</div>
+                <div class="quarto-category">math</div>
+                <div class="quarto-category">philosophy</div>
+                <div class="quarto-category">emergence</div>
+                <div class="quarto-category">essay</div>
+                <div class="quarto-category">meaning</div>
+                <div class="quarto-category">structure</div>
+                <div class="quarto-category">2026</div>
               </div>
                   </div>
   </div>
@@ -367,7 +334,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 14, 2024</p>
+        <p class="date">February 11, 2026</p>
       </div>
     </div>
     
@@ -382,11 +349,11 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#quarto-website-project-with-rstudio" id="toc-quarto-website-project-with-rstudio" class="nav-link active" data-scroll-target="#quarto-website-project-with-rstudio">Quarto website project with Rstudio</a></li>
-  <li><a href="#yaml-settings" id="toc-yaml-settings" class="nav-link" data-scroll-target="#yaml-settings">yaml settings</a></li>
-  <li><a href="#renv" id="toc-renv" class="nav-link" data-scroll-target="#renv">renv</a></li>
-  <li><a href="#folder-setup" id="toc-folder-setup" class="nav-link" data-scroll-target="#folder-setup">Folder setup</a></li>
-  <li><a href="#large-file-storage" id="toc-large-file-storage" class="nav-link" data-scroll-target="#large-file-storage">Large file storage</a></li>
+  <li><a href="#meaning-without-pointing" id="toc-meaning-without-pointing" class="nav-link active" data-scroll-target="#meaning-without-pointing">Meaning without pointing</a></li>
+  <li><a href="#a-seemingly-silly-object-called-a-bazz" id="toc-a-seemingly-silly-object-called-a-bazz" class="nav-link" data-scroll-target="#a-seemingly-silly-object-called-a-bazz">A seemingly silly object called a bazz</a></li>
+  <li><a href="#the-integers-as-a-deceptively-thin-interface" id="toc-the-integers-as-a-deceptively-thin-interface" class="nav-link" data-scroll-target="#the-integers-as-a-deceptively-thin-interface">The integers as a deceptively “thin” interface</a></li>
+  <li><a href="#what-collatz-does-to-my-mind" id="toc-what-collatz-does-to-my-mind" class="nav-link" data-scroll-target="#what-collatz-does-to-my-mind">What Collatz does to my mind</a></li>
+  <li><a href="#final-notes" id="toc-final-notes" class="nav-link" data-scroll-target="#final-notes">Final notes</a></li>
   </ul>
 </nav>
 </nav>
@@ -402,92 +369,158 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 
 
 
-<p>In this post I teach myself how to create a new reproducible project.</p>
-<section id="quarto-website-project-with-rstudio" class="level2">
-<h2 class="anchored" data-anchor-id="quarto-website-project-with-rstudio">Quarto website project with Rstudio</h2>
-<ul>
-<li>select renv and version control</li>
-<li>I already have my github credentials set, but can link to a resource</li>
-</ul>
+<p>I watched <a href="https://youtu.be/8hcSMV6DQ9A?si=mII8aWJjCsS2iM2T">another video</a> about the <a href="https://en.wikipedia.org/wiki/Collatz_conjecture">Collatz conjecture</a> last week. Thanks, algorithm. I don’t even know why I do this to myself. It reliably produces the same mixture of fascination and irritation: the rules are tiny, the behavior is bizarre, and my mind insists that the whole thing should be graspable in some clean way, and then fails to grasp it.</p>
+<p>This is not a crank post. It’s barely even about Collatz, which was merely a trigger. And yet, as in many number theory questions, whatever the answer is, there surely is one. The system is fully specified. Either every starting value eventually reaches 1, or some don’t. Either there is a nontrivial cycle, or there isn’t. Whether we can find a proof is a separate question.</p>
+<p>Of course, Kurt Gödel is always waiting like an ominous gargoyle to tell us that some things are undecidable (relative to some standard axiom systems). But even if that were the case for Collatz, there is still a fact of the matter: within whatever framework you pick, the statement is either provable, disprovable, or independent. In any case, it’s not like the conjecture floats in some metaphysical fog. It is determined by properties of the positive integers, together with the transition rule.</p>
+<p>What interests me, though, is less the conjecture itself than what it does to my head. It’s a very peculiar experience: the sense that something is so “obviously constrained” and yet infuriatingly inacessible and hard. I don’t mean “hard” as in “requires 200 pages of technical machinery.” I mean hard as in: I repeatedly form ideas that feel coherent and so obviously about to crack the problem once and for all; and then they of course evaporate or lead to the same dead ends.</p>
+<p>And that experience, is what pushed me into a broader line of thought: what are mathematical objects, what does it mean for them to have properties, and what does it feel like (cognitively) to search for structure in a system when you don’t yet have the right concepts to see it? What does it mean to understand something that by some accounts doesn’t really exist?</p>
+<p>Whatever the ontological status of mathematical objects ultimately is, Platonic, fictionalist, structuralist, model-theoretic, “just” patterns in computation, we can say a few things with relative certainty. One of them is that mathematical objects and structures are essentially relational. They do not have meaningful properties in isolation. Their “properties” are about the role they play inside a system: how they behave under defined operations, and what they entail when they interact with other objects.</p>
+<section id="meaning-without-pointing" class="level3">
+<h3 class="anchored" data-anchor-id="meaning-without-pointing">Meaning without pointing</h3>
+<blockquote class="blockquote">
+<p>A mathematical object is what it does inside a system of relations and operations</p>
+</blockquote>
+<p>Human language lets us form grammatically clean statements that carry no content. I can say “X is roupy” just as easily as I can say “2 is even.” But unless “roupy” connects to something, I haven’t said anything.</p>
+<p>If I define “roupy” as “paternally upy,” I haven’t fixed the problem. I’ve just stepped one move deeper into a dictionary loop. The words fit together, but nothing constrains anything.</p>
+<p>With everyday words, we eventually escape this loop by pointing to the world. Some terms get grounded in perception and action. Even if definitions remain fuzzy, there’s friction: you can be wrong about what “red” applies to, and the world pushes back.</p>
+<p>Mathematics doesn’t get this kind of grounding, at least not in the same direct way. The mathematician isn’t allowed to point at “two-ness” floating in the air. The only thing left is this: a property of X becomes meaningful only insofar as it connects X to other objects through formal operations and relations. In other words: if the definition doesn’t place X in a structure, it’s not doing anything.</p>
+<p>The symbols 1, 2, 3, … only mean something, i.e., have properties, once we define operations and rules: Peano’s axioms, or Church numerals, or a set-theoretic construction. Only within such a system does the statement “6 is divisible by 2” have content, because “divisible by 2” can be unpacked and checked under the representation you’re using. It defines a relation between objects of the same class (6 and 2) and the outcome of an operation involving them (like “remainder 0”).</p>
+<p>The point is not that “definitions matter.” That’s trivial. The point is that mathematical meaning is operational and relational. It lives in what the symbol lets you do and what it forces to be true.</p>
 </section>
-<section id="yaml-settings" class="level2">
-<h2 class="anchored" data-anchor-id="yaml-settings">yaml settings</h2>
-<p>some of these are not on by default, explain them</p>
+<section id="a-seemingly-silly-object-called-a-bazz" class="level3">
+<h3 class="anchored" data-anchor-id="a-seemingly-silly-object-called-a-bazz">A seemingly silly object called a bazz</h3>
+<p>To make this feel less like a slogan, let’s take a deliberately silly example.</p>
+<p>Imagine an object called a <em>bazz</em>. It interacts with <em>pins</em>. There are three operations:</p>
 <ul>
-<li><p>output-dir</p></li>
-<li><p>execute-dir</p></li>
-<li><p>freeze: auto</p></li>
-<li><p>code-link: true</p></li>
+<li><strong>kuua</strong> takes a pin and a bazz and returns a bazz</li>
+<li><strong>ouz</strong> takes a bazz and returns a bazz plus a pin</li>
+<li><strong>heff</strong> takes a bazz and returns a pin</li>
 </ul>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">execute-dir</span><span class="kw">:</span><span class="at"> project</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="at">  </span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">execute</span><span class="kw">:</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">freeze</span><span class="kw">:</span><span class="at"> auto</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">website</span><span class="kw">:</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> </span><span class="st">"Parameter recovery"</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">navbar</span><span class="kw">:</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">left</span><span class="kw">:</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="fu">href</span><span class="kw">:</span><span class="at"> index.qmd</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">        </span><span class="fu">text</span><span class="kw">:</span><span class="at"> Home</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span><span class="kw">:</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">html</span><span class="kw">:</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">theme</span><span class="kw">:</span><span class="at"> cosmo</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">css</span><span class="kw">:</span><span class="at"> styles.css</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">toc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">code-link</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">editor</span><span class="kw">:</span><span class="at"> visual</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Also:</p>
+<ul>
+<li>you can always <strong>fish</strong> a bazz from the void</li>
+<li>you can ask a bazz whether it is a <strong>jazz</strong>, and it must answer by nodding or shaking</li>
+</ul>
+<p>And bazzes satisfy these rules:</p>
+<ol type="1">
+<li><p>If you kuua a bazz with a pin and then immediately ouz it, you get the original bazz and pin back.</p></li>
+<li><p>If you heff a bazz after kuua-ing it with a pin, you get back that pin – and if you then ouz the bazz, you mysteriously get another free copy of the same pin and the original bazz.</p></li>
+<li><p>A freshly fished void bazz always nods when asked if it is a jazz. After kuaa-ing it with a pin it shakes, and once it shakes, it keeps shaking.</p></li>
+</ol>
+<p>It sounds like nonsense (it is), but it is also just a <a href="https://en.wikipedia.org/wiki/Abstract_data_type">stack, an Abstract Data Type</a>, in disguise: push(), pop(), peek(), create(), isEmpty():</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Bazz operation</th>
+<th>Stack operation</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>kuua</strong>(pin, bazz)</td>
+<td>push(item, stack)</td>
+<td>Add a pin to the bazz</td>
+</tr>
+<tr class="even">
+<td><strong>ouz</strong>(bazz)</td>
+<td>pop(stack)</td>
+<td>Remove and return the top pin</td>
+</tr>
+<tr class="odd">
+<td><strong>heff</strong>(bazz)</td>
+<td>peek(stack)</td>
+<td>View the top pin without removing it</td>
+</tr>
+<tr class="even">
+<td><strong>fish</strong>()</td>
+<td>create()</td>
+<td>Make a new empty bazz/stack</td>
+</tr>
+<tr class="odd">
+<td>is <strong>jazz</strong>?</td>
+<td>isEmpty()</td>
+<td>Check if the bazz/stack has no pins</td>
+</tr>
+</tbody>
+</table>
+<p>While the third column of this table clearly articulates the <em>intended</em> effect of the operation, it is nothing more than a “design specification”: what we want it to do and mean. It is the equational rules that endow the system with these behaviors:</p>
+<ol type="1">
+<li><p><code>ouz(kuua(p, b)) = (b, p)</code> — If you push a pin onto a bazz and immediately pop, you get back the original bazz and the pin</p></li>
+<li><p><code>heff(kuua(p, b)) = p</code> — If you peek at a bazz after pushing a pin, you see that pin</p></li>
+<li><p><code>jazz(fish()) = true</code> — A freshly created bazz is empty</p></li>
+<li><p><code>jazz(kuua(p, b)) = false</code> — Any bazz with at least one pin is not empty</p></li>
+</ol>
+<p>That’s it - the system is fully specified, regardless of the symbols we use, and the helpful descriptions we attach them and to the rules that govern them. Notice that nothing above ever specifies anything about the internal mechanism of any operation; what is more, it doesn’t even specify the outcome of individual operations, except for what <em>type</em> of object it returns. It only specifies how the behavior of some rules affects others.</p>
+<p>What I like about this example is how it separates three things that we often blur together:</p>
+<ol type="1">
+<li><p><strong>The interface:</strong> the operations you’re allowed to do.</p></li>
+<li><p><strong>The axioms:</strong> the laws those operations must satisfy.</p></li>
+<li><p><strong>The interpretation:</strong> the story we tell ourselves (“it stores things,” “it has an inside,” “it grows,” etc.).</p></li>
+</ol>
+<p>The axioms never say “last-in-first-out.”, “inside.”, nor “storage.” And yet if you take the rules seriously, you can prove an emergent structural truth, a consequence that wasn’t spelled out:</p>
+<blockquote class="blockquote">
+<p>If you kuua ten pins in a row and then repeatedly ouz, you recover the pins in reverse order.</p>
+</blockquote>
+<p>At the same time, some questions you’re tempted to ask are not merely unanswered; they’re not even well-formed in the language of the system. For example: “what happens to the pins inside the bazz?” There is no “inside” predicate. That question sneaks in an external metaphor (containers, interiors) that the abstract description never granted you.</p>
+<p>This is a genuine constraint on cognition: we naturally reach for metaphors that feel meaningful, and those metaphors can be helpful, but they can also generate pseudo-questions that the formal structure does not support. And I think this distinction between what the system actually says, what it implies, and what our metaphors tempt us to ask is one of the most useful lenses I’ve found for thinking about mathematics.</p>
 </section>
-<section id="renv" class="level2">
-<h2 class="anchored" data-anchor-id="renv">renv</h2>
-<p>Why? Ensures package versions will make code run. Local links in folder</p>
-<p>for new projects</p>
+<section id="the-integers-as-a-deceptively-thin-interface" class="level3">
+<h3 class="anchored" data-anchor-id="the-integers-as-a-deceptively-thin-interface">The integers as a deceptively “thin” interface</h3>
+<p>Now we can return to the question that started all of this.</p>
+<p>If mathematical objects are defined by their role in a web of relations, and if that web contains emergent structure that may be deeply non-obvious, then we can ask:</p>
+<p>Is there some deep structural relation among the integers that we have simply not yet uncovered? A structure that plays little to no role in most of our everyday experience with numbers, a structure we cannot currently “see,” but that must be there – because the truth of these edge-case statements depends on it.</p>
+<p>Think about how many of the hardest problems in mathematics are absurdly simple statements about the most elementary object imaginable: the counting numbers.</p>
+<p>One apple, two apples, three apples. Each of my three kids can have one. If the dog steals one, I either have to cut them or only give apples to two kids. Or my husband and I can enjoy them ourselves. This is the mental world in which the natural numbers first appear: a thin, practical sequence. Knots on a rope.</p>
+<p>Then you learn that primes are numbers divisible only by themselves and 1. Simple definition. A few steps from axioms to an algorithm. Not useful for most of human history; then suddenly the foundation of modern cryptography. And Euclid proves, 2300 years ago, that you’ll never find the biggest prime. There will always be another. Infinitely many.</p>
+<p>But then you hit questions that look just as simple and fall off a cliff:</p>
 <ul>
-<li><p>renv::init()</p></li>
-<li><p>renv::install()</p></li>
-<li><p>renv::snapshot()</p></li>
-<li><p>commit renv.lock</p></li>
+<li>Are there infinitely many twin primes? Unknown.</li>
+<li>Is every even number the sum of two primes? Unknown.</li>
+<li>Does the rule “if (x) is even, divide by 2; otherwise multiply by 3 and add 1” always reach 1? Unknown.</li>
 </ul>
-<p>For collaborators or new machines:</p>
-<ul>
-<li><p>Restore the project environment with <code>renv::restore()</code></p></li>
-<li><p>Run <code>renv::install()</code> to install the new package</p></li>
-<li><p>Update the Lockfile with <code>renv::snapshot()</code></p></li>
-<li><p>Commit <code>renv.lock</code> with your changes</p></li>
-</ul>
-<p>seems that Rstudio selecting renv and git does not apply renv ignore to the base file?</p>
-<p>on website it says: “After installing the package and checking that your code works, you should call <a href="https://rstudio.github.io/renv/reference/snapshot.html"><code>renv::snapshot()</code></a> to record the latest package versions in your lockfile. If you’re collaborating with others, you’ll need to commit those changes to git, and let them know that you’ve updated the lockfile and they should call <a href="https://rstudio.github.io/renv/reference/restore.html"><code>renv::restore()</code></a> when they’re next working on a project”</p>
-<p>is this really necessary? Shouldn’t renv recognize that new dependencies are listed and prompt this?</p>
+<p>Before you take these questions seriously, it feels like there is almost no structure to whole numbers at all. They feel like the least interesting object: a mere successor relation repeated forever. And yet the true structure runs deep, as deep as mathematical structures go, and contains relations that feel completely disconnected from the “one apple, two apples” story.</p>
+<p>Quadratic reciprocity. p-adics. Modular forms. The list goes on.</p>
+<p>And this is the part that always hits me with the same weird emotion: these consequences were “there” long before we had names for them, as certainly in 100,000 BC when the first humans were learning to count as it is today in number theory textbooks. We just didn’t know it. It still feels like an utter miracle that such complexity was hiding there as an inevitable consequence of logic and formal rules.</p>
+<p>We know for sure that even extremely sophisticated facts about integers (like Fermat’s Last Theorem) ultimately derive from whatever basic axioms you accept. They have to. There is no other source of truth available. Yet finding that path took centuries and some of the best minds in history.</p>
+<p>It seems that so much of the complexity arises because the interaction between addition (linear structure) and multiplication (multiplicative/prime structure) is surprisingly “thick.” Most of the deep mysteries in number theory, live exactly in the friction between these two operations. And still, unless you really think about it, on the surface there appears to be nothing particularly interesting about this interaction. Multiplication distributes over addition. They feel separable, almost independent, and yet that feeling is completely misleading.</p>
 </section>
-<section id="folder-setup" class="level2">
-<h2 class="anchored" data-anchor-id="folder-setup">Folder setup</h2>
+<section id="what-collatz-does-to-my-mind" class="level2">
+<h2 class="anchored" data-anchor-id="what-collatz-does-to-my-mind">What Collatz does to my mind</h2>
+<p>This is where Collatz comes back in, not as the main topic, but as a trigger.</p>
+<p>The thing I find psychologically striking is that the Collatz rule has a certain interface-thinness to it. It’s made of the simplest arithmetic operations imaginable (parity, division by 2, multiplication, addition). And yet whatever global behavior it has is not something I can see directly from those operations in the way I can see, say, why a stack is last-in-first-out once I have the right lens.</p>
+<p>When I tried to think seriously about it last year, the recurring experience was this:</p>
 <ul>
-<li><p>data</p></li>
-<li><p>output</p></li>
-<li><p>notebooks</p></li>
+<li>I’d have an idea that felt like it captured the behavior</li>
+<li>it would feel obviously promising for a few minutes</li>
+<li>and then, as soon as I tried to formalize it, the idea would dissolve into fog</li>
 </ul>
+<p>The dissolving is the interesting part. It’s like my mind keeps proposing consequences or candidate invariants that are almost_meaningful. And then I discover they’re not stable under the operations, or not expressible in the right language, or they fail on some annoying corner case that I can’t rule out. Or most commonly, just lead me to a gaping hole between the properties of numbers I think are relevant to the problem, and how the numbers acted in this system.</p>
+<p>This feels, to me, like a lesson about cognition as much as about mathematics. And it also makes me appreciate what fundamental mathematical progress often is: not “more cleverness,” but deep and novel structural insight - discovering the right language, the right predicates, invariants, decompositions, and abstractions in which the problem becomes legible.</p>
 </section>
-<section id="large-file-storage" class="level2">
-<h2 class="anchored" data-anchor-id="large-file-storage">Large file storage</h2>
+<section id="final-notes" class="level2">
+<h2 class="anchored" data-anchor-id="final-notes">Final notes</h2>
+<p>I wasted a month of my life on Collatz last year, despite reading all the jokes and warnings. Never again, at least not in that mode.</p>
+<p>But I don’t regret the detour entirely, because it pushed me to think about the gap between a formal specification and the space of meanings we think we’re entitled to attach to it.</p>
+<p>The bazz story is a toy version of this. A few equational laws define an interface. From that interface, real structure follows by logical consequence. At the same time, many of the questions that feel most natural (“what’s inside?” “where do the pins go?”) are not deep mysteries, but category errors.</p>
+<p>Something similar happens, I think, whenever we look at an austere set of rules like arithmetic, a dynamical map, a formal grammar, rewriting rules, celluar automata, and then try to reason about it with mental imagery that isn’t actually tied to the operations. We drift toward stories, we drift toward pictures, we drift toward “it must behave like…” And sometimes those stories guide discovery. But sometimes they generate pseudo-problems and pseudo-solutions: things that feel meaningful only because we imported them.</p>
+<p>So for me the interesting thing about Collatz is not the conjecture itself. It’s what it highlights about mathematical meaning. If meaning is relational, constituted by inferential role inside a structure, then “understanding” is about having the right conceptual vocabulary. The vocabulary in which statements become connected to consequences you can control.</p>
+<p>And that vocabulary is not guaranteed to sit near the surface of the original definition. Sometimes it’s ridiculously far away. The integers are the canonical example: successor and induction look like a thin interface, and yet the emergent structure is vast, deep and even today poorly understood. The fact that we needed centuries to discover much of that structure for one of the most fundamental everyday concepts is evidence that the inferential consequences of even a small axiomatic core can be profoundly non-obvious.</p>
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2024,
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2026,
   author = {Popov, Vencislav},
-  title = {Reproducible Research with {R,} {Quarto,} Renv and {GitHub}},
-  date = {2024-04-14},
-  url = {https://venpopov.com/posts/2024/reproducible-r-projects/},
+  title = {Simple Rules, Hard Problems and the Emergence of Meaning in
+    Mathematics},
+  date = {2026-02-11},
+  url = {https://venpopov.com/posts/2026/simple-rules-hard-problems/},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2024" class="csl-entry quarto-appendix-citeas" role="listitem">
-Popov, Vencislav. 2024. <span>“Reproducible Research with R, Quarto,
-Renv and GitHub.”</span> April 14, 2024. <a href="https://venpopov.com/posts/2024/reproducible-r-projects/">https://venpopov.com/posts/2024/reproducible-r-projects/</a>.
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2026" class="csl-entry quarto-appendix-citeas" role="listitem">
+Popov, Vencislav. 2026. <span>“Simple Rules, Hard Problems and the
+Emergence of Meaning in Mathematics.”</span> February 11, 2026. <a href="https://venpopov.com/posts/2026/simple-rules-hard-problems/">https://venpopov.com/posts/2026/simple-rules-hard-problems/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
