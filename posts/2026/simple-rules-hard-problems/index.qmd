@@ -1,0 +1,155 @@
+---
+title: "Simple rules, hard problems and the emergence of meaning in mathematics"
+subtitle: ""
+categories: [math,  philosophy,  emergence,  essay,  meaning,  structure,  2026]
+date: "2026-02-11"
+---
+
+I watched [another video](https://youtu.be/8hcSMV6DQ9A?si=mII8aWJjCsS2iM2T) about the [Collatz conjecture](https://en.wikipedia.org/wiki/Collatz_conjecture) last week. Thanks, algorithm. I don't even know why I do this to myself. It reliably produces the same mixture of fascination and irritation: the rules are tiny, the behavior is bizarre, and my mind insists that the whole thing should be graspable in some clean way, and then fails to grasp it.
+
+This is not a crank post. It's barely even about Collatz, which was merely a trigger. And yet, as in many number theory questions, whatever the answer is, there surely is one. The system is fully specified. Either every starting value eventually reaches 1, or some don't. Either there is a nontrivial cycle, or there isn't. Whether we can find a proof is a separate question. 
+
+Of course, Kurt Gödel is always waiting like an ominous gargoyle to tell us that some things are undecidable (relative to some standard axiom systems). But even if that were the case for Collatz, there is still a fact of the matter: within whatever framework you pick, the statement is either provable, disprovable, or independent. In any case, it's not like the conjecture floats in some metaphysical fog. It is determined by properties of the positive integers, together with the transition rule.
+
+What interests me, though, is less the conjecture itself than what it does to my head. It's a very peculiar experience: the sense that something is so "obviously constrained" and yet infuriatingly inacessible and hard. I don't mean "hard" as in "requires 200 pages of technical machinery." I mean hard as in: I repeatedly form ideas that feel coherent and so obviously about to crack the problem once and for all; and then they of course evaporate or lead to the same dead ends.
+
+And that experience, is what pushed me into a broader line of thought: what are mathematical objects, what does it mean for them to have properties, and what does it feel like (cognitively) to search for structure in a system when you don't yet have the right concepts to see it? What does it mean to understand something that by some accounts doesn't really exist?
+
+Whatever the ontological status of mathematical objects ultimately is, Platonic, fictionalist, structuralist, model-theoretic, "just" patterns in computation, we can say a few things with relative certainty. One of them is that mathematical objects and structures are essentially relational. They do not have meaningful properties in isolation. Their "properties" are about the role they play inside a system: how they behave under defined operations, and what they entail when they interact with other objects.
+
+### Meaning without pointing
+
+> A mathematical object is what it does inside a system of relations and operations
+
+Human language lets us form grammatically clean statements that carry no content. I can say "X is roupy" just as easily as I can say "2 is even." But unless "roupy" connects to something, I haven't said anything.
+
+If I define "roupy" as "paternally upy," I haven't fixed the problem. I've just stepped one move deeper into a dictionary loop. The words fit together, but nothing constrains anything.
+
+With everyday words, we eventually escape this loop by pointing to the world. Some terms get grounded in perception and action. Even if definitions remain fuzzy, there's friction: you can be wrong about what "red" applies to, and the world pushes back.
+
+Mathematics doesn't get this kind of grounding, at least not in the same direct way. The mathematician isn't allowed to point at "two-ness" floating in the air. The only thing left is this: a property of X becomes meaningful only insofar as it connects X to other objects through formal operations and relations. In other words: if the definition doesn't place X in a structure, it's not doing anything.
+
+The symbols 1, 2, 3, … only mean something, i.e., have properties, once we define operations and rules: Peano's axioms, or Church numerals, or a set-theoretic construction. Only within such a system does the statement "6 is divisible by 2" have content, because "divisible by 2" can be unpacked and checked under the representation you're using. It defines a relation between objects of the same class (6 and 2) and the outcome of an operation involving them (like "remainder 0").
+
+The point is not that "definitions matter." That's trivial. The point is that mathematical meaning is operational and relational. It lives in what the symbol lets you do and what it forces to be true.
+
+### A seemingly silly object called a bazz
+
+To make this feel less like a slogan, let's take a deliberately silly example.
+
+Imagine an object called a *bazz*. It interacts with *pins*. There are three operations:
+
+-   **kuua** takes a pin and a bazz and returns a bazz
+-   **ouz** takes a bazz and returns a bazz plus a pin
+-   **heff** takes a bazz and returns a pin
+
+Also:
+
+-   you can always **fish** a bazz from the void
+-   you can ask a bazz whether it is a **jazz**, and it must answer by nodding or shaking
+
+And bazzes satisfy these rules:
+
+1.  If you kuua a bazz with a pin and then immediately ouz it, you get the original bazz and pin back.
+
+2.  If you heff a bazz after kuua-ing it with a pin, you get back that pin -- and if you then ouz the bazz, you mysteriously get another free copy of the same pin and the original bazz.
+
+3.  A freshly fished void bazz always nods when asked if it is a jazz. After kuaa-ing it with a pin it shakes, and once it shakes, it keeps shaking.
+
+It sounds like nonsense (it is), but it is also just a [stack, an Abstract Data Type](https://en.wikipedia.org/wiki/Abstract_data_type), in disguise: push(), pop(), peek(), create(), isEmpty():
+
+| Bazz operation | Stack operation | Effect |
+|----------------|-----------------|--------|
+| **kuua**(pin, bazz) | push(item, stack) | Add a pin to the bazz |
+| **ouz**(bazz) | pop(stack) | Remove and return the top pin |
+| **heff**(bazz) | peek(stack) | View the top pin without removing it |
+| **fish**() | create() | Make a new empty bazz/stack |
+| is **jazz**? | isEmpty() | Check if the bazz/stack has no pins |
+
+While the third column of this table clearly articulates the *intended* effect of the operation, it is nothing more than a "design specification": what we want it to do and mean. It is the equational rules that endow the system with these behaviors:
+
+1. `ouz(kuua(p, b)) = (b, p)` — If you push a pin onto a bazz and immediately pop, you get back the original bazz and the pin
+   
+2. `heff(kuua(p, b)) = p` — If you peek at a bazz after pushing a pin, you see that pin
+
+3. `jazz(fish()) = true` — A freshly created bazz is empty
+
+4. `jazz(kuua(p, b)) = false` — Any bazz with at least one pin is not empty
+
+That's it - the system  is fully specified, regardless of the symbols we use, and the helpful descriptions we attach them and to the rules that govern them. Notice that nothing above ever specifies anything about the internal mechanism of any operation; what is more, it doesn't even specify the outcome of individual operations, except for what *type* of object it returns. It only specifies how the behavior of some rules affects others.
+
+What I like about this example is how it separates three things that we often blur together:
+
+1.  **The interface:** the operations you're allowed to do.
+
+2.  **The axioms:** the laws those operations must satisfy.
+
+3.  **The interpretation:** the story we tell ourselves ("it stores things," "it has an inside," "it grows," etc.).
+
+The axioms never say "last-in-first-out.", "inside.", nor "storage." And yet if you take the rules seriously, you can prove an emergent structural truth, a consequence that wasn't spelled out:
+
+> If you kuua ten pins in a row and then repeatedly ouz, you recover the pins in reverse order.
+
+At the same time, some questions you're tempted to ask are not merely unanswered; they're not even well-formed in the language of the system. For example: "what happens to the pins inside the bazz?" There is no "inside" predicate. That question sneaks in an external metaphor (containers, interiors) that the abstract description never granted you.
+
+This is a genuine constraint on cognition: we naturally reach for metaphors that feel meaningful, and those metaphors can be helpful, but they can also generate pseudo-questions that the formal structure does not support. And I think this distinction between what the system actually says, what it implies, and what our metaphors tempt us to ask is one of the most useful lenses I've found for thinking about mathematics.
+
+### The integers as a deceptively "thin" interface
+
+Now we can return to the question that started all of this.
+
+If mathematical objects are defined by their role in a web of relations, and if that web contains emergent structure that may be deeply non-obvious, then we can ask:
+
+Is there some deep structural relation among the integers that we have simply not yet uncovered? A structure that plays little to no role in most of our everyday experience with numbers, a structure we cannot currently "see," but that must be there -- because the truth of these edge-case statements depends on it.
+
+Think about how many of the hardest problems in mathematics are absurdly simple statements about the most elementary object imaginable: the counting numbers.
+
+One apple, two apples, three apples. Each of my three kids can have one. If the dog steals one, I either have to cut them or only give apples to two kids. Or my husband and I can enjoy them ourselves. This is the mental world in which the natural numbers first appear: a thin, practical sequence. Knots on a rope.
+
+Then you learn that primes are numbers divisible only by themselves and 1. Simple definition. A few steps from axioms to an algorithm. Not useful for most of human history; then suddenly the foundation of modern cryptography. And Euclid proves, 2300 years ago, that you'll never find the biggest prime. There will always be another. Infinitely many.
+
+But then you hit questions that look just as simple and fall off a cliff:
+
+-   Are there infinitely many twin primes? Unknown.
+-   Is every even number the sum of two primes? Unknown.
+-   Does the rule "if (x) is even, divide by 2; otherwise multiply by 3 and add 1" always reach 1? Unknown.
+
+Before you take these questions seriously, it feels like there is almost no structure to whole numbers at all. They feel like the least interesting object: a mere successor relation repeated forever. And yet the true structure runs deep, as deep as mathematical structures go, and contains relations that feel completely disconnected from the "one apple, two apples" story.
+
+Quadratic reciprocity. p-adics. Modular forms. The list goes on.
+
+And this is the part that always hits me with the same weird emotion: these consequences were "there" long before we had names for them, as certainly in 100,000 BC when the first humans were learning to count as it is today in number theory textbooks. We just didn't know it. It still feels like an utter miracle that such complexity was hiding there as an inevitable consequence of logic and formal rules.
+
+We know for sure that even extremely sophisticated facts about integers (like Fermat's Last Theorem) ultimately derive from whatever basic axioms you accept. They have to. There is no other source of truth available. Yet finding that path took centuries and some of the best minds in history.
+
+It seems that so much of the complexity arises because the interaction between addition (linear structure) and multiplication (multiplicative/prime structure) is surprisingly "thick." Most of the deep mysteries in number theory, live exactly in the friction between these two operations. And still, unless you really think about it, on the surface there appears to be nothing particularly interesting about this interaction. Multiplication distributes over addition. They feel separable, almost independent, and yet that feeling is completely misleading.
+
+## What Collatz does to my mind
+
+This is where Collatz comes back in, not as the main topic, but as a trigger.
+
+The thing I find psychologically striking is that the Collatz rule has a certain interface-thinness to it. It's made of the simplest arithmetic operations imaginable (parity, division by 2, multiplication, addition). And yet whatever global behavior it has is not something I can see directly from those operations in the way I can see, say, why a stack is last-in-first-out once I have the right lens.
+
+When I tried to think seriously about it last year, the recurring experience was this:
+
+-   I'd have an idea that felt like it captured the behavior
+-   it would feel obviously promising for a few minutes
+-   and then, as soon as I tried to formalize it, the idea would dissolve into fog
+
+The dissolving is the interesting part. It's like my mind keeps proposing consequences or candidate invariants that are almost_meaningful. And then I discover they're not stable under the operations, or not expressible in the right language, or they fail on some annoying corner case that I can't rule out. Or most commonly, just lead me to a gaping hole between the properties of numbers I think are relevant to the problem, and how the numbers acted in this system.
+
+This feels, to me, like a lesson about cognition as much as about mathematics. And it also makes me appreciate what fundamental mathematical progress often is: not "more cleverness," but deep and novel structural insight - discovering the right language, the right predicates, invariants, decompositions, and abstractions in which the problem becomes legible.
+
+## Final notes
+
+I wasted a month of my life on Collatz last year, despite reading all the jokes and warnings. Never again, at least not in that mode.
+
+But I don't regret the detour entirely, because it pushed me to think about the gap between a formal specification and the space of meanings we think we're entitled to attach to it.
+
+The bazz story is a toy version of this. A few equational laws define an interface. From that interface, real structure follows by logical consequence. At the same time, many of the questions that feel most natural ("what's inside?" "where do the pins go?") are not deep mysteries, but category errors.
+
+Something similar happens, I think, whenever we look at an austere set of rules like arithmetic, a dynamical map, a formal grammar, rewriting rules, celluar automata, and then try to reason about it with mental imagery that isn't actually tied to the operations. We drift toward stories, we drift toward pictures, we drift toward "it must behave like…" And sometimes those stories guide discovery. But sometimes they generate pseudo-problems and pseudo-solutions: things that feel meaningful only because we imported them.
+
+So for me the interesting thing about Collatz is not the conjecture itself. It's what it highlights about mathematical meaning. If meaning is relational, constituted by inferential role inside a structure, then "understanding" is about having the right conceptual vocabulary. The vocabulary in which statements become connected to consequences you can control.
+
+And that vocabulary is not guaranteed to sit near the surface of the original definition. Sometimes it's ridiculously far away. The integers are the canonical example: successor and induction look like a thin interface, and yet the emergent structure is vast, deep and even today poorly understood. The fact that we needed centuries to discover much of that structure for one of the most fundamental everyday concepts is evidence that the inferential consequences of even a small axiomatic core can be profoundly non-obvious.

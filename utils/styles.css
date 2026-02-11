@@ -26,3 +26,11 @@ div.quarto-post {
         grid-template-columns: [screen-start] 1.5em [screen-start-inset] 5fr [page-start page-start-inset] 35px [body-start-outset] 35px [body-start] 1.5em [body-content-start] minmax(500px, calc(1200px - 3em)) [body-content-end] 1.5em [body-end] 35px [body-end-outset] 35px [page-end-inset page-end] 5fr [screen-end-inset] 1.5em !important;
     }
 }
+
+/* Fix inline code styling for light theme */
+body.quarto-light code:not(pre code) {
+  background-color: #f5f5f5 !important;
+  color: #c7254e !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+}

@@ -52,6 +52,8 @@ format:
     toc: true
     highlight-style: monokai
     canonical-url: true
+    grid: 
+      sidebar-width: 250px
 
 execute: 
   freeze: auto
