@@ -11,8 +11,6 @@ name: Render and Publish
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-    env:
-      RENV_CONFIG_REPOS_OVERRIDE: ${{ env.RSPM }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
@@ -28,6 +26,8 @@ jobs:
 
       - name: Setup renv
         uses: r-lib/actions/setup-renv@v2
+        env:
+          RENV_CONFIG_REPOS_OVERRIDE: ${{ env.RSPM }}
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
