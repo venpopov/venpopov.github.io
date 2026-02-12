@@ -16,78 +16,6 @@ error: true
 cache: false
 ---
 
-```{r lockfile, include=FALSE}
-renv::use(
-  ambient      = "ambient@1.0.2",
-  AsioHeaders  = "AsioHeaders@1.22.1-2",
-  base64enc    = "base64enc@0.1-3",
-  bslib        = "bslib@0.9.0",
-  cachem       = "cachem@1.1.0",
-  cli          = "cli@3.6.4",
-  colorspace   = "colorspace@2.1-1",
-  cpp11        = "cpp11@0.5.1",
-  digest       = "digest@0.6.37",
-  dotCall64    = "dotCall64@1.2",
-  evaluate     = "evaluate@1.0.3",
-  fansi        = "fansi@1.0.6",
-  farver       = "farver@2.1.2",
-  fastmap      = "fastmap@1.2.0",
-  fields       = "fields@16.3",
-  fontawesome  = "fontawesome@0.5.3",
-  fs           = "fs@1.6.5",
-  ggdark       = "ggdark@0.2.1",
-  ggplot2      = "ggplot2@3.5.1",
-  glue         = "glue@1.8.0",
-  gridExtra    = "gridExtra@2.3",
-  gtable       = "gtable@0.3.6",
-  highr        = "highr@0.11",
-  htmltools    = "htmltools@0.5.8.1",
-  httpgd       = "httpgd@2.0.2",
-  isoband      = "isoband@0.2.7",
-  jquerylib    = "jquerylib@0.1.4",
-  jsonlite     = "jsonlite@1.8.9",
-  knitr        = "knitr@1.49",
-  labeling     = "labeling@0.4.3",
-  lattice      = "lattice@0.22-6",
-  lifecycle    = "lifecycle@1.0.4",
-  magrittr     = "magrittr@2.0.3",
-  maps         = "maps@3.4.2.1",
-  MASS         = "MASS@7.3-64",
-  Matrix       = "Matrix@1.7-2",
-  memoise      = "memoise@2.0.1",
-  mgcv         = "mgcv@1.9-1",
-  mime         = "mime@0.12",
-  munsell      = "munsell@0.5.1",
-  nlme         = "nlme@3.1-167",
-  patchwork    = "patchwork@1.3.0",
-  pillar       = "pillar@1.10.1",
-  pkgconfig    = "pkgconfig@2.0.3",
-  purrr        = "purrr@1.0.4",
-  R6           = "R6@2.6.1",
-  rappdirs     = "rappdirs@0.3.3",
-  RColorBrewer = "RColorBrewer@1.1-3",
-  Rcpp         = "Rcpp@1.0.14",
-  renv         = "renv@1.1.1",
-  rlang        = "rlang@1.1.5",
-  rmarkdown    = "rmarkdown@2.29",
-  sass         = "sass@0.4.9",
-  scales       = "scales@1.3.0",
-  spam         = "spam@2.11-1",
-  systemfonts  = "systemfonts@1.2.1",
-  tibble       = "tibble@3.2.1",
-  tinytex      = "tinytex@0.54",
-  unigd        = "unigd@0.1.2",
-  utf8         = "utf8@1.2.4",
-  vctrs        = "vctrs@0.6.5",
-  viridis      = "viridis@0.6.5",
-  viridisLite  = "viridisLite@0.4.2",
-  wesanderson  = "wesanderson@0.3.7",
-  withr        = "withr@3.0.2",
-  xfun         = "xfun@0.50",
-  yaml         = "yaml@2.3.10"
-)
-```
-
 Imagine a universe where light behaves differently than ours. Rather than diffusing its intensity with distance, and simply increasing it with multiple sources, light in this universe is different. When two light beams meet, their combined intensity depends on the angle between them. Right angles are the best - when two light beams meet at a point perpendicularly, they have the highest possible intensity at that point. As the angle becomes smaller or bigger than 90 degrees (pi/2 radians), the intensity becomes weaker.
 
 Why would you imagine such a thing? I don't know why I wonder about such things, but I often do. As an example, I drew the image below while thinking about this - we have two "suns", the red dots are 90 degree intersections, the blue points are intersections with a smaller angle.
@@ -96,8 +24,8 @@ Why would you imagine such a thing? I don't know why I wonder about such things,
 
 Drawing can only get me so far, but this is an easy enough simulation to do in R, and the results are pretty, especially when we change some of those initial assumptions. I've long been a fan of Danielle Navarro's [approach to generative art](https://art-from-code.netlify.app/), and it has been years since I dipped my toes in these waters, so here goes nothing. This post will be light on details, but hopefully it makes sense. Let's explore how this imaginary physics creates some beautiful patterns.
 
-```{r setup}
-#| label: setup
+```{r}
+#| label: init
 #| message: false
 #| cache: false
 library(ggplot2)
@@ -105,7 +33,6 @@ library(purrr)
 library(patchwork)
 library(ambient)
 library(wesanderson)
-library(httpgd)
 library(ggdark)
 library(viridis)
 library(fields)
