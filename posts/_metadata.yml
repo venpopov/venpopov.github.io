@@ -14,8 +14,9 @@ freeze: true
 # Posts can override this by setting their own image field
 image: /images/venpopov.png
 
-# Descriptions for social media previews are auto-extracted from the first paragraph
+# Prevent site description from being inherited - allow auto-extraction from post content
 # Posts can override by adding: description: "Custom description..." to their frontmatter
+description: ~
 
 # Enable banner style title blocks
 title-block-banner: "#eeeeee"
