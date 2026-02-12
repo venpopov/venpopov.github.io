@@ -37,12 +37,12 @@ website:
             text: bmm (Bayesian Measurement Modeling
           - href: https://venpopov.github.io/chkptstanr/index.html
             text: chkptstanr (Checkpointing for Stan)
-      - href: posts.qmd
+      - href: posts/index.qmd
         text: Blog
     right:
       - icon: rss
         text: RSS feed
-        href: posts.xml
+        href: posts/index.xml
   draft-mode: unlinked
 
 format:
