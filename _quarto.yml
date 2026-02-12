@@ -41,6 +41,7 @@ website:
         text: Blog
     right:
       - icon: rss
+        text: RSS feed
         href: posts.xml
   draft-mode: unlinked
 
