@@ -17,7 +17,7 @@
 <width>144</width>
 </image>
 <generator>quarto-1.8.27</generator>
-<lastBuildDate>Tue, 10 Feb 2026 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 11 Feb 2026 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Simple rules, hard problems and the emergence of meaning in mathematics</title>
   <dc:creator>Vencislav Popov</dc:creator>
@@ -190,7 +190,7 @@ Emergence of Meaning in Mathematics.”</span> February 11, 2026. <a href="https
   <category>structure</category>
   <category>2026</category>
   <guid>https://venpopov.com/posts/2026/simple-rules-hard-problems/</guid>
-  <pubDate>Tue, 10 Feb 2026 23:00:00 GMT</pubDate>
+  <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Package management and reproducibility are a nightmare</title>
@@ -324,7 +324,7 @@ Are a Nightmare.”</span> February 3, 2026. <a href="https://venpopov.com/posts
   <category>workflow</category>
   <category>2026</category>
   <guid>https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/</guid>
-  <pubDate>Mon, 02 Feb 2026 23:00:00 GMT</pubDate>
+  <pubDate>Tue, 03 Feb 2026 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Open Science needs reliable infrastructure</title>
@@ -593,7 +593,7 @@ Infrastructure.”</span> November 6, 2025. <a href="https://venpopov.com/posts/
   <category>academic publishing</category>
   <category>2025</category>
   <guid>https://venpopov.com/posts/2025/open-science-needs-reliable-infrastructure/</guid>
-  <pubDate>Wed, 05 Nov 2025 23:00:00 GMT</pubDate>
+  <pubDate>Thu, 06 Nov 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>aRt-o Pollo</title>
@@ -1924,7 +1924,7 @@ Popov, Vencislav. 2025. <span>“aRt-o Pollo.”</span> February 21, 2025.
   <category>art</category>
   <category>2025</category>
   <guid>https://venpopov.com/posts/2025/arto-pollo/</guid>
-  <pubDate>Thu, 20 Feb 2025 23:00:00 GMT</pubDate>
+  <pubDate>Fri, 21 Feb 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>R love you, R hate you</title>
@@ -2671,7 +2671,7 @@ Popov, Vencislav. 2025. <span>“R Love You, R Hate You.”</span> February
   <category>programming</category>
   <category>2025</category>
   <guid>https://venpopov.com/posts/2025/r-love-you-r-hate-you/</guid>
-  <pubDate>Thu, 20 Feb 2025 23:00:00 GMT</pubDate>
+  <pubDate>Fri, 21 Feb 2025 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Reduce friction for creating Quarto blog posts</title>
@@ -3040,7 +3040,7 @@ Posts.”</span> November 17, 2024. <a href="https://venpopov.com/posts/2024/red
   <category>shell</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</guid>
-  <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
+  <pubDate>Sun, 17 Nov 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Rethinking my approach to computational projects and reproducibility</title>
@@ -3138,7 +3138,7 @@ Projects and Reproducibility.”</span> November 17, 2024. <a href="https://venp
   <category>project management</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/reproducibility-is-hard/</guid>
-  <pubDate>Sat, 16 Nov 2024 23:00:00 GMT</pubDate>
+  <pubDate>Sun, 17 Nov 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Taking a stand on open peer review</title>
@@ -3182,7 +3182,7 @@ Review.”</span> August 4, 2024. <a href="https://venpopov.com/posts/2024/takin
   <category>open science</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</guid>
-  <pubDate>Sat, 03 Aug 2024 22:00:00 GMT</pubDate>
+  <pubDate>Sun, 04 Aug 2024 00:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Introducing the Bayesian Measurement Modeling R Package (bmm)</title>
@@ -3916,7 +3916,7 @@ Modeling R Package (Bmm).”</span> June 13, 2024. <a href="https://venpopov.com
   <category>R package</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/introducing-bmm/</guid>
-  <pubDate>Wed, 12 Jun 2024 22:00:00 GMT</pubDate>
+  <pubDate>Thu, 13 Jun 2024 00:00:00 GMT</pubDate>
   <media:content url="https://venpopov.com/posts/2024/introducing-bmm/microscope.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
@@ -4064,7 +4064,7 @@ Affecting Others’ .gitignore.”</span> May 24, 2024. <a href="https://venpopo
   <category>collaboration</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/git-local-ignore/</guid>
-  <pubDate>Thu, 23 May 2024 22:00:00 GMT</pubDate>
+  <pubDate>Fri, 24 May 2024 00:00:00 GMT</pubDate>
   <media:content url="https://venpopov.com/posts/2024/git-local-ignore/dontshare.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 <item>
@@ -4389,7 +4389,7 @@ Package.”</span> March 3, 2024. <a href="https://venpopov.com/posts/2024/r-mul
   <category>R package</category>
   <category>2024</category>
   <guid>https://venpopov.com/posts/2024/r-multiple-package-versions/</guid>
-  <pubDate>Sat, 02 Mar 2024 23:00:00 GMT</pubDate>
+  <pubDate>Sun, 03 Mar 2024 00:00:00 GMT</pubDate>
   <media:content url="https://venpopov.com/posts/2024/r-multiple-package-versions/juggling.png" medium="image" type="image/png" height="144" width="144"/>
 </item>
 </channel>
