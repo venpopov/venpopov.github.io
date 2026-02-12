@@ -13,4 +13,6 @@ listing:
   max-description-length: 300
 page-layout: full
 title-block-banner: true
+aliases:
+  - posts.html
 ---

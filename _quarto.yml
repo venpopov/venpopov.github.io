@@ -2,6 +2,7 @@ project:
   type: website
   resources:
     - "papers/*.pdf"
+    - "posts/subscribe.html"
   render:
     - "!AGENTS.md"
     - "*.qmd"
