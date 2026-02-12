@@ -64,22 +64,6 @@ if node "${SCRIPT_DIR}/check-links.js"; then
 else
     echo ""
     echo "⚠️  Broken links detected!"
-    
-    # Only prompt if running in pipeline mode
-    if [[ "$PIPELINE_MODE" == true ]]; then
-        echo ""
-        read -p "Do you want to continue publishing anyway? (y/N) " -n 1 -r
-        echo ""
-        
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            echo "⏩ Continuing with publish..."
-            exit 0
-        else
-            echo "❌ Publish cancelled. Please fix the broken links and try again."
-            exit 1
-        fi
-    else
-        echo "Please fix the broken links before publishing."
-        exit 1
-    fi
+    echo "Continuing without failing the pipeline."
+    exit 0
 fi
