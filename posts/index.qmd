@@ -3,7 +3,7 @@ title: "Computational thinking"
 subtitle: "On computational modeling, metascience, reproducibility, bayesian methods & more"
 listing:
   feed: true
-  contents: .
+  contents: /posts
   sort: "date desc"
   type: default
   grid-columns: 1
