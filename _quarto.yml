@@ -13,7 +13,6 @@ project:
 
 website:
   title: "Ven Popov"
-  description: "Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich."
   site-url: https://venpopov.com
   favicon: images/favicon.ico
   image: images/venpopov.png

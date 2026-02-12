@@ -1,5 +1,6 @@
 ---
 title: "About me"
+description: "Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich."
 format: 
   html:
     toc: false

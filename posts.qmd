@@ -1,6 +1,7 @@
 ---
 title: "Computational thinking"
 subtitle: "On computational modeling, metascience, reproducibility, bayesian methods & more"
+description: "Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich."
 listing:
   feed: true
   contents: posts
