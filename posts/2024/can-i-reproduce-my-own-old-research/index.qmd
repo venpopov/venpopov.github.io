@@ -1,6 +1,7 @@
 ---
 title: "Can I reproduce my own old research?"
 subtitle: ""
+description: "I try to reproduce my own published work in R and document what still breaks, and why."
 categories: [R,  reproducibility,  project management,  open science,  GitHub,  git,  2024]
 date: "2024-12-02"
 draft: true

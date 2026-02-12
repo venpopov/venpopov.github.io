@@ -1,6 +1,7 @@
 ---
 title: "Package management and reproducibility are a nightmare"
 subtitle: "I continue my love-hate relationship with R, renv and Quarto"
+description: "I use renv for package management and Quarto for publishing. I freeze posts so they don’t get recomputed every time. I hadn’t touched the blog in a few months. I just wanted to fix a couple of typos. Two minutes of work. Run `quarto render`. Done. Except, of course, not done."
 categories: [R,  R package,  2026,  package management,  reproducibility,  workflow,  2026]
 date: "2026-02-03"
 ---

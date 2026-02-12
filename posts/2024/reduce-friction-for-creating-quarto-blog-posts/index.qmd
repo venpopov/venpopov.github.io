@@ -1,6 +1,7 @@
 ---
 title: "Reduce friction for creating Quarto blog posts"
 subtitle: "I teach myself how to code simple shell scripts to automate some annoying tasks"
+description: "I share the shell scripts I wrote to remove busywork when starting new Quarto blog posts."
 categories: [workflow, shell, 2024]
 date: "2024-11-17"
 ---

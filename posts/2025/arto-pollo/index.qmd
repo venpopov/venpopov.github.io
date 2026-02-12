@@ -1,6 +1,7 @@
 ---
 title: "aRt-o Pollo"
 subtitle: ""
+description: "I explore a strange light-physics idea and turn it into generative art in R."
 categories: [R,  art,  2025]
 date: "2025-02-21"
 format: 

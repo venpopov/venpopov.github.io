@@ -1,6 +1,7 @@
 ---
 title: "Rethinking my approach to computational projects and reproducibility"
 subtitle: "There has to be a better way"
+description: "I've been trying to incorporate better coding practices, modern reporting pipelines, and reproducible workflows into my research projects, but it's been a struggle. The complexity of the tools, the sheer number of moving parts, and the interactions between them have been overwhelming. I've spent more time debugging my workflow than actually doing research. There has to be a better way."
 categories: [workflow,  reproducibility,  R, git, targets, project management, 2024]
 date: "2024-11-17"
 ---
