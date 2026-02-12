@@ -10,6 +10,9 @@ comments:
 # Freeze computed outputs
 freeze: true
 
+# default image for sharing posts
+image: /images/venpopov.png
+
 # Enable banner style title blocks
 title-block-banner: "#eeeeee"
 
