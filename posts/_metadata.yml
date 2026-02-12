@@ -10,6 +10,10 @@ comments:
 # Freeze computed outputs
 freeze: true
 
+# Default image for social media previews (Open Graph, Twitter Cards)
+# Posts can override this by setting their own image field
+image: ../../images/venpopov.png
+
 # Enable banner style title blocks
 title-block-banner: "#eeeeee"
 

@@ -18,7 +18,6 @@ new_post <- function(folder, basedir = "posts") {
     "title: ", 
     "subtitle: ",
     "categories: []",
-    "image: ",
     glue::glue("date: {Sys.Date()}"),
     "---"
     ), post_filename
