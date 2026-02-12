@@ -11,6 +11,8 @@ name: Render and Publish
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
+    env:
+      RENV_CONFIG_REPOS_OVERRIDE: ${{ env.RSPM }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v5
@@ -36,4 +38,3 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
-          RENV_CONFIG_REPOS_OVERRIDE: ${{ env.RSPM }}
