@@ -11,7 +11,7 @@ comments:
 freeze: true
 
 # default image for sharing posts
-image: /images/venpopov.png
+image: images/venpopov.png
 
 # Enable banner style title blocks
 title-block-banner: "#eeeeee"
