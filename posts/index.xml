@@ -6,13 +6,13 @@
       version="2.0">
 <channel>
 <title>Ven Popov</title>
-<link>https://venpopov.com/posts.html</link>
-<atom:link href="https://venpopov.com/posts.xml" rel="self" type="application/rss+xml"/>
+<link>https://venpopov.com/posts/</link>
+<atom:link href="https://venpopov.com/posts/index.xml" rel="self" type="application/rss+xml"/>
 <description>Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.</description>
 <image>
 <url>https://venpopov.com/images/venpopov.png</url>
 <title>Ven Popov</title>
-<link>https://venpopov.com/posts.html</link>
+<link>https://venpopov.com/posts/</link>
 <height>144</height>
 <width>144</width>
 </image>

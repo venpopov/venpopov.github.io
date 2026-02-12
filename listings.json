@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/posts.html",
+    "listing": "/posts/index.html",
     "items": [
       "/posts/2026/simple-rules-hard-problems/index.html",
       "/posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html",

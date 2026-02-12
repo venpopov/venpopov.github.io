@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Vencislav Popov">
 
 <title>Computational thinking – Ven Popov</title>
 <style>
@@ -23,24 +24,24 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<link href="./images/favicon.ico" rel="icon">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-9e15f8fb9e1f2f288bfbe28f6ca11029.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-9e15f8fb9e1f2f288bfbe28f6ca11029.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e388fd0db5efeb2cfe2345fca7fca003.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-4dfb68d8562d4feb425247e230e35c35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<link href="../images/favicon.ico" rel="icon">
+<script src="../site_libs/quarto-listing/list.min.js"></script>
+<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-9e15f8fb9e1f2f288bfbe28f6ca11029.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9e15f8fb9e1f2f288bfbe28f6ca11029.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-e388fd0db5efeb2cfe2345fca7fca003.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-4dfb68d8562d4feb425247e230e35c35.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "language": {
     "search-no-results-text": "No results",
@@ -125,22 +126,18 @@ window.Quarto = {
 };
 </script>
 
-<link rel="alternate" type="application/rss+xml" title="Ven Popov" href="posts.xml" data-external="1"><meta property="og:title" content="Computational thinking – Ven Popov">
+<link rel="alternate" type="application/rss+xml" title="Ven Popov" href="index.xml" data-external="1"><meta property="og:title" content="Computational thinking – Ven Popov">
 <meta property="og:description" content="On computational modeling, metascience, reproducibility, bayesian methods &amp; more">
-<meta property="og:image" content="https://venpopov.com/images/venpopov.png">
+<meta property="og:image" content="https://venpopov.com/posts/images/venpopov.png">
 <meta property="og:site_name" content="Ven Popov">
-<meta property="og:image:height" content="501">
-<meta property="og:image:width" content="501">
 <meta name="twitter:title" content="Computational thinking – Ven Popov">
 <meta name="twitter:description" content="On computational modeling, metascience, reproducibility, bayesian methods &amp; more">
-<meta name="twitter:image" content="https://venpopov.com/images/venpopov.png">
-<meta name="twitter:image-height" content="501">
-<meta name="twitter:image-width" content="501">
+<meta name="twitter:image" content="https://venpopov.com/posts/images/venpopov.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://venpopov.com/posts.html">
+<link rel="canonical" href="https://venpopov.com/posts/">
 </head>
 
-<body class="nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -307,11 +304,11 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./images/popov-lab-logo-transparent.png" alt="" class="navbar-logo light-content">
-    <img src="./images/popov-lab-logo-transparent.png" alt="" class="navbar-logo dark-content">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../images/popov-lab-logo-transparent.png" alt="" class="navbar-logo light-content">
+    <img src="../images/popov-lab-logo-transparent.png" alt="" class="navbar-logo dark-content">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Ven Popov</span>
     </a>
   </div>
@@ -321,15 +318,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./publications.html"> 
+    <a class="nav-link" href="../publications.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./CV/index.html"> 
+    <a class="nav-link" href="../CV/index.html"> 
 <span class="menu-text">CV</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -348,13 +345,13 @@ window.Quarto = {
     </ul>
   </li>
   <li class="nav-item">
-    <a class="nav-link active" href="./posts.html" aria-current="page"> 
+    <a class="nav-link active" href="../posts/index.html" aria-current="page"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./posts.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../posts/index.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text">RSS feed</span></a>
   </li>  
@@ -367,7 +364,7 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-page-left">
       <h1 class="title">Computational thinking</h1>
@@ -378,6 +375,12 @@ window.Quarto = {
   
   <div class="quarto-title-meta column-page-left">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p><a href="https://venpopov.com">Vencislav Popov</a> <a href="https://orcid.org/0000-0002-8073-4199" class="quarto-title-author-orcid"> <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo1N0NEMjA4MDI1MjA2ODExOTk0QzkzNTEzRjZEQTg1NyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozM0NDOEJGNEZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozM0NDOEJGM0ZGNTcxMUUxODdBOEVCODg2RjdCQ0QwOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZDN0YxMTc0MDcyMDY4MTE5NUZFRDc5MUM2MUUwNEREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjU3Q0QyMDgwMjUyMDY4MTE5OTRDOTM1MTNGNkRBODU3Ii8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+84NovQAAAR1JREFUeNpiZEADy85ZJgCpeCB2QJM6AMQLo4yOL0AWZETSqACk1gOxAQN+cAGIA4EGPQBxmJA0nwdpjjQ8xqArmczw5tMHXAaALDgP1QMxAGqzAAPxQACqh4ER6uf5MBlkm0X4EGayMfMw/Pr7Bd2gRBZogMFBrv01hisv5jLsv9nLAPIOMnjy8RDDyYctyAbFM2EJbRQw+aAWw/LzVgx7b+cwCHKqMhjJFCBLOzAR6+lXX84xnHjYyqAo5IUizkRCwIENQQckGSDGY4TVgAPEaraQr2a4/24bSuoExcJCfAEJihXkWDj3ZAKy9EJGaEo8T0QSxkjSwORsCAuDQCD+QILmD1A9kECEZgxDaEZhICIzGcIyEyOl2RkgwAAhkmC+eAm0TAAAAABJRU5ErkJggg=="></a></p>
+            </div>
+    </div>
       
     
       
@@ -386,9 +389,12 @@ window.Quarto = {
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
+  
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<p>subscribe.html</p>
+</div></div>
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(11)</span></div><div class="category" data-category="MjAyNA==">2024 <span class="quarto-category-count">(6)</span></div><div class="category" data-category="MjAyNQ==">2025 <span class="quarto-category-count">(3)</span></div><div class="category" data-category="MjAyNg==">2026 <span class="quarto-category-count">(3)</span></div><div class="category" data-category="YWNhZGVtaWMlMjBwdWJsaXNoaW5n">academic publishing <span class="quarto-category-count">(2)</span></div><div class="category" data-category="YXJ0">art <span class="quarto-category-count">(1)</span></div><div class="category" data-category="YmF5ZXNpYW4=">bayesian <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Y29sbGFib3JhdGlvbg==">collaboration <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZW1lcmdlbmNl">emergence <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZXNzYXk=">essay <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2l0">git <span class="quarto-category-count">(2)</span></div><div class="category" data-category="R2l0SHVi">GitHub <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWF0aA==">math <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bWVhbmluZw==">meaning <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bW9kZWxpbmc=">modeling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="b3BlbiUyMHNjaWVuY2U=">open science <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGFja2FnZSUyMG1hbmFnZW1lbnQ=">package management <span class="quarto-category-count">(2)</span></div><div class="category" data-category="cGVlciUyMHJldmlldw==">peer review <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cGhpbG9zb3BoeQ==">philosophy <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvZ3JhbW1pbmc=">programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cHJvamVjdCUyMG1hbmFnZW1lbnQ=">project management <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Ug==">R <span class="quarto-category-count">(6)</span></div><div class="category" data-category="UiUyMHBhY2thZ2U=">R package <span class="quarto-category-count">(3)</span></div><div class="category" data-category="cmVwcm9kdWNpYmlsaXR5">reproducibility <span class="quarto-category-count">(5)</span></div><div class="category" data-category="c2hlbGw=">shell <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3RydWN0dXJl">structure <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGFyZ2V0cw==">targets <span class="quarto-category-count">(1)</span></div><div class="category" data-category="d29ya2Zsb3c=">workflow <span class="quarto-category-count">(4)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
@@ -404,10 +410,10 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="bWF0aCUyQ3BoaWxvc29waHklMkNlbWVyZ2VuY2UlMkNlc3NheSUyQ21lYW5pbmclMkNzdHJ1Y3R1cmUlMkMyMDI2" data-listing-date-sort="1770768000000" data-listing-file-modified-sort="1770901300754" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2572">
+<div class="quarto-post image-right" data-index="0" data-categories="bWF0aCUyQ3BoaWxvc29waHklMkNlbWVyZ2VuY2UlMkNlc3NheSUyQ21lYW5pbmclMkNzdHJ1Y3R1cmUlMkMyMDI2" data-listing-date-sort="1770768000000" data-listing-file-modified-sort="1770903830794" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2572">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2026/simple-rules-hard-problems/index.html" class="no-external">Simple rules, hard problems and the emergence of meaning in mathematics</a>
+<a href="../posts/2026/simple-rules-hard-problems/index.html" class="no-external">Simple rules, hard problems and the emergence of meaning in mathematics</a>
 </h3>
 <div class="listing-categories">
 
@@ -426,12 +432,12 @@ window.Quarto = {
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNg=='); return false;">2026</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2026/simple-rules-hard-problems/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2026/simple-rules-hard-problems/index.html" class="no-external">
 <p>What are mathematical objects? And what does it mean to understand something that by some accounts doesn’t really exist?</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2026/simple-rules-hard-problems/index.html" class="no-external">
+<a href="../posts/2026/simple-rules-hard-problems/index.html" class="no-external">
 <div class="listing-date">
 Feb 11, 2026
 </div>
@@ -439,10 +445,10 @@ Feb 11, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ1IlMjBwYWNrYWdlJTJDMjAyNiUyQ3BhY2thZ2UlMjBtYW5hZ2VtZW50JTJDcmVwcm9kdWNpYmlsaXR5JTJDd29ya2Zsb3clMkMyMDI2" data-listing-date-sort="1770076800000" data-listing-file-modified-sort="1770901300753" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="798">
+<div class="quarto-post image-right" data-index="1" data-categories="UiUyQ1IlMjBwYWNrYWdlJTJDMjAyNiUyQ3BhY2thZ2UlMjBtYW5hZ2VtZW50JTJDcmVwcm9kdWNpYmlsaXR5JTJDd29ya2Zsb3clMkMyMDI2" data-listing-date-sort="1770076800000" data-listing-file-modified-sort="1770903830794" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="798">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html" class="no-external">Package management and reproducibility are a nightmare</a>
+<a href="../posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html" class="no-external">Package management and reproducibility are a nightmare</a>
 </h3>
 <div class="listing-categories">
 
@@ -461,12 +467,12 @@ Feb 11, 2026
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNg=='); return false;">2026</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html" class="no-external">
 <p>I continue my love-hate relationship with R, renv and Quarto</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html" class="no-external">
+<a href="../posts/2026/package-management-and-reproducibility-are-a-nightmare/index.html" class="no-external">
 <div class="listing-date">
 Feb 3, 2026
 </div>
@@ -474,10 +480,10 @@ Feb 3, 2026
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="b3BlbiUyMHNjaWVuY2UlMkNyZXByb2R1Y2liaWxpdHklMkNhY2FkZW1pYyUyMHB1Ymxpc2hpbmclMkMyMDI1" data-listing-date-sort="1762387200000" data-listing-file-modified-sort="1770901300751" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3428">
+<div class="quarto-post image-right" data-index="2" data-categories="b3BlbiUyMHNjaWVuY2UlMkNyZXByb2R1Y2liaWxpdHklMkNhY2FkZW1pYyUyMHB1Ymxpc2hpbmclMkMyMDI1" data-listing-date-sort="1762387200000" data-listing-file-modified-sort="1770903830791" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3428">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">Open Science needs reliable infrastructure</a>
+<a href="../posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">Open Science needs reliable infrastructure</a>
 </h3>
 <div class="listing-categories">
 
@@ -490,12 +496,12 @@ Feb 3, 2026
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNQ=='); return false;">2025</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">
 <p>After OSF’s October 2025 redesign, I discovered that eight years of DOI-linked preprints and materials were silently hidden by an automated spam flag. What happened, how it was resolved, and what it reveals about trust in open science infrastructure.</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">
+<a href="../posts/2025/open-science-needs-reliable-infrastructure/index.html" class="no-external">
 <div class="listing-date">
 Nov 6, 2025
 </div>
@@ -503,10 +509,10 @@ Nov 6, 2025
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2FydCUyQzIwMjU=" data-listing-date-sort="1740096000000" data-listing-file-modified-sort="1770901300749" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1454">
+<div class="quarto-post image-right" data-index="3" data-categories="UiUyQ2FydCUyQzIwMjU=" data-listing-date-sort="1740096000000" data-listing-file-modified-sort="1770903830789" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1454">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2025/arto-pollo/index.html" class="no-external">aRt-o Pollo</a>
+<a href="../posts/2025/arto-pollo/index.html" class="no-external">aRt-o Pollo</a>
 </h3>
 <div class="listing-categories">
 
@@ -517,12 +523,12 @@ Nov 6, 2025
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNQ=='); return false;">2025</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2025/arto-pollo/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2025/arto-pollo/index.html" class="no-external">
 <p>I explore a strange light-physics idea and turn it into generative art in R.</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2025/arto-pollo/index.html" class="no-external">
+<a href="../posts/2025/arto-pollo/index.html" class="no-external">
 <div class="listing-date">
 Feb 21, 2025
 </div>
@@ -530,10 +536,10 @@ Feb 21, 2025
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ3Byb2dyYW1taW5nJTJDMjAyNQ==" data-listing-date-sort="1740096000000" data-listing-file-modified-sort="1770901300753" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2274">
+<div class="quarto-post image-right" data-index="4" data-categories="UiUyQ3Byb2dyYW1taW5nJTJDMjAyNQ==" data-listing-date-sort="1740096000000" data-listing-file-modified-sort="1770903830793" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2274">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external">R love you, R hate you</a>
+<a href="../posts/2025/r-love-you-r-hate-you/index.html" class="no-external">R love you, R hate you</a>
 </h3>
 <div class="listing-categories">
 
@@ -544,12 +550,12 @@ Feb 21, 2025
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNQ=='); return false;">2025</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2025/r-love-you-r-hate-you/index.html" class="no-external">
 <p>I’ve grown to loveR despite many of its quirks. Perhaps this is just Stockholm Syndrome.</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2025/r-love-you-r-hate-you/index.html" class="no-external">
+<a href="../posts/2025/r-love-you-r-hate-you/index.html" class="no-external">
 <div class="listing-date">
 Feb 21, 2025
 </div>
@@ -557,10 +563,10 @@ Feb 21, 2025
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="d29ya2Zsb3clMkNzaGVsbCUyQzIwMjQ=" data-listing-date-sort="1731801600000" data-listing-file-modified-sort="1770901300744" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1098">
+<div class="quarto-post image-right" data-index="5" data-categories="d29ya2Zsb3clMkNzaGVsbCUyQzIwMjQ=" data-listing-date-sort="1731801600000" data-listing-file-modified-sort="1770903830784" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1098">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">Reduce friction for creating Quarto blog posts</a>
+<a href="../posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">Reduce friction for creating Quarto blog posts</a>
 </h3>
 <div class="listing-categories">
 
@@ -571,12 +577,12 @@ Feb 21, 2025
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">2024</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">
 <p>I teach myself how to code simple shell scripts to automate some annoying tasks</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">
+<a href="../posts/2024/reduce-friction-for-creating-quarto-blog-posts/index.html" class="no-external">
 <div class="listing-date">
 Nov 17, 2024
 </div>
@@ -584,10 +590,10 @@ Nov 17, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="d29ya2Zsb3clMkNyZXByb2R1Y2liaWxpdHklMkNSJTJDZ2l0JTJDdGFyZ2V0cyUyQ3Byb2plY3QlMjBtYW5hZ2VtZW50JTJDMjAyNA==" data-listing-date-sort="1731801600000" data-listing-file-modified-sort="1770901300745" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1791">
+<div class="quarto-post image-right" data-index="6" data-categories="d29ya2Zsb3clMkNyZXByb2R1Y2liaWxpdHklMkNSJTJDZ2l0JTJDdGFyZ2V0cyUyQ3Byb2plY3QlMjBtYW5hZ2VtZW50JTJDMjAyNA==" data-listing-date-sort="1731801600000" data-listing-file-modified-sort="1770903830785" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1791">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">Rethinking my approach to computational projects and reproducibility</a>
+<a href="../posts/2024/reproducibility-is-hard/index.html" class="no-external">Rethinking my approach to computational projects and reproducibility</a>
 </h3>
 <div class="listing-categories">
 
@@ -606,12 +612,12 @@ Nov 17, 2024
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">2024</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2024/reproducibility-is-hard/index.html" class="no-external">
 <p>I’ve spent more time debugging my workflow than actually doing research. There has to be a better way.</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2024/reproducibility-is-hard/index.html" class="no-external">
+<a href="../posts/2024/reproducibility-is-hard/index.html" class="no-external">
 <div class="listing-date">
 Nov 17, 2024
 </div>
@@ -619,10 +625,10 @@ Nov 17, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="YWNhZGVtaWMlMjBwdWJsaXNoaW5nJTJDcGVlciUyMHJldmlldyUyQ29wZW4lMjBzY2llbmNlJTJDMjAyNA==" data-listing-date-sort="1722729600000" data-listing-file-modified-sort="1770901300749" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="357">
+<div class="quarto-post image-right" data-index="7" data-categories="YWNhZGVtaWMlMjBwdWJsaXNoaW5nJTJDcGVlciUyMHJldmlldyUyQ29wZW4lMjBzY2llbmNlJTJDMjAyNA==" data-listing-date-sort="1722729600000" data-listing-file-modified-sort="1770903830789" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="357">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">Taking a stand on open peer review</a>
+<a href="../posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">Taking a stand on open peer review</a>
 </h3>
 <div class="listing-categories">
 
@@ -635,12 +641,12 @@ Nov 17, 2024
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">2024</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">
 <p>I will no longer review for journals that do not publish reviews alongside the work</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">
+<a href="../posts/2024/taking-a-stand-on-open-peer-review/index.html" class="no-external">
 <div class="listing-date">
 Aug 4, 2024
 </div>
@@ -648,10 +654,10 @@ Aug 4, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="UiUyQ21vZGVsaW5nJTJDYmF5ZXNpYW4lMkNSJTIwcGFja2FnZSUyQzIwMjQ=" data-listing-date-sort="1718236800000" data-listing-file-modified-sort="1770901300732" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2619">
+<div class="quarto-post image-right" data-index="8" data-categories="UiUyQ21vZGVsaW5nJTJDYmF5ZXNpYW4lMkNSJTIwcGFja2FnZSUyQzIwMjQ=" data-listing-date-sort="1718236800000" data-listing-file-modified-sort="1770903830772" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2619">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2024/introducing-bmm/index.html" class="no-external">Introducing the Bayesian Measurement Modeling R Package (bmm)</a>
+<a href="../posts/2024/introducing-bmm/index.html" class="no-external">Introducing the Bayesian Measurement Modeling R Package (bmm)</a>
 </h3>
 <div class="listing-categories">
 
@@ -666,12 +672,12 @@ Aug 4, 2024
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">2024</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2024/introducing-bmm/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2024/introducing-bmm/index.html" class="no-external">
 <p>Making Bayesian measurement modeling in psychology accessible, reliable &amp; efficient</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2024/introducing-bmm/index.html" class="no-external">
+<a href="../posts/2024/introducing-bmm/index.html" class="no-external">
 <div class="listing-date">
 Jun 13, 2024
 </div>
@@ -679,10 +685,10 @@ Jun 13, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="Z2l0JTJDR2l0SHViJTJDcmVwcm9kdWNpYmlsaXR5JTJDd29ya2Zsb3clMkNjb2xsYWJvcmF0aW9uJTJDMjAyNA==" data-listing-date-sort="1716508800000" data-listing-file-modified-sort="1770901300719" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="616">
+<div class="quarto-post image-right" data-index="9" data-categories="Z2l0JTJDR2l0SHViJTJDcmVwcm9kdWNpYmlsaXR5JTJDd29ya2Zsb3clMkNjb2xsYWJvcmF0aW9uJTJDMjAyNA==" data-listing-date-sort="1716508800000" data-listing-file-modified-sort="1770903830759" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="616">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2024/git-local-ignore/index.html" class="no-external">Locally Ignoring Git Files Without Affecting Others’ .gitignore</a>
+<a href="../posts/2024/git-local-ignore/index.html" class="no-external">Locally Ignoring Git Files Without Affecting Others’ .gitignore</a>
 </h3>
 <div class="listing-categories">
 
@@ -699,12 +705,12 @@ Jun 13, 2024
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">2024</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2024/git-local-ignore/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2024/git-local-ignore/index.html" class="no-external">
 <p>How to exclude files from version control without affecting other developers’ .gitignore configuration</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2024/git-local-ignore/index.html" class="no-external">
+<a href="../posts/2024/git-local-ignore/index.html" class="no-external">
 <div class="listing-date">
 May 24, 2024
 </div>
@@ -712,10 +718,10 @@ May 24, 2024
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="10" data-categories="UiUyQ3JlcHJvZHVjaWJpbGl0eSUyQ3BhY2thZ2UlMjBtYW5hZ2VtZW50JTJDUiUyMHBhY2thZ2UlMkMyMDI0" data-listing-date-sort="1709424000000" data-listing-file-modified-sort="1770901300743" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1385">
+<div class="quarto-post image-right" data-index="10" data-categories="UiUyQ3JlcHJvZHVjaWJpbGl0eSUyQ3BhY2thZ2UlMjBtYW5hZ2VtZW50JTJDUiUyMHBhY2thZ2UlMkMyMDI0" data-listing-date-sort="1709424000000" data-listing-file-modified-sort="1770903830783" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1385">
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">Working with multiple versions of an R package</a>
+<a href="../posts/2024/r-multiple-package-versions/index.html" class="no-external">Working with multiple versions of an R package</a>
 </h3>
 <div class="listing-categories">
 
@@ -730,12 +736,12 @@ May 24, 2024
 <div class="listing-category" onclick="window.quartoListingCategory('MjAyNA=='); return false;">2024</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">
+<div class="delink listing-description"><a href="../posts/2024/r-multiple-package-versions/index.html" class="no-external">
 <p>After being dissatisfied with existing solutions, I wrote a package to do that</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/2024/r-multiple-package-versions/index.html" class="no-external">
+<a href="../posts/2024/r-multiple-package-versions/index.html" class="no-external">
 <div class="listing-date">
 Mar 3, 2024
 </div>
@@ -745,7 +751,15 @@ Mar 3, 2024
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div><div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov,
+  author = {Popov, Vencislav},
+  title = {Computational Thinking},
+  url = {https://venpopov.com/posts/},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov" class="csl-entry quarto-appendix-citeas" role="listitem">
+Popov, Vencislav. n.d. <span>“Computational Thinking.”</span> <a href="https://venpopov.com/posts/">https://venpopov.com/posts/</a>.
+</div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -1159,6 +1173,38 @@ Mar 3, 2024
     }
   });
   </script>
+<input type="hidden" id="giscus-base-theme" value="dark">
+<input type="hidden" id="giscus-alt-theme" value="light">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      if (authorPrefersDark) {
+          [baseTheme, altTheme] = [altTheme, baseTheme];
+      }
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "venpopov/venpopov.github.io";
+    script.dataset.repoId = "R_kgDOMLn9zg";
+    script.dataset.category = "Blog discussions";
+    script.dataset.categoryId = "DIC_kwDOMLn9zs4CgNPC";
+    script.dataset.mapping = "pathname";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
 </div> <!-- /content -->
 
 
