@@ -14,5 +14,5 @@ listing:
 page-layout: full
 title-block-banner: true
 aliases:
-  - posts.html
+  - /posts.html
 ---
