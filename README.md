@@ -14,13 +14,17 @@ The `utils/purge_css.sh` script will auto-install npm dependencies if `utils/nod
 
 ## How to update the website
 
-The website is generated using Quarto. After making any changes, run the following command to update the html files, check for dead links, and publish to github pages:
+The website is automatically built and deployed via GitHub Actions whenever changes are pushed to the `main` branch. See `.github/workflows/publish.yml` for details.
+
+### Local Development
+
+To preview changes locally before pushing:
 
 ``` bash
-quarto render && update_website
+quarto render
 ```
 
-`update_website` is an alias for `quarto publish gh-pages --no-prompt --no-render --no-browser` defined in .zshrc [my dotfiles](https://github.com/venpopov/.dotfiles)
+This will generate the website in the `_site/` directory. You can preview it locally by opening `_site/index.html` in your browser or by running `quarto preview`.
 
 ### Dead link checker
 
@@ -64,9 +68,9 @@ date: ""
 ```
 
 3.  Write the content of the post in the `.qmd` file
-4.  Run `quarto render` to update the website
-5.  Run `update_website` to push the changes to the server
-6.  The new post should be available at `https://venpopov.com/posts/2024/new-post/`
+4.  Commit and push the changes to the `main` branch
+5.  GitHub Actions will automatically build and deploy the website
+6.  The new post will be available at `https://venpopov.com/posts/2024/new-post/`
 
 ### Automated way
 

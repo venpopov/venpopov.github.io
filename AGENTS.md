@@ -8,14 +8,12 @@ This is a personal academic website built with Quarto, featuring publications, a
 
 ### Build and Deploy
 
-Render the website locally:
-```bash
-quarto render
-```
+The website is automatically built and deployed to GitHub Pages via GitHub Actions on every push to the `main` branch (see `.github/workflows/publish.yml`).
 
-Publish to GitHub Pages.
+For local development and preview:
 ```bash
-quarto publish gh-pages --no-prompt --no-render --no-browser
+quarto render  # Build the site locally
+quarto preview # Preview the site in your browser
 ```
 ### Working with Node.js Dependencies
 
