@@ -1,6 +1,5 @@
 ---
 title: "Open Science needs reliable infrastructure"
-subtitle: "A Postmortem on the OSF Redesign Incident"
 categories: [open science,  reproducibility,  academic publishing,  2025]
 date: "2025-11-06"
 format:

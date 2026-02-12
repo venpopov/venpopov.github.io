@@ -1,7 +1,6 @@
 ---
 title: "Locally Ignoring Git Files Without Affecting Others’ .gitignore"
-subtitle: "How to exclude files from version control without affecting other developers' .gitignore configuration"
-description: "I explain the Git config trick I use to ignore local files without touching a shared .gitignore."
+description: "How to exclude files from version control without affecting other developers' .gitignore configuration"
 categories: [ git, GitHub, reproducibility, workflow, collaboration, 2024]
 image: dontshare.png
 date: "2024-05-24"

@@ -1,7 +1,6 @@
 ---
 title: Working with multiple versions of an R package
-subtitle: After being dissatisfied with existing solutions, I wrote a package to do that
-description: "I show how I built and use a small tool to work with multiple versions of an R package for testing and comparison."
+description: After being dissatisfied with existing solutions, I wrote a package to do that
 categories: [R, reproducibility, package management, R package, 2024]
 image: juggling.png # source https://www.pexels.com/photo/a-woman-doing-juggling-8895421/
 date: "2024-03-03"

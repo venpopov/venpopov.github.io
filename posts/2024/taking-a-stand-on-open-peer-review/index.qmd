@@ -1,7 +1,6 @@
 ---
 title: "Taking a stand on open peer review"
-subtitle: "I will no longer review for journals that do not publish reviews alongside the work"
-description: "Thank you for inviting me to review this submission. I would be glad to review the manuscript if my review and the subsequent author responses are published alongside the paper, should it be accepted."
+description: "I will no longer review for journals that do not publish reviews alongside the work"
 categories: [academic publishing, peer review, open science, 2024]
 date: "2024-08-04"
 ---

@@ -1,7 +1,6 @@
 ---
 title: "Simple rules, hard problems and the emergence of meaning in mathematics"
-subtitle: ""
-description: "What are mathematical objects? What does it mean for them to have properties, and what does it feel like to search for structure in a system when you don't yet have the right concepts to see it? What does it mean to understand something that by some accounts doesn't really exist?"
+description: "What are mathematical objects? And what does it mean to understand something that by some accounts doesn't really exist?"
 categories: [math,  philosophy,  emergence,  essay,  meaning,  structure,  2026]
 date: "2026-02-11"
 ---

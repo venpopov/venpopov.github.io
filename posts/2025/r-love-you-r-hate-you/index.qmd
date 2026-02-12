@@ -1,6 +1,6 @@
 ---
 title: "R love you, R hate you"
-description: "I've grown to loveR despite many of its quirks. Perhaps this is just Stockholm Syndrome, as I joked in my 'Intro to programming' class recently, though I genuinely enjoy the language and its functional programming roots. Yet..."
+description: "I've grown to loveR despite many of its quirks. Perhaps this is just Stockholm Syndrome."
 categories: [R,  programming,  2025]
 date: "2025-02-21"
 execute:
