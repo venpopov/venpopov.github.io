@@ -4,8 +4,7 @@ on:
   pull_request:
     branches: main
 
-env:
-  RENV_CONFIG_REPOS_OVERRIDE: ${{ env.RSPM }}
+
 
 name: Render and Publish
 
@@ -37,3 +36,4 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
+          RENV_CONFIG_REPOS_OVERRIDE: ${{ env.RSPM }}
