@@ -1,0 +1,17 @@
+/*-- scss:rules --*/
+/* Light theme overrides */
+
+body.quarto-light code:not(pre code) {
+  background-color: #f5f5f5 !important;
+  color: #c7254e !important;
+  padding: 2px 4px !important;
+  border-radius: 3px !important;
+}
+
+.quarto-post {
+  background-color: #F8F9FA !important;
+}
+
+.quarto-post:hover {
+  background-color: #f2f2f2 !important;
+}

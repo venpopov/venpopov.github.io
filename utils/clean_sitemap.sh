@@ -1,5 +1,9 @@
 #!/bin/bash
 # Clean up sitemap URLs to use canonical (clean) URLs instead of index.html
+if [[ -z "$QUARTO_PROJECT_RENDER_ALL" ]]; then
+    echo "Skipping sitemap cleanup; QUARTO_PROJECT_RENDER_ALL is not set."
+    exit 0
+fi
 
 # Get the directory where this script is located (utils/)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

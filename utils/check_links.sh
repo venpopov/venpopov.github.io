@@ -9,6 +9,11 @@
 #   ./utils/check_links.sh --pipeline  # Run as part of build pipeline (prompts on errors)
 #   ./utils/check_links.sh --skip      # Skip the check and proceed
 
+if [[ -z "$QUARTO_PROJECT_RENDER_ALL" ]]; then
+    echo "Skipping link check; QUARTO_PROJECT_RENDER_ALL is not set."
+    exit 0
+fi
+
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

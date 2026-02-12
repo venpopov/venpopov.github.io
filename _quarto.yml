@@ -46,9 +46,8 @@ website:
 format:
   html:
     theme: 
-      dark: [cosmo, utils/theme-dark.scss]
-      light: cosmo
-    css: utils/styles.css
+      dark: [cosmo, utils/theme-shared.scss, utils/theme-dark.scss]
+      light: [cosmo, utils/theme-shared.scss, utils/theme-light.scss]
     toc: true
     highlight-style: monokai
     canonical-url: true

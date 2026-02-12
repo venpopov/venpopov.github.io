@@ -1,0 +1,87 @@
+/*-- scss:rules --*/
+/* Shared styles for light and dark themes */
+
+.navbar-logo {
+  max-height: 50px;
+  padding-right: 20px;
+}
+
+.quarto-layout-row {
+  padding-bottom: 10px;
+}
+
+/* reduce the column width fo the metadata field for the blog listing */
+div.quarto-post .metadata {
+  flex-basis: 10% !important;
+}
+
+/* remove line between listing items */
+div.quarto-post {
+  border-bottom: none !important;
+}
+
+@media(min-width: 992px) {
+  body.fullcontent:not(.floating):not(.docked) .page-columns {
+    display: grid;
+    gap: 0;
+    grid-template-columns: [screen-start] 1.5em [screen-start-inset] 5fr [page-start page-start-inset] 35px [body-start-outset] 35px [body-start] 1.5em [body-content-start] minmax(500px, calc(1200px - 3em)) [body-content-end] 1.5em [body-end] 35px [body-end-outset] 35px [page-end-inset page-end] 5fr [screen-end-inset] 1.5em !important;
+  }
+}
+
+p {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+  overflow: visible !important;
+  position: relative;
+  letter-spacing: 0.025em;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol !important;
+}
+
+.listing-title {
+  margin-bottom: .5em !important;
+}
+
+.quarto-post {
+  border-radius: 1rem !important;
+  margin-bottom: 1em !important;
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
+  padding-left: 1em !important;
+  padding-right: 1em !important;
+}
+
+.quarto-banner-title-block {
+  margin-top: 0em !important;
+}
+
+.listing-subtitle {
+  display: none;
+}
+
+.metadata {
+  font-size: 0.9em !important;
+}
+
+div.sourceCode {
+  padding: .5em !important;
+  border: 1px #75AADB !important;
+  border-radius: 0.5rem !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+figcaption {
+  font-style: italic;
+}
+
+.callout-header {
+  margin-bottom: 0.5rem !important;
+}
+
+div.description {
+  margin-top: .75em !important;
+}

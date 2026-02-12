@@ -34,3 +34,54 @@ body.quarto-light code:not(pre code) {
   padding: 2px 4px !important;
   border-radius: 3px !important;
 }
+
+p {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol;
+  overflow: visible !important;
+  position: relative;
+  letter-spacing: 0.025em;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica Neue, Helvetica, Roboto, Arial, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol !important;
+}
+
+.listing-title {
+  margin-bottom: .5em !important;
+}
+
+.quarto-post {
+  border-radius: 1rem !important;
+  margin-bottom: 1em !important;
+  padding-top: 1em !important;
+  padding-bottom: 1em !important;
+  padding-left: 1em !important;
+  padding-right: 1em !important;
+}
+
+.quarto-banner-title-block {
+  margin-top: 0em !important;
+}
+
+.listing-subtitle {
+  display: none;
+}
+
+
+.metadata {
+  font-size: 0.9em !important;
+}
+
+div.sourceCode {
+  padding: .5em !important;
+  border: 1px #75AADB !important;
+  border-radius: 0.5rem !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+figcaption {
+  font-style: italic;
+}
