@@ -17,7 +17,204 @@
 <width>144</width>
 </image>
 <generator>quarto-1.8.27</generator>
-<lastBuildDate>Wed, 11 Feb 2026 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 20 Feb 2026 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Are Cognitive Representations Propositional, Analog, or Something Else?</title>
+  <dc:creator>Vencislav Popov</dc:creator>
+  <link>https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This post was motivated by a question from a student after my introductory cognitive psychology lecture. I wrote it as a short, self-contained explainer and then realized it would also work well as a blog post.</p>
+</div>
+</div>
+<p>One of the oldest and most persistent questions in cognitive science is deceptively simple:</p>
+<p><strong>What form do mental representations take?</strong></p>
+<p>Are thoughts stored as symbolic propositions, like sentences in a mental language? Are they analog, resembling the structure of perception and action? Or are they something else entirely, patterns that do not neatly fit either category?</p>
+<p>This question sits at the heart of debates between symbolic theories of cognition, production systems, and connectionist (neural network) models.</p>
+<p>In this post, we will look at the <em>same basic cognitive problems</em> through three different lenses. Each lens makes different assumptions about what counts as a representation and how cognition operates on it. The goal is not to declare a winner, but to clarify what each approach is actually committing to.</p>
+<p>To do that, it helps to step back, look briefly at some history, and ground the discussion in a few concrete toy examples.</p>
+<section id="a-motivating-toy-problem-deciding-whether-two-things-are-the-same" class="level2">
+<h2 class="anchored" data-anchor-id="a-motivating-toy-problem-deciding-whether-two-things-are-the-same">A motivating toy problem: deciding whether two things are the same</h2>
+<p>Consider a very simple task: you see two shapes on a screen and must decide whether they are <em>the same</em> or <em>different</em>.</p>
+<p>At first glance, this looks trivial. But it turns out to be an excellent test case for thinking about representations.</p>
+<ul>
+<li>A <strong>symbolic model</strong> might represent the shapes as discrete descriptions (e.g., <code>shape = square</code>, <code>color = red</code>) and apply an explicit rule: <em>IF description(A) = description(B), THEN respond SAME</em>.</li>
+<li>An <strong>analog model</strong> might represent each shape as a point in a continuous feature space (size, orientation, curvature) and compute a distance between them.</li>
+<li>A <strong>connectionist model</strong> might take raw pixel inputs, learn internal representations through exposure, and produce a SAME or DIFFERENT response without ever explicitly representing the rule “compare features.”</li>
+</ul>
+<p>All three approaches can solve the task, but they do so by making very different assumptions about what is represented and how.</p>
+</section>
+<section id="the-classical-view-cognition-as-symbolic-computation" class="level2">
+<h2 class="anchored" data-anchor-id="the-classical-view-cognition-as-symbolic-computation">The classical view: cognition as symbolic computation</h2>
+<p>Early cognitive science, emerging in the 1950s and 1960s, was strongly shaped by developments in logic, computer science, and artificial intelligence. Influential figures such as Allen Newell and Herbert A. Simon proposed that thinking is best understood as <strong>symbol manipulation</strong>.</p>
+<p>In this view:</p>
+<ul>
+<li>Mental representations are <strong>explicit symbols</strong> with internal structure.</li>
+<li>These symbols express <strong>propositional content</strong> (e.g., <em>IF goal is X AND condition Y holds, THEN do Z</em>).</li>
+<li>Cognition consists of <strong>rule-based operations</strong> over these symbols.</li>
+</ul>
+<p>Production systems, formal models built from rules that fire when their conditions are met, became a central formalism for this approach. Importantly, these theories were not meant as loose metaphors. They were intended as literal computational accounts of mental processes.</p>
+<section id="a-concrete-example-mental-arithmetic" class="level3">
+<h3 class="anchored" data-anchor-id="a-concrete-example-mental-arithmetic">A concrete example: mental arithmetic</h3>
+<p>Take mental arithmetic, such as calculating <code>23 + 48</code>.</p>
+<p>A symbolic model assumes that numbers are represented as structured symbols (digits, place values) and that cognition consists of applying learned rules (carry the one, add digits, etc.). The process is discrete, stepwise, and explicitly rule governed. There is no sense in which the representation of <code>23</code> is <em>closer</em> to <code>24</code> than to <code>99</code>. Those are simply different symbols (although you can include an explicit algorithm in the model to compute a distance based on mathematical rules, and then use that information in processing; but that is simply another set of symbolic rules).</p>
+<p>In their <em>purest</em> form, symbolic theories do <strong>not</strong> assume analog or continuous representations. Symbols are discrete, structured, and combinatorial. Logical reasoning, formal problem solving, and language were the paradigmatic examples where this framework seemed especially powerful.</p>
+</section>
+</section>
+<section id="hybrids-and-pragmatism-symbolic-systems-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="hybrids-and-pragmatism-symbolic-systems-in-practice">Hybrids and pragmatism: symbolic systems in practice</h2>
+<p>As cognitive modeling matured, it became clear that purely symbolic systems struggled with issues like learning, noise, timing, and graded behavior. Human cognition is slow, error prone, and sensitive to frequency and recency, properties that are awkward to capture with all or none rules.</p>
+<p>In response, many symbolic architectures incorporated continuous elements.</p>
+<p>A prominent example is ACT-R, which retains symbolic chunks and production rules but augments them with:</p>
+<ul>
+<li>activation levels,</li>
+<li>continuous decay and learning functions,</li>
+<li>noise and utility parameters.</li>
+</ul>
+<section id="a-concrete-example-memory-retrieval" class="level3">
+<h3 class="anchored" data-anchor-id="a-concrete-example-memory-retrieval">A concrete example: memory retrieval</h3>
+<p>In ACT-R, whether you successfully recall a fact (e.g., <em>Paris is the capital of France</em>) depends not only on whether the symbol exists, but also on its <strong>activation</strong>, which reflects how often and how recently it has been used. Retrieval is probabilistic and graded, even though the retrieved item itself is symbolic.</p>
+<p>Crucially, these quantities <strong>modulate access to symbols</strong> rather than replacing them. ACT-R is still fundamentally propositional, but it acknowledges that cognition is not cleanly binary or deterministic.</p>
+<p>This illustrates an important point: even within symbolic traditions, researchers have long recognized the need for graded, quantitative mechanisms. The real disagreement is not about whether numbers exist in the system, but about <strong>what does the representing</strong>.</p>
+<blockquote class="blockquote">
+<p><strong>Common confusions to avoid</strong></p>
+<ul>
+<li><em>Distributed</em> does <strong>not</strong> mean vague or unstructured.</li>
+<li><em>Continuous</em> does <strong>not</strong> automatically mean analog.</li>
+<li><em>Symbolic</em> does <strong>not</strong> mean rigid, static, or unrealistic.</li>
+</ul>
+<p>Much confusion in this area comes from sliding between these ideas without noticing.</p>
+</blockquote>
+</section>
+</section>
+<section id="the-connectionist-alternative-representations-as-patterns" class="level2">
+<h2 class="anchored" data-anchor-id="the-connectionist-alternative-representations-as-patterns">The connectionist alternative: representations as patterns</h2>
+<section id="a-minimal-neural-network-just-for-context" class="level3">
+<h3 class="anchored" data-anchor-id="a-minimal-neural-network-just-for-context">A minimal neural network, just for context</h3>
+<p>Before going further, it helps to have a very simple picture in mind of what people mean by a <em>neural network</em> in cognitive modeling.</p>
+<p>At its most basic, a neural network consists of simple units, artificial neurons, which aim to be a simplified version of real neurons. These units receive activation from other units. Each connection has a <strong>weight</strong> that determines how strongly activity is passed along. Units combine their inputs, apply a simple transformation (often a nonlinear one), and pass the result forward. Learning consists of gradually adjusting the weights so that the network produces better outputs for the task it is trained on.</p>
+<p><img src="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/artificial-neuron.svg" class="dark-invert img-fluid"></p>
+<p>These simple units can be organized in several layers, often labeled as:</p>
+<ul>
+<li><strong>Input units</strong>, which receive information from the environment (for example, stimulus features or pixel values).</li>
+<li><strong>Hidden units</strong>, which transform that information through weighted connections.</li>
+<li><strong>Output units</strong>, which produce a response (for example, a decision or classification).</li>
+</ul>
+<p>You can think of this schematically as:</p>
+<blockquote class="blockquote">
+<p>inputs → hidden units → outputs</p>
+</blockquote>
+<p><img src="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/nn-layers.svg" class="dark-invert img-fluid"></p>
+<p>Nothing in this basic setup specifies symbols, rules, or explicit features. Those, if they appear at all, arise from how the network is trained and what problem it is asked to solve.</p>
+<p>With that minimal picture in mind, we can return to the representational questions.</p>
+<p>Connectionist models, often called neural networks, approach the problem from a very different angle. Rather than assuming a particular representational format, they specify:</p>
+<ul>
+<li>a set of simple processing units,</li>
+<li>weighted connections between them,</li>
+<li>a learning rule,</li>
+<li>and a task or environment.</li>
+</ul>
+<p>What they <em>do not</em> specify in advance is the representational vocabulary.</p>
+<p>Instead, representations <strong>emerge</strong> through learning as patterns of activation across units. These patterns are typically:</p>
+<ul>
+<li>distributed (many units participate),</li>
+<li>graded (activation varies continuously),</li>
+<li>and context sensitive.</li>
+</ul>
+</section>
+<section id="a-concrete-example-category-learning" class="level3">
+<h3 class="anchored" data-anchor-id="a-concrete-example-category-learning">A concrete example: category learning</h3>
+<p>Imagine training a network to categorize animals as <em>birds</em> or <em>not birds</em> based on features such as wings, beaks, feathers, and flight.</p>
+<p>Early in training, the network may respond inconsistently. Over time, it develops internal activation patterns that reliably separate birds from non birds. Importantly, there may be no single unit that represents “bird.” Instead, <em>birdness</em> is encoded as a pattern across many units.</p>
+<p>From the connectionist perspective, asking whether representations are “propositional” or “analog” is often the wrong question. The more relevant question is: <em>What patterns are useful for solving the task, given the constraints of the system and its learning history?</em></p>
+</section>
+</section>
+<section id="where-is-knowledge-stored-weights-or-activations" class="level2">
+<h2 class="anchored" data-anchor-id="where-is-knowledge-stored-weights-or-activations">Where is knowledge stored: weights or activations?</h2>
+<p>A common confusion concerns where “knowledge” resides in a neural network. The answer is: <strong>in both weights and activations, but in different ways</strong>.</p>
+<ul>
+<li><strong>Weights</strong> encode <strong>persistent</strong> knowledge. They determine the space of possible representations and transformations the network can produce. One helpful way to think about weights is as storing <em>dispositions</em> or <em>potentials</em>, what the system is capable of representing.</li>
+<li><strong>Activations</strong> encode <strong>momentary representations</strong>. At any given moment, the current pattern of activity across units reflects what the system is representing or processing right now.</li>
+</ul>
+<p>An analogy: weights define the grammar of a language; activations are the sentences currently being spoken.</p>
+<p>So knowledge is not “only in the weights,” nor are activations meaningless without them. Representation arises from their interaction.</p>
+</section>
+<section id="what-do-different-layers-represent" class="level2">
+<h2 class="anchored" data-anchor-id="what-do-different-layers-represent">What do different layers represent?</h2>
+<p>Although details vary across architectures, it is useful to distinguish roles typically played by different layers:</p>
+<ul>
+<li><strong>Input units</strong> represent task relevant information from the environment. These might correspond to sensory features, stimulus dimensions, or structured encodings supplied by the modeler.</li>
+<li><strong>Hidden units</strong> develop internal representations shaped by learning. These are often the most theoretically interesting part of the network. They may reflect abstract dimensions, latent variables, or compressed structure in the task.</li>
+<li><strong>Output units</strong> represent the system’s response, choices, classifications, actions, predictions.</li>
+</ul>
+<section id="a-concrete-example-perception-to-action" class="level3">
+<h3 class="anchored" data-anchor-id="a-concrete-example-perception-to-action">A concrete example: perception to action</h3>
+<p>In a simple vision to action network, input units might encode pixel intensities, hidden units might come to represent edges or object parts, and output units might encode motor responses such as <em>grasp</em> or <em>avoid</em>. None of these representations is explicitly symbolic, but they can still support behavior that looks rule governed.</p>
+<p>None of these layers is intrinsically symbolic or analog. A network trained on logical inference may develop symbol like internal states; one trained on perception may develop smooth, metric representations. The architecture does not dictate the representational format. The task does.</p>
+</section>
+</section>
+<section id="a-crucial-unifying-insight" class="level2">
+<h2 class="anchored" data-anchor-id="a-crucial-unifying-insight">A crucial unifying insight</h2>
+<p>Modern neural networks are <strong>universal function approximators</strong>. In principle, they can implement symbolic computations just as well as continuous mappings.</p>
+<p>What distinguishes connectionist models is not what they <em>can</em> compute, but <strong>how the computations are specified</strong>:</p>
+<ul>
+<li><strong>Symbolic models</strong> rely on <strong>hand crafted representations and rules</strong> supplied by the theorist.</li>
+<li><strong>Connectionist models</strong> rely on <strong>learning</strong>, allowing representations and transformations to be discovered rather than prescribed.</li>
+</ul>
+<p>This shifts the theoretical focus. Instead of asking <em>What is the right representational format?</em>, cognitive science increasingly asks:</p>
+<blockquote class="blockquote">
+<p>How do structured representations arise from learning, constraints, and interaction with the environment?</p>
+</blockquote>
+<p>That question, rather than a strict symbolic vs.&nbsp;analog dichotomy, captures much of what is at stake in contemporary theories of cognition.</p>
+</section>
+<section id="why-this-distinction-matters" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-distinction-matters">Why this distinction matters</h2>
+<p>At an introductory level, it might seem like this debate is mostly philosophical. But it has very practical consequences.</p>
+<ul>
+<li>It affects <strong>how we design experiments</strong>. Are we testing explicit rules, similarity spaces, or learned representations?</li>
+<li>It affects <strong>how we interpret behavior</strong>. Is an error a failure of a rule, a noisy comparison, or a learned bias?</li>
+<li>It affects <strong>how we think about artificial intelligence</strong>. Modern AI systems succeed largely by learning representations rather than being given them, which brings connectionist ideas back to center stage.</li>
+</ul>
+<p>Most importantly, it affects how we think about explanation in psychology. A good cognitive theory does not just reproduce behavior. It tells us <em>what kind of internal structure</em> could plausibly give rise to that behavior.</p>
+<p>Understanding the representational commitments of different models is the first step toward making sense of that structure.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2026,
+  author = {Popov, Vencislav},
+  title = {Are {Cognitive} {Representations} {Propositional,} {Analog,}
+    or {Something} {Else?}},
+  date = {2026-02-20},
+  url = {https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2026" class="csl-entry quarto-appendix-citeas">
+Popov, Vencislav. 2026. <span>“Are Cognitive Representations
+Propositional, Analog, or Something Else?”</span> February 20, 2026. <a href="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/">https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/</a>.
+</div></div></section></div> ]]></description>
+  <category>cognitive science</category>
+  <category>explainer</category>
+  <category>2026</category>
+  <guid>https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/</guid>
+  <pubDate>Fri, 20 Feb 2026 00:00:00 GMT</pubDate>
+  <media:content url="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/images/venpopov.png" medium="image" type="image/png"/>
+</item>
 <item>
   <title>Simple rules, hard problems and the emergence of meaning in mathematics</title>
   <dc:creator>Vencislav Popov</dc:creator>

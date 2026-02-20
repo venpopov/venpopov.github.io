@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://venpopov.com/publications</loc>
-    <lastmod>2026-02-12T20:30:14.500Z</lastmod>
+    <lastmod>2026-02-20T13:15:16.547Z</lastmod>
   </url>
   <url>
     <loc>https://venpopov.com/posts/2026/simple-rules-hard-problems/</loc>
-    <lastmod>2026-02-12T20:30:14.500Z</lastmod>
+    <lastmod>2026-02-20T13:15:16.547Z</lastmod>
   </url>
   <url>
-    <loc>https://venpopov.com/posts/2025/r-love-you-r-hate-you/</loc>
-    <lastmod>2026-02-12T20:30:14.498Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2025/arto-pollo/</loc>
-    <lastmod>2026-02-12T20:30:14.496Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2024/reproducibility-is-hard/</loc>
-    <lastmod>2026-02-12T20:30:14.491Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2024/r-multiple-package-versions/</loc>
-    <lastmod>2026-02-12T20:30:14.488Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2024/git-local-ignore/</loc>
-    <lastmod>2026-02-12T20:30:14.466Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/</loc>
-    <lastmod>2026-02-12T20:30:14.401Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/CV/</loc>
-    <lastmod>2026-02-12T20:30:14.355Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2024/introducing-bmm/</loc>
-    <lastmod>2026-02-12T20:30:14.477Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</loc>
-    <lastmod>2026-02-12T20:30:14.490Z</lastmod>
-  </url>
-  <url>
-    <loc>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</loc>
-    <lastmod>2026-02-12T20:30:14.494Z</lastmod>
+    <loc>https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/</loc>
+    <lastmod>2026-02-20T13:15:16.547Z</lastmod>
   </url>
   <url>
     <loc>https://venpopov.com/posts/2025/open-science-needs-reliable-infrastructure/</loc>
-    <lastmod>2026-02-12T20:30:14.497Z</lastmod>
+    <lastmod>2026-02-20T13:15:16.544Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2024/taking-a-stand-on-open-peer-review/</loc>
+    <lastmod>2026-02-20T13:15:16.542Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2024/reduce-friction-for-creating-quarto-blog-posts/</loc>
+    <lastmod>2026-02-20T13:15:16.537Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2024/introducing-bmm/</loc>
+    <lastmod>2026-02-20T13:15:16.525Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/CV/</loc>
+    <lastmod>2026-02-20T13:15:16.398Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/</loc>
+    <lastmod>2026-02-20T13:15:16.448Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2024/git-local-ignore/</loc>
+    <lastmod>2026-02-20T13:15:16.512Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2024/r-multiple-package-versions/</loc>
+    <lastmod>2026-02-20T13:15:16.536Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2024/reproducibility-is-hard/</loc>
+    <lastmod>2026-02-20T13:15:16.538Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2025/arto-pollo/</loc>
+    <lastmod>2026-02-20T13:15:16.542Z</lastmod>
+  </url>
+  <url>
+    <loc>https://venpopov.com/posts/2025/r-love-you-r-hate-you/</loc>
+    <lastmod>2026-02-20T13:15:16.546Z</lastmod>
   </url>
   <url>
     <loc>https://venpopov.com/posts/2026/package-management-and-reproducibility-are-a-nightmare/</loc>
-    <lastmod>2026-02-12T20:30:14.500Z</lastmod>
+    <lastmod>2026-02-20T13:15:16.547Z</lastmod>
   </url>
   <url>
     <loc>https://venpopov.com/posts/</loc>
-    <lastmod>2026-02-12T20:30:14.500Z</lastmod>
+    <lastmod>2026-02-20T13:15:16.547Z</lastmod>
   </url>
 </urlset>
