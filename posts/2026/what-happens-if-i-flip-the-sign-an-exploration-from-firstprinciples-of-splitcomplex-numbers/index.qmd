@@ -1,0 +1,707 @@
+---
+title: "What Happens If I Flip the Sign? An Exploration from First-principles of Split-complex Numbers"
+subtitle: ""
+categories: [math,  exploration,  2026]
+date: "2026-04-08"
+draft: true
+---
+
+
+I have been brushing up on my abstract algebra lately. At the moment I am reading *Linear Algebra Done Right* and Aluffi’s *Algebra: Notes from the Underground*. To practice the ideas, I decided, at least for a while, not to do the book exercises. Instead, I wanted to experiment on my own—not to discover anything new, but to make the discovery myself, slowly enough to get to know the resulting structure from the inside.
+
+I started with a very small question. We all learn early on that the complex numbers arise by adjoining a formal symbol $i$ with the rule
+
+$$
+i^2=-1.
+$$
+
+So I wondered what would happen if I made one tiny change to that story. What if I adjoined a new symbol $t$ with the rule
+
+$$
+t^2=1?
+$$
+
+At first this looked like a harmless variation. It turned out not to be harmless at all. That one sign change led me, step by step, into the split-complex numbers, then into orthogonal idempotents, then into function algebras on finite sets, and finally into the subtler infinite-dimensional story where indicator functions behave like multiplicative atoms and, under the right hypotheses, even become an honest orthonormal basis.
+
+What follows is that path of discovery, cleaned up from my scratch work but still written in the order in which the structure gradually revealed itself.
+
+## 1. Starting from first principles: adjoining $t$ with $t^2=1$
+
+Take all formal expressions of the form
+
+$$
+x=u+vt,
+$$
+
+where $u,v
+\in\mathbb R$, and define addition and multiplication exactly as one would expect, using distributivity together with the single rule $t^2=1$.
+
+If
+
+$$
+x=u+vt,
+\qquad
+y=a+bt,
+$$
+
+then
+
+$$
+x+y=(u+a)+(v+b)t
+$$
+
+and
+
+$$
+xy=(u+vt)(a+bt)=ua+ubt+vat+vbt^2=(ua+vb)+(ub+va)t.
+$$
+
+So this gives a $2$-dimensional real algebra. It looks suspiciously like the complex numbers, except that the basic quadratic relation has the opposite sign. In $\mathbb C$ we impose $i^2=-1$; here we are imposing $t^2=1$.
+
+That tiny formal change turns out to alter the structure completely.
+
+## 2. Zero divisors appear immediately
+
+The first test multiplication is the obvious one:
+
+$$
+(1+t)(1-t)=1-t^2=0.
+$$
+
+So two nonzero elements multiply to zero.
+
+That already marks a decisive break from the complex numbers. In $\mathbb C$, nonzero elements never annihilate one another. Here they do, immediately. So whatever this algebra is, it is not a field. It is doing something more decomposed—something split.
+
+And once the factors $1+t$ and $1-t$ appear, it is hard not to divide them by $2$ and see what happens. Define
+
+$$
+e_+=\frac{1+t}{2},
+\qquad
+e_- = \frac{1-t}{2}.
+$$
+
+Now compute:
+
+$$
+e_+^2=\frac{(1+t)^2}{4}=\frac{1+2t+t^2}{4}=\frac{2+2t}{4}=\frac{1+t}{2}=e_+,
+$$
+
+and similarly,
+
+$$
+e_-^2=e_-.
+$$
+
+Also,
+
+$$
+e_+e_- = \frac{(1+t)(1-t)}{4}=0.
+$$
+
+And finally,
+
+$$
+e_++e_-=1,
+\qquad
+e_+-e_-=t.
+$$
+
+This is the moment when the algebra suddenly becomes transparent. The new basis elements are
+
+- idempotent: $e_\pm^2=e_\pm$,
+- orthogonal under multiplication: $e_+e_-=0$,
+- and they sum to the identity: $e_++e_-=1$.
+
+I had started with a naive sign-flip experiment, and now a remarkably rigid structure had appeared almost uninvited.
+
+## 3. Every element rewrites naturally in the idempotent basis
+
+Since
+
+$$
+1=e_+ + e_-,
+\qquad
+t=e_+ - e_-,
+$$
+
+any element
+
+$$
+x=u+vt
+$$
+
+can be rewritten as
+
+$$
+x=u(e_++e_-)+v(e_+-e_-)
+=(u+v)e_+ + (u-v)e_-.
+$$
+
+So if I define
+
+$$
+a=u+v,
+\qquad
+b=u-v,
+$$
+
+then every element takes the form
+
+$$
+x=ae_+ + be_-.
+$$
+
+This already suggests that the algebra is decomposing into two independent channels.
+
+And now multiplication diagonalizes completely. If
+
+$$
+x=ae_+ + be_-,
+\qquad
+y=ce_+ + de_-,
+$$
+
+then, using only
+
+$$
+e_+^2=e_+,
+\qquad
+e_-^2=e_-,
+\qquad
+e_+e_-=0,
+$$
+
+we get
+
+$$
+xy=(ae_+ + be_-)(ce_+ + de_-)=ace_+ + bde_-.
+$$
+
+So in these coordinates, addition and multiplication become
+
+$$
+(a,b)+(c,d)=(a+c,b+d)
+$$
+
+and
+
+$$
+(a,b)(c,d)=(ac,bd).
+$$
+
+The algebra has diagonalized itself. That was the first moment it stopped feeling like a slightly odd cousin of $\mathbb C$ and started feeling like something built to split cleanly into independent parts.
+
+## 4. What the algebra actually is
+
+At this point the abstract description becomes recognizable. The algebra I built is
+
+$$
+\mathbb R[t]/(t^2-1).
+$$
+
+Since
+
+$$
+t^2-1=(t-1)(t+1),
+$$
+
+and the two factors are coprime, the Chinese remainder theorem gives
+
+$$
+\mathbb R[t]/(t^2-1)
+\cong
+\mathbb R[t]/(t-1)\times \mathbb R[t]/(t+1)
+\cong
+\mathbb R\times\mathbb R.
+$$
+
+Concretely, the isomorphism is
+
+$$
+u+vt \longmapsto (u+v,u-v).
+$$
+
+So this strange-looking algebra is not strange at all once the right coordinates are chosen. It is simply $\mathbb R^2$ with coordinatewise multiplication.
+
+As I learned after doing the whole exploration, this is the classical algebra usually called the **[split-complex numbers](https://en.wikipedia.org/wiki/Split-complex_number?wprov=sfti1#)**, though it also goes by names such as the **hyperbolic numbers**, **double numbers**, or **perplex numbers**.
+
+So the experiment had not produced an exotic new object at all. It had backed, almost accidentally, into a classical one. That only made me want to keep going.
+
+### Inverses and zero divisors
+
+In the $(a,b)$ coordinates, inversion is immediate. The element $(a,b)$ is invertible exactly when both coordinates are nonzero, and in that case
+
+$$
+(a,b)^{-1}=\left(\frac1a,\frac1b\right).
+$$
+
+Translating this back into the $u+vt$ form gives
+
+$$
+(u+vt)^{-1}=\frac{u-vt}{u^2-v^2},
+$$
+
+provided that
+
+$$
+u^2-v^2\neq 0.
+$$
+
+So the zero divisors are precisely the elements satisfying
+
+$$
+u^2-v^2=0,
+$$
+
+that is,
+
+$$
+u=v
+\qquad \text{or} \qquad
+u=-v.
+$$
+
+Geometrically, in the $(u,v)$-plane, the singular set is the union of the two lines
+
+$$
+u=v
+\qquad \text{and} \qquad
+u=-v.
+$$
+
+This is one of the places where the familiar hyperbolic geometry of the split-complex numbers begins to peek through.
+
+### Functions act coordinatewise
+
+Once the idempotent basis is in place, another pleasant fact becomes almost automatic. For any polynomial $p$, one has
+
+$$
+p(a\operatorname{e}_+ + b \operatorname{e}_-)=p(a)\operatorname{e}_+ + p(b)\operatorname{e}_-.
+$$
+
+The reason is simple: powers never mix,
+
+$$
+(a \operatorname e_+ + b \operatorname e_-)^n = a^n \operatorname e_+ + b^n \operatorname e_-,
+$$
+
+because all cross-terms die. And whenever a function defined by a power-series converges, the same pointwise rule continues to hold.
+
+So, for example,
+
+$$
+\exp{(a \operatorname e_+ +\, b \operatorname e_-)}=\exp(a) \operatorname e_+ +\, \exp(b) \operatorname e_-.
+$$
+
+Returning to the $u+vt$ coordinates, where $a=u+v$ and $b=u-v$, this becomes
+
+$$
+\begin{aligned}
+e^{u+vt}
+&=e^{u+v} \operatorname e_+ + e^{u-v} \operatorname e_- \\
+&=e^u\bigl(e^v \operatorname e_+ + e^{-v} \operatorname e_-\bigr) \\
+&=e^u\left(\cosh v + t\sinh v\right).
+\end{aligned}
+$$
+
+This is the hyperbolic analogue of the familiar complex formula
+
+$$
+e^{x+yi}=e^x(\cos y + i\sin y).
+$$
+
+And the idempotents do something else neat as well: they isolate the two coordinates. If
+
+$$
+x=a \operatorname e_+ + b \operatorname e_-,
+$$
+
+then
+
+$$
+\operatorname e_+x=a \operatorname e_+,
+\qquad
+\operatorname e_-x= b \operatorname e_-.
+$$
+
+Likewise, for any coordinatewise-defined function $f$,
+
+$$
+\operatorname e_+f(a,b)=f(a) \operatorname e_+,
+\qquad
+\operatorname e_-f(a,b)=f(b) \operatorname e_-.
+$$
+
+So the idempotents are not just basis vectors. They are also projection operators onto the two independent channels.
+
+## 5. The right conceptual name: complete orthogonal idempotents
+
+The pair $e_+,e_-$ is not just a lucky trick. It belongs to a general pattern.
+
+A family $e_1,\dots,e_n$ in an algebra is called a **complete set of pairwise orthogonal idempotents** if
+
+$$
+e_i^2=e_i,
+\qquad
+e_ie_j=0 \text{ for } i\neq j,
+\qquad
+e_1+\cdots+e_n=1.
+$$
+
+That is exactly what happened here.
+
+This is not the same thing as an orthonormal basis in an inner-product space, because the orthogonality here is multiplicative rather than metric. But the analogy is strong. An orthonormal basis diagonalizes an inner product; a complete set of orthogonal idempotents diagonalizes multiplication.
+
+The formulas even rhyme:
+
+$$
+\langle v_i,v_j\rangle = \delta_{ij}
+$$
+
+versus
+
+$$
+e_ie_j=\delta_{ij}e_i.
+$$
+
+That was one of the most satisfying moments in the exploration: this basis felt like an orthogonal basis, but for algebra itself.
+
+## 6. The surprise hiding underneath: this is really a function algebra
+
+The coordinatewise multiplication law suggested a different interpretation. Consider the two-point set
+
+$$
+S=\{+,-\}.
+$$
+
+The algebra of real-valued functions on $S$ is just
+
+$$
+\mathbb R^S \cong \mathbb R\times\mathbb R,
+$$
+
+with pointwise addition and multiplication.
+
+Now take the two singleton indicators
+
+$$
+\delta_+ := \mathbf 1_{\{+\}},
+\qquad
+\delta_- := \mathbf 1_{\{-\}}.
+$$
+
+They satisfy
+
+$$
+\delta_+^2=\delta_+,
+\qquad
+\delta_-^2=\delta_-,
+$$
+
+$$
+\delta_+\delta_-=0,
+\qquad
+\delta_+ + \delta_- = 1.
+$$
+
+So the basis $e_+,e_-$ is doing exactly what the indicator basis does in a two-point function algebra.
+
+This was the point where the experiment took a turn I had not anticipated. It was the first real “oh!” moment for me. I had not merely found a convenient basis for a funny number system. I had stumbled into the algebra of functions on a finite set.
+
+And once that interpretation appears, the general pattern is hard to miss. For any finite set $S$ and any field $F$, the algebra
+
+$$
+F^S
+$$
+
+of all $F$-valued functions on $S$ has a canonical basis given by the singleton indicators
+
+$$
+\delta_s := \mathbf 1_{\{s\}}, \qquad s\in S.
+$$
+
+These satisfy
+
+$$
+\delta_s^2=\delta_s,
+\qquad
+\delta_s\delta_t=0 \text{ for } s\neq t,
+\qquad
+\sum_{s\in S}\delta_s=1.
+$$
+
+Every function expands as
+
+$$
+f=\sum_{s\in S} f(s)\,\delta_s,
+$$
+
+and multiplication is pointwise:
+
+$$
+(fg)(s)=f(s)g(s).
+$$
+
+And so is addition:
+
+$$
+(f+g)(s)=f(s)+g(s).
+$$
+
+So the phenomenon I had rediscovered from the single relation $t^2=1$ was not a special trick at all. It was the smallest nontrivial example of a general principle:
+
+> Function algebras on finite sets come with a canonical multiplicatively orthogonal basis of idempotents.
+
+Even better, the coefficients in that basis are not mysterious. They are just the function values. Multiplying by one of the basis idempotents isolates a single coordinate:
+
+$$
+\delta_s f = f(s)\,\delta_s.
+$$
+
+So the same objects play two roles at once: they are the atomic basis vectors, and they are the algebraic devices that pick out individual coordinates.
+
+In retrospect that makes the original split-complex discovery feel even cleaner. The elements $e_+$ and $e_-$ were not merely a convenient change of basis. They were the two point-masses on a two-point space, and multiplication had become pointwise multiplication because the algebra had quietly turned into the algebra of functions on that space.
+
+## 7. Pushing the original experiment: what if $t^n=1$?
+
+At that point it was irresistible to ask for the next step. If adjoining $t$ with $t^2=1$ produces a two-point function algebra, what happens if one adjoins a formal symbol satisfying
+
+$$
+t^n=1?
+$$
+
+The resulting algebra is
+
+$$
+A_n = F[t]/(t^n-1).
+$$
+
+Before even factoring the polynomial, one structural feature jumps out. The residue classes
+
+$$
+1,t,t^2,\dots,t^{n-1}
+$$
+
+multiply according to the rule
+
+$$
+t^a t^b = t^{a+b \, \mod n}.
+$$
+
+So these powers of $t$ form a cyclic multiplicative group of order $n$, isomorphic to the additive group $(\mathbb Z/n\mathbb Z,+)$. Once linear combinations are allowed, the experiment has quietly moved from a cyclic group to its group algebra. The basis
+
+$$
+1,t,t^2,\dots,t^{n-1}
+$$
+
+is therefore not just a convenient spanning set. It is the natural basis coming from the group elements themselves.
+
+At first I half-expected some neat $n$-fold real splitting. The real answer depends entirely on how the polynomial $t^n-1$ factors over the base field.
+
+### Over $\mathbb C$
+
+Over the complex numbers,
+
+$$
+t^n-1=\prod_{k=0}^{n-1}(t-\omega^k),
+\qquad
+\omega=e^{2\pi i/n},
+$$
+
+and the roots are all distinct. So one gets
+
+$$
+\mathbb C[t]/(t^n-1)\cong \mathbb C^n.
+$$
+
+Concretely,
+
+$$
+f(t) \longmapsto \bigl(f(1),f(\omega),f(\omega^2),\dots,f(\omega^{n-1})\bigr).
+$$
+
+So over $\mathbb C$, the quotient really is the algebra of functions on the finite set of $n$th roots of unity.
+
+This was the point where something I had been feeling only vaguely snapped into focus. The roots of unity are not, by themselves, “the basis” of $\mathbb C^n$. Rather, they index one natural coordinate system: evaluation at the $n$ points $1,\omega,\dots,\omega^{n-1}$. 
+
+### Over $\mathbb R$
+
+Over the reals, the picture is only partly split. Real roots contribute one-dimensional real factors, while nonreal roots occur in complex-conjugate pairs and produce quadratic irreducible factors. As real algebras this gives
+
+- if $n$ is odd,
+  $$
+  \mathbb R[t]/(t^n-1)\cong \mathbb R\times \mathbb C^{(n-1)/2},
+  $$
+- if $n$ is even,
+  $$
+  \mathbb R[t]/(t^n-1)\cong \mathbb R\times \mathbb R\times \mathbb C^{(n-2)/2}.
+  $$
+
+So the perfectly real splitting into independent one-dimensional axes is a special luxury of the case $n=2$.
+
+## 8. The higher idempotents and the Fourier change of basis
+
+Over $\mathbb C[t]/(t^n-1)$ there is a direct analogue of the pair $e_+,e_-$.
+
+Let $\omega=e^{2\pi i/n}$ and define, for $j=0,1,\dots,n-1$,
+
+$$
+e_j=\frac1n\sum_{m=0}^{n-1} \omega^{-jm} t^m.
+$$
+
+These are the Fourier idempotents. They satisfy
+
+$$
+e_j^2=e_j,
+\qquad
+e_je_k=0 \text{ for } j\neq k,
+\qquad
+\sum_{j=0}^{n-1} e_j=1.
+$$
+
+So they form a complete set of orthogonal idempotents.
+
+Under the isomorphism with $\mathbb C^n$, each $e_j$ becomes the function that is $1$ at $\omega^j$ and $0$ at all the other roots. In other words, each $e_j$ is just a singleton indicator in disguise. Once again the algebra has turned into a finite function algebra, and once again the distinguished basis is the atomic one.
+
+But now there is an extra layer of structure. The change of basis is explicit in both directions:
+
+$$
+e_j=\frac1n\sum_{m=0}^{n-1} \omega^{-jm} t^m,
+$$
+
+and conversely,
+
+$$
+t^m=\sum_{j=0}^{n-1}\omega^{jm} e_j.
+$$
+
+So if $u=(u_0,\dots,u_{n-1})^\top$ is the coordinate vector in the power basis $\{1,t,\dots,t^{n-1}\}$ and $a=(a_0,\dots,a_{n-1})^\top$ is the coordinate vector in the idempotent basis $\{e_0,\dots,e_{n-1}\}$, then
+
+$$
+u = Wa,
+\qquad
+a=\frac1n\overline{W}\,u,
+$$
+
+where
+
+$$
+W_{mj}=\omega^{mj}.
+$$
+
+That is exactly the discrete Fourier transform matrix and its inverse, up to the usual normalization. If one rescales by $1/\sqrt n$, one gets the standard unitary DFT matrix.
+
+This was one of my favorite moments in the whole exploration. I had not just rediscovered a family of orthogonal idempotents. I had backed into the DFT itself: it is the linear change of coordinates between the basis coming from the cyclic group elements and the basis coming from point masses on the corresponding finite function algebra.
+
+There is also a clean group-theoretic way to say the same thing. The powers $t^m$ are indexed by the cyclic group $C_n\cong \mathbb Z/n\mathbb Z$. The functions
+
+$$
+\chi_m(k)=\omega^{mk}
+$$
+
+are its characters. The formulas above are precisely the Fourier transform and Fourier inversion for that finite abelian group.
+
+## 9. One last extension: infinite sets
+
+The same picture survives for an arbitrary, potentially infinite, set $S$, but now one has to distinguish between a pointwise decomposition and a genuine Hamel-basis expansion. We now ignore the original motivation for $t^n = 1$ and work directly with the indicators.
+
+Consider the algebra
+
+$$
+F^S
+$$
+
+of all functions $f:S\to F$.
+
+The singleton indicators still exist:
+
+$$
+\delta_s := \mathbf 1_{\{s\}}, \qquad s\in S.
+$$
+
+They still satisfy
+
+$$
+\delta_s^2=\delta_s,
+\qquad
+\delta_s\delta_t=0 \text{ for } s\neq t.
+$$
+
+And every function still has the pointwise decomposition
+
+$$
+f(u)=\sum_{s\in S} f(s)\,\delta_s(u)
+\qquad (u\in S),
+$$
+
+because at a given point $u$, exactly one term survives: the one with $s=u$.
+
+But if $S$ is infinite, that does **not** make the family $\{\delta_s\}_{s\in S}$ a Hamel basis of all of $F^S$, because Hamel bases allow only finite linear combinations. What we really have is an atomic product decomposition
+
+$$
+F^S \cong \prod_{s\in S} F,
+$$
+
+and the indicator family records those coordinates pointwise.
+
+For the subspace of finitely supported functions,
+
+$$
+F^{(S)},
+$$
+
+the story does become literally basis-theoretic: the singleton indicators are a genuine basis.
+
+If $|S|=|\mathbb R| = |\mathbb C| = 2^{\aleph_0}$, one may also choose a bijection
+
+$$
+T:\mathbb R \to S
+$$
+
+and relabel the singleton indicators by real or complex numbers:
+
+$$
+\delta_x := \mathbf 1_{\{T(x)\}}, \qquad x\in\mathbb R \text{ or } \mathbb C.
+$$
+
+That changes only the labels, not the structure. At that stage the role of $\mathbb R$ is purely as an index set; no topology, order, or measure has entered yet.
+
+## 10. Under square summability, an honest orthonormal basis
+
+The final refinement appears when one passes from all functions on $S$ to square-summable ones. With counting measure, this gives the Hilbert space
+
+$$
+\ell^2(S).
+$$
+
+Now the singleton indicators really do form an orthonormal basis:
+
+$$
+\langle \delta_s,\delta_t\rangle = \delta_{s,t},
+$$
+
+with $\delta_{s,t}$ the usual Kronecker delta. And every $f\in \ell^2(S)$ has the expansion
+
+$$
+f = \sum_{s\in S} f(s) \, \delta_s
+$$
+
+with convergence in the $\ell^2$ norm.
+
+So in this setting the analogy becomes exact. The same family that serves as multiplicative atoms in the algebra $F^S$ also serves as orthonormal coordinates in the Hilbert space $\ell^2(S)$.
+
+I liked that as an ending to the exploration. The basis first appeared as an algebraic curiosity inside the split-complex numbers, and only later revealed itself as something that also belongs naturally to Hilbert-space geometry.
+
+## 11. Looking back
+
+Seen from the end, the thread is surprisingly clean. A single sign flip produced zero divisors; the zero divisors suggested the factors $1+t$ and $1-t$; those suggested idempotents; the idempotents diagonalized multiplication; diagonalized multiplication exposed a direct product; and the direct product turned out to be the function algebra on a two-point set. From there the finite-set picture, the cyclic-group generalization, and the Fourier change of basis follow almost inevitably. The infinite case then appears as a final extension, with the same indicator family surviving pointwise and becoming a genuine orthonormal basis once one passes to $\ell^2(S)$.
+
+So the deeper principle hiding inside the experiment seems to be this:
+
+> Whenever an algebra splits into orthogonal idempotent pieces, it begins to behave like a function algebra on a set of mutually independent points.
+
+That is why the basis felt so natural. It was not merely convenient. It was the algebraic analogue of decomposing a space into disjoint atoms.
+
+And that, for me, is one of the pleasures of returning to old mathematics seriously: not just remembering the answer, but watching the answer reveal the structure that was already waiting inside the first small question.
+
+None of this is new mathematics. But starting from the tiny prompt “what if $t^2=1$?” and following the consequences by hand made the web of ideas feel unusually vivid to me. That was reason enough to keep going.

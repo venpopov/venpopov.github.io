@@ -1,0 +1,295 @@
+---
+title: "Split-Complex Visualizations Test"
+format: html
+execute:
+  echo: false
+draft: true
+---
+
+<style>
+.cell-output-display,
+.cell,
+div.sourceCode,
+div.column {
+  overflow: visible !important;
+}
+</style>
+
+## 1. The Singular Set and Zero Divisors
+
+This visualization plots the split-complex plane. The blue curves represent the "unit circle" hyperbola $u^2 - v^2 = 1$, and the red curves represent $u^2 - v^2 = -1$. The diagonal lines are the zero divisors $u = \pm v$. Drag the point to explore how the invariant norm $u^2 - v^2$ changes in real time, collapsing to zero as the point approaches the diagonals.
+
+```{ojs}
+mutable point = ({u: 1.5, v: 0.5})
+
+domainVals = Array.from({length: 101}, (_, i) => -5 + i * 0.1)
+
+chart1 = {
+  const plot = Plot.plot({
+    grid: true,
+    aspectRatio: 1,
+    x: {domain: [-5, 5], label: "u (Real)"},
+    y: {domain: [-5, 5], label: "v (t)"},
+    marks: [
+      Plot.line(domainVals, {x: y => Math.sqrt(1 + y*y), y: y => y, stroke: "#3b82f6"}),
+      Plot.line(domainVals, {x: y => -Math.sqrt(1 + y*y), y: y => y, stroke: "#3b82f6"}),
+      Plot.line(domainVals, {x: x => x, y: x => Math.sqrt(1 + x*x), stroke: "#ef4444"}),
+      Plot.line(domainVals, {x: x => x, y: x => -Math.sqrt(1 + x*x), stroke: "#ef4444"}),
+      Plot.ruleY([0]),
+      Plot.ruleX([0]),
+      Plot.line([[-5, -5], [5, 5]], {stroke: "#9ca3af", strokeDasharray: "4"}),
+      Plot.line([[-5, 5], [5, -5]], {stroke: "#9ca3af", strokeDasharray: "4"}),
+      Plot.dot([point], {x: "u", y: "v", fill: "black", r: 6}),
+      Plot.text([point], {
+        x: "u", y: "v",
+        text: d => `u = ${d.u.toFixed(1)}, v = ${d.v.toFixed(1)}  |  Norm = ${(d.u*d.u - d.v*d.v).toFixed(2)}`,
+        dx: 10, dy: -10, textAnchor: "start"
+      })
+    ]
+  });
+
+  const sx = plot.scale("x");
+  const sy = plot.scale("y");
+  const xScale = d3.scaleLinear().domain(sx.domain).range(sx.range);
+  const yScale = d3.scaleLinear().domain(sy.domain).range(sy.range);
+
+  const labelGroup = d3.select(plot).select("[aria-label='text']");
+  const label = labelGroup.select("text");
+  let startCx, startCy;
+
+  d3.select(plot).selectAll("circle")
+    .style("cursor", "grab")
+    .call(d3.drag()
+      .on("start", function() {
+        d3.select(this).style("cursor", "grabbing");
+        startCx = +d3.select(this).attr("cx");
+        startCy = +d3.select(this).attr("cy");
+      })
+      .on("drag", function(event) {
+        const [px, py] = d3.pointer(event, plot);
+        const u = Math.max(-5, Math.min(5, Math.round(xScale.invert(px) * 10) / 10));
+        const v = Math.max(-5, Math.min(5, Math.round(yScale.invert(py) * 10) / 10));
+        const newCx = xScale(u);
+        const newCy = yScale(v);
+        d3.select(this).attr("cx", newCx).attr("cy", newCy);
+        if (!labelGroup.empty()) {
+          labelGroup.attr("transform", `translate(${newCx - startCx},${newCy - startCy})`);
+          label.text(`u = ${u.toFixed(1)}, v = ${v.toFixed(1)}  |  Norm = ${(u*u - v*v).toFixed(2)}`);
+        }
+      })
+      .on("end", function(event) {
+        d3.select(this).style("cursor", "grab");
+        const [px, py] = d3.pointer(event, plot);
+        const u = Math.max(-5, Math.min(5, Math.round(xScale.invert(px) * 10) / 10));
+        const v = Math.max(-5, Math.min(5, Math.round(yScale.invert(py) * 10) / 10));
+        mutable point = {u, v};
+      })
+    );
+
+  return plot;
+}
+```
+
+---
+
+## 2. Idempotent Projections
+
+This shows how a split-complex number $u + vt$ (black arrow) decomposes in the idempotent basis: $\color{#10b981}{a \cdot e_+}$ $+$ $\color{#8b5cf6}{b \cdot e_-}$, where $\color{#10b981}{a = u + v}$ is the projection onto the $e_+$ diagonal ($u = v$) and $\color{#8b5cf6}{b = u - v}$ is the projection onto the $e_-$ diagonal ($u = -v$). In these coordinates, multiplication is purely element-wise.
+
+```{ojs}
+viewof vec = Inputs.form({
+  u: Inputs.range([-4, 4], {value: 2, step: 0.1, label: "u"}),
+  v: Inputs.range([-4, 4], {value: 1, step: 0.1, label: "v"})
+})
+```
+
+```{ojs}
+basisData = {
+  const a = vec.u + vec.v;
+  const b = vec.u - vec.v;
+  return {a, b};
+}
+```
+
+```{ojs}
+{
+  const vSign = vec.v >= 0 ? "+" : "-";
+  const vAbs = Math.abs(vec.v).toFixed(1);
+  const bSign = basisData.b >= 0 ? "+" : "-";
+  const bAbs = Math.abs(basisData.b).toFixed(1);
+
+  const formula = tex`${vec.u.toFixed(1)} ${vSign} ${vAbs}\,t \;=\; \color{#10b981}{${basisData.a.toFixed(1)}\cdot e_+} \;${bSign}\; \color{#8b5cf6}{${bAbs}\cdot e_-}`;
+
+  const plot = Plot.plot({
+    grid: true,
+    aspectRatio: 1,
+    x: {domain: [-3, 3], label: "u"},
+    y: {domain: [-3, 3], label: "v"},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.ruleX([0]),
+      Plot.line([[-3, -3], [3, 3]], {stroke: "#10b981", strokeWidth: 1}), 
+      Plot.line([[-3, 3], [3, -3]], {stroke: "#8b5cf6", strokeWidth: 1}),
+      Plot.arrow([[0, 0]], {x1: 0, y1: 0, x2: basisData.a/2, y2: basisData.a/2, stroke: "#10b981", strokeWidth: 3}),
+      Plot.arrow([[0, 0]], {x1: 0, y1: 0, x2: basisData.b/2, y2: -basisData.b/2, stroke: "#8b5cf6", strokeWidth: 3}),
+      Plot.arrow([[0, 0]], {x1: 0, y1: 0, x2: vec.u, y2: vec.v, stroke: "black", strokeWidth: 3}),
+      Plot.line([[basisData.a/2, basisData.a/2], [vec.u, vec.v]], {stroke: "gray", strokeDasharray: "4"}),
+      Plot.line([[basisData.b/2, -basisData.b/2], [vec.u, vec.v]], {stroke: "gray", strokeDasharray: "4"}),
+      Plot.text([{x: basisData.a/2, y: basisData.a/2}], {
+        x: "x", y: "y",
+        text: [`a = ${basisData.a.toFixed(1)}`],
+        dx: 12, dy: -8, fill: "#10b981", fontWeight: "bold", fontSize: 13
+      }),
+      Plot.text([{x: basisData.b/2, y: -basisData.b/2}], {
+        x: "x", y: "y",
+        text: [`b = ${basisData.b.toFixed(1)}`],
+        dx: 12, dy: 8, fill: "#8b5cf6", fontWeight: "bold", fontSize: 13
+      })
+    ]
+  });
+
+  return html`<div style="text-align: center; margin-bottom: 12px; font-size: 1.15em;">${formula}</div>${plot}`;
+}
+```
+
+The following examples show how specific elements decompose. Note how $e_+$ and $e_-$ each live entirely on their own diagonal:
+
+```{ojs}
+decompPlot = (u, v) => {
+  const a = u + v;
+  const b = u - v;
+  const marks = [
+    Plot.ruleY([0]),
+    Plot.ruleX([0]),
+    Plot.line([[-1.5, -1.5], [1.5, 1.5]], {stroke: "#10b981", strokeWidth: 1}),
+    Plot.line([[-1.5, 1.5], [1.5, -1.5]], {stroke: "#8b5cf6", strokeWidth: 1})
+  ];
+  if (Math.abs(a) > 0.01)
+    marks.push(Plot.arrow([[0, 0]], {x1: 0, y1: 0, x2: a/2, y2: a/2, stroke: "#10b981", strokeWidth: 3}));
+  if (Math.abs(b) > 0.01)
+    marks.push(Plot.arrow([[0, 0]], {x1: 0, y1: 0, x2: b/2, y2: -b/2, stroke: "#8b5cf6", strokeWidth: 3}));
+  marks.push(Plot.arrow([[0, 0]], {x1: 0, y1: 0, x2: u, y2: v, stroke: "black", strokeWidth: 3}));
+  if (Math.abs(a) > 0.01 && Math.abs(b) > 0.01) {
+    marks.push(Plot.line([[a/2, a/2], [u, v]], {stroke: "gray", strokeDasharray: "4"}));
+    marks.push(Plot.line([[b/2, -b/2], [u, v]], {stroke: "gray", strokeDasharray: "4"}));
+  }
+  return Plot.plot({
+    grid: true,
+    aspectRatio: 1,
+    width: 260,
+    x: {domain: [-1.5, 1.5], label: "u"},
+    y: {domain: [-1.5, 1.5], label: "v"},
+    marks
+  });
+}
+```
+
+```{ojs}
+html`<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+  <figure style="margin: 0; text-align: center;">
+    ${decompPlot(0.5, 0.5)}
+    <figcaption>${tex`e_+ = \color{#10b981}{1 \cdot e_+} + \color{#8b5cf6}{0 \cdot e_-}`}</figcaption>
+  </figure>
+  <figure style="margin: 0; text-align: center;">
+    ${decompPlot(0.5, -0.5)}
+    <figcaption>${tex`e_- = \color{#10b981}{0 \cdot e_+} + \color{#8b5cf6}{1 \cdot e_-}`}</figcaption>
+  </figure>
+  <figure style="margin: 0; text-align: center;">
+    ${decompPlot(1, 0)}
+    <figcaption>${tex`1 = \color{#10b981}{1 \cdot e_+} + \color{#8b5cf6}{1 \cdot e_-}`}</figcaption>
+  </figure>
+  <figure style="margin: 0; text-align: center;">
+    ${decompPlot(0, 1)}
+    <figcaption>${tex`t = \color{#10b981}{1 \cdot e_+} + \color{#8b5cf6}{({-1}) \cdot e_-}`}</figcaption>
+  </figure>
+</div>`
+```
+
+
+## 3. Circular vs. Hyperbolic Euler's Formula
+
+A side-by-side comparison illustrating $e^{i\theta} = \cos\theta + i\sin\theta$ and its hyperbolic equivalent $e^{vt} = \cosh v + t\sinh v$. A single shared parameter controls both points, highlighting the geometric mapping of the exponential function in standard $\mathbb{C}$ versus split-complex numbers.
+
+```{ojs}
+viewof param = Inputs.range([-2.5, 2.5], {value: 1, step: 0.05, label: "Parameter (Angle / v)"})
+
+circleData = Array.from({length: 100}, (_, i) => {
+  const t = -2.5 + (i/99)*5;
+  return {x: Math.cos(t), y: Math.sin(t)};
+})
+
+hyperbolaData = Array.from({length: 100}, (_, i) => {
+  const t = -2.5 + (i/99)*5;
+  return {x: Math.cosh(t), y: Math.sinh(t)};
+})
+
+html`<div style="display: flex; gap: 20px; flex-wrap: wrap;">
+  ${Plot.plot({
+    width: 350,
+    height: 350,
+    x: {domain: [-2, 2], label: "Real"},
+    y: {domain: [-2, 2], label: "Imaginary"},
+    marks: [
+      Plot.ruleY([0]), Plot.ruleX([0]),
+      Plot.line(circleData, {x: "x", y: "y", stroke: "gray"}),
+      Plot.dot([{x: Math.cos(param), y: Math.sin(param)}], {x: "x", y: "y", fill: "#3b82f6", r: 6})
+    ]
+  })}
+  ${Plot.plot({
+    width: 350,
+    height: 350,
+    x: {domain: [-6, 6], label: "1"},
+    y: {domain: [-6, 6], label: "t"},
+    marks: [
+      Plot.ruleY([0]), Plot.ruleX([0]),
+      Plot.line(hyperbolaData, {x: "x", y: "y", stroke: "gray"}),
+      Plot.dot([{x: Math.cosh(param), y: Math.sinh(param)}], {x: "x", y: "y", fill: "#ef4444", r: 6})
+    ]
+  })}
+</div>`
+```
+
+---
+
+## 4. Fourier Idempotents (n=5)
+
+This simulates the term-by-term vector addition for the higher idempotents $e_j$. Adjusting the target index $j$ and the evaluation point index $k$ shows how the vectors map algebraically. When $j = k$, the sum exhibits perfect constructive interference along the real axis to equal $1$. Otherwise, it loops perfectly to $0$.
+
+```{ojs}
+viewof fourierParams = Inputs.form({
+  j: Inputs.range([0, 4], {value: 0, step: 1, label: "Target Idempotent Index (j)"}),
+  k: Inputs.range([0, 4], {value: 0, step: 1, label: "Evaluation Point Index (k)"})
+})
+
+vectors = Array.from({length: 5}, (_, m) => {
+  const angle = (fourierParams.k - fourierParams.j) * m * 2 * Math.PI / 5;
+  return {
+    m: m,
+    dx: Math.cos(angle) / 5,
+    dy: Math.sin(angle) / 5
+  };
+})
+
+cumulativeVectors = vectors.reduce((acc, curr, i) => {
+  const prev = i === 0 ? {x: 0, y: 0} : acc[i-1].end;
+  acc.push({
+    start: prev,
+    end: {x: prev.x + curr.dx, y: prev.y + curr.dy},
+    m: curr.m
+  });
+  return acc;
+}, [])
+
+Plot.plot({
+  aspectRatio: 1,
+  width: 500,
+  x: {domain: [-0.5, 1.2], label: "Real Part"},
+  y: {domain: [-0.6, 0.6], label: "Imaginary Part"},
+  marks: [
+    Plot.ruleY([0]), Plot.ruleX([0]),
+    Plot.arrow(cumulativeVectors, {x1: d => d.start.x, y1: d => d.start.y, x2: d => d.end.x, y2: d => d.end.y, stroke: "steelblue"}),
+    Plot.dot(cumulativeVectors, {x: d => d.end.x, y: d => d.end.y, fill: "black"}),
+    Plot.dot([{x: 1, y: 0}], {x: "x", y: "y", fill: "red", r: 4, title: "1.0"})
+  ]
+})
+```
