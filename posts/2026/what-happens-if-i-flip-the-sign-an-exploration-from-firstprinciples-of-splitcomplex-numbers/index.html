@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Vencislav Popov">
-<meta name="dcterms.date" content="2026-02-20">
+<meta name="dcterms.date" content="2026-04-08">
 
-<title>Are Cognitive Representations Propositional, Analog, or Something Else? – Ven Popov</title>
+<title>What Happens If I Flip the Sign? An Exploration from First-principles of Split-complex Numbers – Ven Popov</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -73,17 +73,47 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
         background: #eeeeee;
       }
 </style>
+<meta name="quarto:status" content="draft">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Are Cognitive Representations Propositional, Analog, or Something Else? – Ven Popov">
-<meta property="og:description" content="Are thoughts stored as symbolic propositions, like sentences in a mental language? Are they analog, resembling the structure of perception and action? Or are they something else entirely, patterns that do not neatly fit either category?">
-<meta property="og:image" content="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/images/venpopov.png">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="What Happens If I Flip the Sign? An Exploration from First-principles of Split-complex Numbers – Ven Popov">
+<meta property="og:description" content="Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.">
+<meta property="og:image" content="https://venpopov.com/posts/2026/what-happens-if-i-flip-the-sign-an-exploration-from-firstprinciples-of-splitcomplex-numbers/images/venpopov.png">
 <meta property="og:site_name" content="Ven Popov">
-<meta name="twitter:title" content="Are Cognitive Representations Propositional, Analog, or Something Else? – Ven Popov">
-<meta name="twitter:description" content="Are thoughts stored as symbolic propositions, like sentences in a mental language? Are they analog, resembling the structure of perception and action? Or are they something else entirely, patterns that do not neatly fit either category?">
-<meta name="twitter:image" content="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/images/venpopov.png">
+<meta name="twitter:title" content="What Happens If I Flip the Sign? An Exploration from First-principles of Split-complex Numbers – Ven Popov">
+<meta name="twitter:description" content="Ven Popov is a senior scientist in computational modeling at the Department of Psychology, University of Zurich.">
+<meta name="twitter:image" content="https://venpopov.com/posts/2026/what-happens-if-i-flip-the-sign-an-exploration-from-firstprinciples-of-splitcomplex-numbers/images/venpopov.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/">
+<link rel="canonical" href="https://venpopov.com/posts/2026/what-happens-if-i-flip-the-sign-an-exploration-from-firstprinciples-of-splitcomplex-numbers/">
 </head>
 
 <body class="floating nav-fixed quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
@@ -249,7 +279,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
   </script>
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><div id="quarto-draft-alert" class="alert alert-warning"><i class="bi bi-pencil-square"></i>Draft</div>
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
@@ -316,11 +346,10 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Are Cognitive Representations Propositional, Analog, or Something Else?</h1>
-            <p class="subtitle lead">Are thoughts stored as symbolic propositions, like sentences in a mental language? Are they analog, resembling the structure of perception and action? Or are they something else entirely, patterns that do not neatly fit either category?</p>
+      <h1 class="title">What Happens If I Flip the Sign? An Exploration from First-principles of Split-complex Numbers</h1>
                                 <div class="quarto-categories">
-                <div class="quarto-category">cognitive science</div>
-                <div class="quarto-category">explainer</div>
+                <div class="quarto-category">math</div>
+                <div class="quarto-category">exploration</div>
                 <div class="quarto-category">2026</div>
               </div>
                   </div>
@@ -339,7 +368,7 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">February 20, 2026</p>
+        <p class="date">April 8, 2026</p>
       </div>
     </div>
     
@@ -354,27 +383,25 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-motivating-toy-problem-deciding-whether-two-things-are-the-same" id="toc-a-motivating-toy-problem-deciding-whether-two-things-are-the-same" class="nav-link active" data-scroll-target="#a-motivating-toy-problem-deciding-whether-two-things-are-the-same">A motivating toy problem: deciding whether two things are the same</a></li>
-  <li><a href="#the-classical-view-cognition-as-symbolic-computation" id="toc-the-classical-view-cognition-as-symbolic-computation" class="nav-link" data-scroll-target="#the-classical-view-cognition-as-symbolic-computation">The classical view: cognition as symbolic computation</a>
+  <li><a href="#starting-from-first-principles-adjoining-t-with-t21" id="toc-starting-from-first-principles-adjoining-t-with-t21" class="nav-link active" data-scroll-target="#starting-from-first-principles-adjoining-t-with-t21">1. Starting from first principles: adjoining <span class="math inline">\(t\)</span> with <span class="math inline">\(t^2=1\)</span></a></li>
+  <li><a href="#zero-divisors-appear-immediately" id="toc-zero-divisors-appear-immediately" class="nav-link" data-scroll-target="#zero-divisors-appear-immediately">2. Zero divisors appear immediately</a></li>
+  <li><a href="#every-element-rewrites-naturally-in-the-idempotent-basis" id="toc-every-element-rewrites-naturally-in-the-idempotent-basis" class="nav-link" data-scroll-target="#every-element-rewrites-naturally-in-the-idempotent-basis">3. Every element rewrites naturally in the idempotent basis</a></li>
+  <li><a href="#what-the-algebra-actually-is" id="toc-what-the-algebra-actually-is" class="nav-link" data-scroll-target="#what-the-algebra-actually-is">4. What the algebra actually is</a>
   <ul class="collapse">
-  <li><a href="#a-concrete-example-mental-arithmetic" id="toc-a-concrete-example-mental-arithmetic" class="nav-link" data-scroll-target="#a-concrete-example-mental-arithmetic">A concrete example: mental arithmetic</a></li>
+  <li><a href="#inverses-and-zero-divisors" id="toc-inverses-and-zero-divisors" class="nav-link" data-scroll-target="#inverses-and-zero-divisors">Inverses and zero divisors</a></li>
+  <li><a href="#functions-act-coordinatewise" id="toc-functions-act-coordinatewise" class="nav-link" data-scroll-target="#functions-act-coordinatewise">Functions act coordinatewise</a></li>
   </ul></li>
-  <li><a href="#hybrids-and-pragmatism-symbolic-systems-in-practice" id="toc-hybrids-and-pragmatism-symbolic-systems-in-practice" class="nav-link" data-scroll-target="#hybrids-and-pragmatism-symbolic-systems-in-practice">Hybrids and pragmatism: symbolic systems in practice</a>
+  <li><a href="#the-right-conceptual-name-complete-orthogonal-idempotents" id="toc-the-right-conceptual-name-complete-orthogonal-idempotents" class="nav-link" data-scroll-target="#the-right-conceptual-name-complete-orthogonal-idempotents">5. The right conceptual name: complete orthogonal idempotents</a></li>
+  <li><a href="#the-surprise-hiding-underneath-this-is-really-a-function-algebra" id="toc-the-surprise-hiding-underneath-this-is-really-a-function-algebra" class="nav-link" data-scroll-target="#the-surprise-hiding-underneath-this-is-really-a-function-algebra">6. The surprise hiding underneath: this is really a function algebra</a></li>
+  <li><a href="#pushing-the-original-experiment-what-if-tn1" id="toc-pushing-the-original-experiment-what-if-tn1" class="nav-link" data-scroll-target="#pushing-the-original-experiment-what-if-tn1">7. Pushing the original experiment: what if <span class="math inline">\(t^n=1\)</span>?</a>
   <ul class="collapse">
-  <li><a href="#a-concrete-example-memory-retrieval" id="toc-a-concrete-example-memory-retrieval" class="nav-link" data-scroll-target="#a-concrete-example-memory-retrieval">A concrete example: memory retrieval</a></li>
+  <li><a href="#over-mathbb-c" id="toc-over-mathbb-c" class="nav-link" data-scroll-target="#over-mathbb-c">Over <span class="math inline">\(\mathbb C\)</span></a></li>
+  <li><a href="#over-mathbb-r" id="toc-over-mathbb-r" class="nav-link" data-scroll-target="#over-mathbb-r">Over <span class="math inline">\(\mathbb R\)</span></a></li>
   </ul></li>
-  <li><a href="#the-connectionist-alternative-representations-as-patterns" id="toc-the-connectionist-alternative-representations-as-patterns" class="nav-link" data-scroll-target="#the-connectionist-alternative-representations-as-patterns">The connectionist alternative: representations as patterns</a>
-  <ul class="collapse">
-  <li><a href="#a-minimal-neural-network-just-for-context" id="toc-a-minimal-neural-network-just-for-context" class="nav-link" data-scroll-target="#a-minimal-neural-network-just-for-context">A minimal neural network, just for context</a></li>
-  <li><a href="#a-concrete-example-category-learning" id="toc-a-concrete-example-category-learning" class="nav-link" data-scroll-target="#a-concrete-example-category-learning">A concrete example: category learning</a></li>
-  </ul></li>
-  <li><a href="#where-is-knowledge-stored-weights-or-activations" id="toc-where-is-knowledge-stored-weights-or-activations" class="nav-link" data-scroll-target="#where-is-knowledge-stored-weights-or-activations">Where is knowledge stored: weights or activations?</a></li>
-  <li><a href="#what-do-different-layers-represent" id="toc-what-do-different-layers-represent" class="nav-link" data-scroll-target="#what-do-different-layers-represent">What do different layers represent?</a>
-  <ul class="collapse">
-  <li><a href="#a-concrete-example-perception-to-action" id="toc-a-concrete-example-perception-to-action" class="nav-link" data-scroll-target="#a-concrete-example-perception-to-action">A concrete example: perception to action</a></li>
-  </ul></li>
-  <li><a href="#a-crucial-unifying-insight" id="toc-a-crucial-unifying-insight" class="nav-link" data-scroll-target="#a-crucial-unifying-insight">A crucial unifying insight</a></li>
-  <li><a href="#why-this-distinction-matters" id="toc-why-this-distinction-matters" class="nav-link" data-scroll-target="#why-this-distinction-matters">Why this distinction matters</a></li>
+  <li><a href="#the-higher-idempotents-and-the-fourier-change-of-basis" id="toc-the-higher-idempotents-and-the-fourier-change-of-basis" class="nav-link" data-scroll-target="#the-higher-idempotents-and-the-fourier-change-of-basis">8. The higher idempotents and the Fourier change of basis</a></li>
+  <li><a href="#one-last-extension-infinite-sets" id="toc-one-last-extension-infinite-sets" class="nav-link" data-scroll-target="#one-last-extension-infinite-sets">9. One last extension: infinite sets</a></li>
+  <li><a href="#under-square-summability-an-honest-orthonormal-basis" id="toc-under-square-summability-an-honest-orthonormal-basis" class="nav-link" data-scroll-target="#under-square-summability-an-honest-orthonormal-basis">10. Under square summability, an honest orthonormal basis</a></li>
+  <li><a href="#looking-back" id="toc-looking-back" class="nav-link" data-scroll-target="#looking-back">11. Looking back</a></li>
   </ul>
 </nav>
 </nav>
@@ -421,184 +448,522 @@ gtag('config', 'G-ZVYQ98TZ00', { 'anonymize_ip': true});
 
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This post was motivated by a question from a student after my introductory cognitive psychology lecture. I wrote it as a short, self-contained explainer and then realized it would also work well as a blog post.</p>
-</div>
-</div>
-<p>One of the oldest and most persistent questions in cognitive science is deceptively simple:</p>
-<p><strong>What form do mental representations take?</strong></p>
-<p>Are thoughts stored as symbolic propositions, like sentences in a mental language? Are they analog, resembling the structure of perception and action? Or are they something else entirely, patterns that do not neatly fit either category?</p>
-<p>This question sits at the heart of debates between symbolic theories of cognition, production systems, and connectionist (neural network) models.</p>
-<p>In this post, we will look at the <em>same basic cognitive problems</em> through three different lenses. Each lens makes different assumptions about what counts as a representation and how cognition operates on it. The goal is not to declare a winner, but to clarify what each approach is actually committing to.</p>
-<p>To do that, it helps to step back, look briefly at some history, and ground the discussion in a few concrete toy examples.</p>
-<section id="a-motivating-toy-problem-deciding-whether-two-things-are-the-same" class="level2">
-<h2 class="anchored" data-anchor-id="a-motivating-toy-problem-deciding-whether-two-things-are-the-same">A motivating toy problem: deciding whether two things are the same</h2>
-<p>Consider a very simple task: you see two shapes on a screen and must decide whether they are <em>the same</em> or <em>different</em>.</p>
-<p>At first glance, this looks trivial. But it turns out to be an excellent test case for thinking about representations.</p>
-<ul>
-<li>A <strong>symbolic model</strong> might represent the shapes as discrete descriptions (e.g., <code>shape = square</code>, <code>color = red</code>) and apply an explicit rule: <em>IF description(A) = description(B), THEN respond SAME</em>.</li>
-<li>An <strong>analog model</strong> might represent each shape as a point in a continuous feature space (size, orientation, curvature) and compute a distance between them.</li>
-<li>A <strong>connectionist model</strong> might take raw pixel inputs, learn internal representations through exposure, and produce a SAME or DIFFERENT response without ever explicitly representing the rule “compare features.”</li>
-</ul>
-<p>All three approaches can solve the task, but they do so by making very different assumptions about what is represented and how.</p>
+<p>I have been brushing up on my abstract algebra lately. At the moment I am reading <em>Linear Algebra Done Right</em> and Aluffi’s <em>Algebra: Notes from the Underground</em>. To practice the ideas, I decided, at least for a while, not to do the book exercises. Instead, I wanted to experiment on my own—not to discover anything new, but to make the discovery myself, slowly enough to get to know the resulting structure from the inside.</p>
+<p>I started with a very small question. We all learn early on that the complex numbers arise by adjoining a formal symbol <span class="math inline">\(i\)</span> with the rule</p>
+<p><span class="math display">\[
+i^2=-1.
+\]</span></p>
+<p>So I wondered what would happen if I made one tiny change to that story. What if I adjoined a new symbol <span class="math inline">\(t\)</span> with the rule</p>
+<p><span class="math display">\[
+t^2=1?
+\]</span></p>
+<p>At first this looked like a harmless variation. It turned out not to be harmless at all. That one sign change led me, step by step, into the split-complex numbers, then into orthogonal idempotents, then into function algebras on finite sets, and finally into the subtler infinite-dimensional story where indicator functions behave like multiplicative atoms and, under the right hypotheses, even become an honest orthonormal basis.</p>
+<p>What follows is that path of discovery, cleaned up from my scratch work but still written in the order in which the structure gradually revealed itself.</p>
+<section id="starting-from-first-principles-adjoining-t-with-t21" class="level2">
+<h2 class="anchored" data-anchor-id="starting-from-first-principles-adjoining-t-with-t21">1. Starting from first principles: adjoining <span class="math inline">\(t\)</span> with <span class="math inline">\(t^2=1\)</span></h2>
+<p>Take all formal expressions of the form</p>
+<p><span class="math display">\[
+x=u+vt,
+\]</span></p>
+<p>where <span class="math inline">\(u,v
+\in\mathbb R\)</span>, and define addition and multiplication exactly as one would expect, using distributivity together with the single rule <span class="math inline">\(t^2=1\)</span>.</p>
+<p>If</p>
+<p><span class="math display">\[
+x=u+vt,
+\qquad
+y=a+bt,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+x+y=(u+a)+(v+b)t
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+xy=(u+vt)(a+bt)=ua+ubt+vat+vbt^2=(ua+vb)+(ub+va)t.
+\]</span></p>
+<p>So this gives a <span class="math inline">\(2\)</span>-dimensional real algebra. It looks suspiciously like the complex numbers, except that the basic quadratic relation has the opposite sign. In <span class="math inline">\(\mathbb C\)</span> we impose <span class="math inline">\(i^2=-1\)</span>; here we are imposing <span class="math inline">\(t^2=1\)</span>.</p>
+<p>That tiny formal change turns out to alter the structure completely.</p>
 </section>
-<section id="the-classical-view-cognition-as-symbolic-computation" class="level2">
-<h2 class="anchored" data-anchor-id="the-classical-view-cognition-as-symbolic-computation">The classical view: cognition as symbolic computation</h2>
-<p>Early cognitive science, emerging in the 1950s and 1960s, was strongly shaped by developments in logic, computer science, and artificial intelligence. Influential figures such as Allen Newell and Herbert A. Simon proposed that thinking is best understood as <strong>symbol manipulation</strong>.</p>
-<p>In this view:</p>
+<section id="zero-divisors-appear-immediately" class="level2">
+<h2 class="anchored" data-anchor-id="zero-divisors-appear-immediately">2. Zero divisors appear immediately</h2>
+<p>The first test multiplication is the obvious one:</p>
+<p><span class="math display">\[
+(1+t)(1-t)=1-t^2=0.
+\]</span></p>
+<p>So two nonzero elements multiply to zero.</p>
+<p>That already marks a decisive break from the complex numbers. In <span class="math inline">\(\mathbb C\)</span>, nonzero elements never annihilate one another. Here they do, immediately. So whatever this algebra is, it is not a field. It is doing something more decomposed—something split.</p>
+<p>And once the factors <span class="math inline">\(1+t\)</span> and <span class="math inline">\(1-t\)</span> appear, it is hard not to divide them by <span class="math inline">\(2\)</span> and see what happens. Define</p>
+<p><span class="math display">\[
+e_+=\frac{1+t}{2},
+\qquad
+e_- = \frac{1-t}{2}.
+\]</span></p>
+<p>Now compute:</p>
+<p><span class="math display">\[
+e_+^2=\frac{(1+t)^2}{4}=\frac{1+2t+t^2}{4}=\frac{2+2t}{4}=\frac{1+t}{2}=e_+,
+\]</span></p>
+<p>and similarly,</p>
+<p><span class="math display">\[
+e_-^2=e_-.
+\]</span></p>
+<p>Also,</p>
+<p><span class="math display">\[
+e_+e_- = \frac{(1+t)(1-t)}{4}=0.
+\]</span></p>
+<p>And finally,</p>
+<p><span class="math display">\[
+e_++e_-=1,
+\qquad
+e_+-e_-=t.
+\]</span></p>
+<p>This is the moment when the algebra suddenly becomes transparent. The new basis elements are</p>
 <ul>
-<li>Mental representations are <strong>explicit symbols</strong> with internal structure.</li>
-<li>These symbols express <strong>propositional content</strong> (e.g., <em>IF goal is X AND condition Y holds, THEN do Z</em>).</li>
-<li>Cognition consists of <strong>rule-based operations</strong> over these symbols.</li>
+<li>idempotent: <span class="math inline">\(e_\pm^2=e_\pm\)</span>,</li>
+<li>orthogonal under multiplication: <span class="math inline">\(e_+e_-=0\)</span>,</li>
+<li>and they sum to the identity: <span class="math inline">\(e_++e_-=1\)</span>.</li>
 </ul>
-<p>Production systems, formal models built from rules that fire when their conditions are met, became a central formalism for this approach. Importantly, these theories were not meant as loose metaphors. They were intended as literal computational accounts of mental processes.</p>
-<section id="a-concrete-example-mental-arithmetic" class="level3">
-<h3 class="anchored" data-anchor-id="a-concrete-example-mental-arithmetic">A concrete example: mental arithmetic</h3>
-<p>Take mental arithmetic, such as calculating <code>23 + 48</code>.</p>
-<p>A symbolic model assumes that numbers are represented as structured symbols (digits, place values) and that cognition consists of applying learned rules (carry the one, add digits, etc.). The process is discrete, stepwise, and explicitly rule governed. There is no sense in which the representation of <code>23</code> is <em>closer</em> to <code>24</code> than to <code>99</code>. Those are simply different symbols (although you can include an explicit algorithm in the model to compute a distance based on mathematical rules, and then use that information in processing; but that is simply another set of symbolic rules).</p>
-<p>In their <em>purest</em> form, symbolic theories do <strong>not</strong> assume analog or continuous representations. Symbols are discrete, structured, and combinatorial. Logical reasoning, formal problem solving, and language were the paradigmatic examples where this framework seemed especially powerful.</p>
+<p>I had started with a naive sign-flip experiment, and now a remarkably rigid structure had appeared almost uninvited.</p>
+</section>
+<section id="every-element-rewrites-naturally-in-the-idempotent-basis" class="level2">
+<h2 class="anchored" data-anchor-id="every-element-rewrites-naturally-in-the-idempotent-basis">3. Every element rewrites naturally in the idempotent basis</h2>
+<p>Since</p>
+<p><span class="math display">\[
+1=e_+ + e_-,
+\qquad
+t=e_+ - e_-,
+\]</span></p>
+<p>any element</p>
+<p><span class="math display">\[
+x=u+vt
+\]</span></p>
+<p>can be rewritten as</p>
+<p><span class="math display">\[
+x=u(e_++e_-)+v(e_+-e_-)
+=(u+v)e_+ + (u-v)e_-.
+\]</span></p>
+<p>So if I define</p>
+<p><span class="math display">\[
+a=u+v,
+\qquad
+b=u-v,
+\]</span></p>
+<p>then every element takes the form</p>
+<p><span class="math display">\[
+x=ae_+ + be_-.
+\]</span></p>
+<p>This already suggests that the algebra is decomposing into two independent channels.</p>
+<p>And now multiplication diagonalizes completely. If</p>
+<p><span class="math display">\[
+x=ae_+ + be_-,
+\qquad
+y=ce_+ + de_-,
+\]</span></p>
+<p>then, using only</p>
+<p><span class="math display">\[
+e_+^2=e_+,
+\qquad
+e_-^2=e_-,
+\qquad
+e_+e_-=0,
+\]</span></p>
+<p>we get</p>
+<p><span class="math display">\[
+xy=(ae_+ + be_-)(ce_+ + de_-)=ace_+ + bde_-.
+\]</span></p>
+<p>So in these coordinates, addition and multiplication become</p>
+<p><span class="math display">\[
+(a,b)+(c,d)=(a+c,b+d)
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(a,b)(c,d)=(ac,bd).
+\]</span></p>
+<p>The algebra has diagonalized itself. That was the first moment it stopped feeling like a slightly odd cousin of <span class="math inline">\(\mathbb C\)</span> and started feeling like something built to split cleanly into independent parts.</p>
+</section>
+<section id="what-the-algebra-actually-is" class="level2">
+<h2 class="anchored" data-anchor-id="what-the-algebra-actually-is">4. What the algebra actually is</h2>
+<p>At this point the abstract description becomes recognizable. The algebra I built is</p>
+<p><span class="math display">\[
+\mathbb R[t]/(t^2-1).
+\]</span></p>
+<p>Since</p>
+<p><span class="math display">\[
+t^2-1=(t-1)(t+1),
+\]</span></p>
+<p>and the two factors are coprime, the Chinese remainder theorem gives</p>
+<p><span class="math display">\[
+\mathbb R[t]/(t^2-1)
+\cong
+\mathbb R[t]/(t-1)\times \mathbb R[t]/(t+1)
+\cong
+\mathbb R\times\mathbb R.
+\]</span></p>
+<p>Concretely, the isomorphism is</p>
+<p><span class="math display">\[
+u+vt \longmapsto (u+v,u-v).
+\]</span></p>
+<p>So this strange-looking algebra is not strange at all once the right coordinates are chosen. It is simply <span class="math inline">\(\mathbb R^2\)</span> with coordinatewise multiplication.</p>
+<p>As I learned after doing the whole exploration, this is the classical algebra usually called the <strong><a href="https://en.wikipedia.org/wiki/Split-complex_number?wprov=sfti1#">split-complex numbers</a></strong>, though it also goes by names such as the <strong>hyperbolic numbers</strong>, <strong>double numbers</strong>, or <strong>perplex numbers</strong>.</p>
+<p>So the experiment had not produced an exotic new object at all. It had backed, almost accidentally, into a classical one. That only made me want to keep going.</p>
+<section id="inverses-and-zero-divisors" class="level3">
+<h3 class="anchored" data-anchor-id="inverses-and-zero-divisors">Inverses and zero divisors</h3>
+<p>In the <span class="math inline">\((a,b)\)</span> coordinates, inversion is immediate. The element <span class="math inline">\((a,b)\)</span> is invertible exactly when both coordinates are nonzero, and in that case</p>
+<p><span class="math display">\[
+(a,b)^{-1}=\left(\frac1a,\frac1b\right).
+\]</span></p>
+<p>Translating this back into the <span class="math inline">\(u+vt\)</span> form gives</p>
+<p><span class="math display">\[
+(u+vt)^{-1}=\frac{u-vt}{u^2-v^2},
+\]</span></p>
+<p>provided that</p>
+<p><span class="math display">\[
+u^2-v^2\neq 0.
+\]</span></p>
+<p>So the zero divisors are precisely the elements satisfying</p>
+<p><span class="math display">\[
+u^2-v^2=0,
+\]</span></p>
+<p>that is,</p>
+<p><span class="math display">\[
+u=v
+\qquad \text{or} \qquad
+u=-v.
+\]</span></p>
+<p>Geometrically, in the <span class="math inline">\((u,v)\)</span>-plane, the singular set is the union of the two lines</p>
+<p><span class="math display">\[
+u=v
+\qquad \text{and} \qquad
+u=-v.
+\]</span></p>
+<p>This is one of the places where the familiar hyperbolic geometry of the split-complex numbers begins to peek through.</p>
+</section>
+<section id="functions-act-coordinatewise" class="level3">
+<h3 class="anchored" data-anchor-id="functions-act-coordinatewise">Functions act coordinatewise</h3>
+<p>Once the idempotent basis is in place, another pleasant fact becomes almost automatic. For any polynomial <span class="math inline">\(p\)</span>, one has</p>
+<p><span class="math display">\[
+p(a\operatorname{e}_+ + b \operatorname{e}_-)=p(a)\operatorname{e}_+ + p(b)\operatorname{e}_-.
+\]</span></p>
+<p>The reason is simple: powers never mix,</p>
+<p><span class="math display">\[
+(a \operatorname e_+ + b \operatorname e_-)^n = a^n \operatorname e_+ + b^n \operatorname e_-,
+\]</span></p>
+<p>because all cross-terms die. And whenever a function defined by a power-series converges, the same pointwise rule continues to hold.</p>
+<p>So, for example,</p>
+<p><span class="math display">\[
+\exp{(a \operatorname e_+ +\, b \operatorname e_-)}=\exp(a) \operatorname e_+ +\, \exp(b) \operatorname e_-.
+\]</span></p>
+<p>Returning to the <span class="math inline">\(u+vt\)</span> coordinates, where <span class="math inline">\(a=u+v\)</span> and <span class="math inline">\(b=u-v\)</span>, this becomes</p>
+<p><span class="math display">\[
+\begin{aligned}
+e^{u+vt}
+&amp;=e^{u+v} \operatorname e_+ + e^{u-v} \operatorname e_- \\
+&amp;=e^u\bigl(e^v \operatorname e_+ + e^{-v} \operatorname e_-\bigr) \\
+&amp;=e^u\left(\cosh v + t\sinh v\right).
+\end{aligned}
+\]</span></p>
+<p>This is the hyperbolic analogue of the familiar complex formula</p>
+<p><span class="math display">\[
+e^{x+yi}=e^x(\cos y + i\sin y).
+\]</span></p>
+<p>And the idempotents do something else neat as well: they isolate the two coordinates. If</p>
+<p><span class="math display">\[
+x=a \operatorname e_+ + b \operatorname e_-,
+\]</span></p>
+<p>then</p>
+<p><span class="math display">\[
+\operatorname e_+x=a \operatorname e_+,
+\qquad
+\operatorname e_-x= b \operatorname e_-.
+\]</span></p>
+<p>Likewise, for any coordinatewise-defined function <span class="math inline">\(f\)</span>,</p>
+<p><span class="math display">\[
+\operatorname e_+f(a,b)=f(a) \operatorname e_+,
+\qquad
+\operatorname e_-f(a,b)=f(b) \operatorname e_-.
+\]</span></p>
+<p>So the idempotents are not just basis vectors. They are also projection operators onto the two independent channels.</p>
 </section>
 </section>
-<section id="hybrids-and-pragmatism-symbolic-systems-in-practice" class="level2">
-<h2 class="anchored" data-anchor-id="hybrids-and-pragmatism-symbolic-systems-in-practice">Hybrids and pragmatism: symbolic systems in practice</h2>
-<p>As cognitive modeling matured, it became clear that purely symbolic systems struggled with issues like learning, noise, timing, and graded behavior. Human cognition is slow, error prone, and sensitive to frequency and recency, properties that are awkward to capture with all or none rules.</p>
-<p>In response, many symbolic architectures incorporated continuous elements.</p>
-<p>A prominent example is ACT-R, which retains symbolic chunks and production rules but augments them with:</p>
-<ul>
-<li>activation levels,</li>
-<li>continuous decay and learning functions,</li>
-<li>noise and utility parameters.</li>
-</ul>
-<section id="a-concrete-example-memory-retrieval" class="level3">
-<h3 class="anchored" data-anchor-id="a-concrete-example-memory-retrieval">A concrete example: memory retrieval</h3>
-<p>In ACT-R, whether you successfully recall a fact (e.g., <em>Paris is the capital of France</em>) depends not only on whether the symbol exists, but also on its <strong>activation</strong>, which reflects how often and how recently it has been used. Retrieval is probabilistic and graded, even though the retrieved item itself is symbolic.</p>
-<p>Crucially, these quantities <strong>modulate access to symbols</strong> rather than replacing them. ACT-R is still fundamentally propositional, but it acknowledges that cognition is not cleanly binary or deterministic.</p>
-<p>This illustrates an important point: even within symbolic traditions, researchers have long recognized the need for graded, quantitative mechanisms. The real disagreement is not about whether numbers exist in the system, but about <strong>what does the representing</strong>.</p>
+<section id="the-right-conceptual-name-complete-orthogonal-idempotents" class="level2">
+<h2 class="anchored" data-anchor-id="the-right-conceptual-name-complete-orthogonal-idempotents">5. The right conceptual name: complete orthogonal idempotents</h2>
+<p>The pair <span class="math inline">\(e_+,e_-\)</span> is not just a lucky trick. It belongs to a general pattern.</p>
+<p>A family <span class="math inline">\(e_1,\dots,e_n\)</span> in an algebra is called a <strong>complete set of pairwise orthogonal idempotents</strong> if</p>
+<p><span class="math display">\[
+e_i^2=e_i,
+\qquad
+e_ie_j=0 \text{ for } i\neq j,
+\qquad
+e_1+\cdots+e_n=1.
+\]</span></p>
+<p>That is exactly what happened here.</p>
+<p>This is not the same thing as an orthonormal basis in an inner-product space, because the orthogonality here is multiplicative rather than metric. But the analogy is strong. An orthonormal basis diagonalizes an inner product; a complete set of orthogonal idempotents diagonalizes multiplication.</p>
+<p>The formulas even rhyme:</p>
+<p><span class="math display">\[
+\langle v_i,v_j\rangle = \delta_{ij}
+\]</span></p>
+<p>versus</p>
+<p><span class="math display">\[
+e_ie_j=\delta_{ij}e_i.
+\]</span></p>
+<p>That was one of the most satisfying moments in the exploration: this basis felt like an orthogonal basis, but for algebra itself.</p>
+</section>
+<section id="the-surprise-hiding-underneath-this-is-really-a-function-algebra" class="level2">
+<h2 class="anchored" data-anchor-id="the-surprise-hiding-underneath-this-is-really-a-function-algebra">6. The surprise hiding underneath: this is really a function algebra</h2>
+<p>The coordinatewise multiplication law suggested a different interpretation. Consider the two-point set</p>
+<p><span class="math display">\[
+S=\{+,-\}.
+\]</span></p>
+<p>The algebra of real-valued functions on <span class="math inline">\(S\)</span> is just</p>
+<p><span class="math display">\[
+\mathbb R^S \cong \mathbb R\times\mathbb R,
+\]</span></p>
+<p>with pointwise addition and multiplication.</p>
+<p>Now take the two singleton indicators</p>
+<p><span class="math display">\[
+\delta_+ := \mathbf 1_{\{+\}},
+\qquad
+\delta_- := \mathbf 1_{\{-\}}.
+\]</span></p>
+<p>They satisfy</p>
+<p><span class="math display">\[
+\delta_+^2=\delta_+,
+\qquad
+\delta_-^2=\delta_-,
+\]</span></p>
+<p><span class="math display">\[
+\delta_+\delta_-=0,
+\qquad
+\delta_+ + \delta_- = 1.
+\]</span></p>
+<p>So the basis <span class="math inline">\(e_+,e_-\)</span> is doing exactly what the indicator basis does in a two-point function algebra.</p>
+<p>This was the point where the experiment took a turn I had not anticipated. It was the first real “oh!” moment for me. I had not merely found a convenient basis for a funny number system. I had stumbled into the algebra of functions on a finite set.</p>
+<p>And once that interpretation appears, the general pattern is hard to miss. For any finite set <span class="math inline">\(S\)</span> and any field <span class="math inline">\(F\)</span>, the algebra</p>
+<p><span class="math display">\[
+F^S
+\]</span></p>
+<p>of all <span class="math inline">\(F\)</span>-valued functions on <span class="math inline">\(S\)</span> has a canonical basis given by the singleton indicators</p>
+<p><span class="math display">\[
+\delta_s := \mathbf 1_{\{s\}}, \qquad s\in S.
+\]</span></p>
+<p>These satisfy</p>
+<p><span class="math display">\[
+\delta_s^2=\delta_s,
+\qquad
+\delta_s\delta_t=0 \text{ for } s\neq t,
+\qquad
+\sum_{s\in S}\delta_s=1.
+\]</span></p>
+<p>Every function expands as</p>
+<p><span class="math display">\[
+f=\sum_{s\in S} f(s)\,\delta_s,
+\]</span></p>
+<p>and multiplication is pointwise:</p>
+<p><span class="math display">\[
+(fg)(s)=f(s)g(s).
+\]</span></p>
+<p>And so is addition:</p>
+<p><span class="math display">\[
+(f+g)(s)=f(s)+g(s).
+\]</span></p>
+<p>So the phenomenon I had rediscovered from the single relation <span class="math inline">\(t^2=1\)</span> was not a special trick at all. It was the smallest nontrivial example of a general principle:</p>
 <blockquote class="blockquote">
-<p><strong>Common confusions to avoid</strong></p>
-<ul>
-<li><em>Distributed</em> does <strong>not</strong> mean vague or unstructured.</li>
-<li><em>Continuous</em> does <strong>not</strong> automatically mean analog.</li>
-<li><em>Symbolic</em> does <strong>not</strong> mean rigid, static, or unrealistic.</li>
-</ul>
-<p>Much confusion in this area comes from sliding between these ideas without noticing.</p>
+<p>Function algebras on finite sets come with a canonical multiplicatively orthogonal basis of idempotents.</p>
 </blockquote>
+<p>Even better, the coefficients in that basis are not mysterious. They are just the function values. Multiplying by one of the basis idempotents isolates a single coordinate:</p>
+<p><span class="math display">\[
+\delta_s f = f(s)\,\delta_s.
+\]</span></p>
+<p>So the same objects play two roles at once: they are the atomic basis vectors, and they are the algebraic devices that pick out individual coordinates.</p>
+<p>In retrospect that makes the original split-complex discovery feel even cleaner. The elements <span class="math inline">\(e_+\)</span> and <span class="math inline">\(e_-\)</span> were not merely a convenient change of basis. They were the two point-masses on a two-point space, and multiplication had become pointwise multiplication because the algebra had quietly turned into the algebra of functions on that space.</p>
 </section>
+<section id="pushing-the-original-experiment-what-if-tn1" class="level2">
+<h2 class="anchored" data-anchor-id="pushing-the-original-experiment-what-if-tn1">7. Pushing the original experiment: what if <span class="math inline">\(t^n=1\)</span>?</h2>
+<p>At that point it was irresistible to ask for the next step. If adjoining <span class="math inline">\(t\)</span> with <span class="math inline">\(t^2=1\)</span> produces a two-point function algebra, what happens if one adjoins a formal symbol satisfying</p>
+<p><span class="math display">\[
+t^n=1?
+\]</span></p>
+<p>The resulting algebra is</p>
+<p><span class="math display">\[
+A_n = F[t]/(t^n-1).
+\]</span></p>
+<p>Before even factoring the polynomial, one structural feature jumps out. The residue classes</p>
+<p><span class="math display">\[
+1,t,t^2,\dots,t^{n-1}
+\]</span></p>
+<p>multiply according to the rule</p>
+<p><span class="math display">\[
+t^a t^b = t^{a+b \, \mod n}.
+\]</span></p>
+<p>So these powers of <span class="math inline">\(t\)</span> form a cyclic multiplicative group of order <span class="math inline">\(n\)</span>, isomorphic to the additive group <span class="math inline">\((\mathbb Z/n\mathbb Z,+)\)</span>. Once linear combinations are allowed, the experiment has quietly moved from a cyclic group to its group algebra. The basis</p>
+<p><span class="math display">\[
+1,t,t^2,\dots,t^{n-1}
+\]</span></p>
+<p>is therefore not just a convenient spanning set. It is the natural basis coming from the group elements themselves.</p>
+<p>At first I half-expected some neat <span class="math inline">\(n\)</span>-fold real splitting. The real answer depends entirely on how the polynomial <span class="math inline">\(t^n-1\)</span> factors over the base field.</p>
+<section id="over-mathbb-c" class="level3">
+<h3 class="anchored" data-anchor-id="over-mathbb-c">Over <span class="math inline">\(\mathbb C\)</span></h3>
+<p>Over the complex numbers,</p>
+<p><span class="math display">\[
+t^n-1=\prod_{k=0}^{n-1}(t-\omega^k),
+\qquad
+\omega=e^{2\pi i/n},
+\]</span></p>
+<p>and the roots are all distinct. So one gets</p>
+<p><span class="math display">\[
+\mathbb C[t]/(t^n-1)\cong \mathbb C^n.
+\]</span></p>
+<p>Concretely,</p>
+<p><span class="math display">\[
+f(t) \longmapsto \bigl(f(1),f(\omega),f(\omega^2),\dots,f(\omega^{n-1})\bigr).
+\]</span></p>
+<p>So over <span class="math inline">\(\mathbb C\)</span>, the quotient really is the algebra of functions on the finite set of <span class="math inline">\(n\)</span>th roots of unity.</p>
+<p>This was the point where something I had been feeling only vaguely snapped into focus. The roots of unity are not, by themselves, “the basis” of <span class="math inline">\(\mathbb C^n\)</span>. Rather, they index one natural coordinate system: evaluation at the <span class="math inline">\(n\)</span> points <span class="math inline">\(1,\omega,\dots,\omega^{n-1}\)</span>.</p>
 </section>
-<section id="the-connectionist-alternative-representations-as-patterns" class="level2">
-<h2 class="anchored" data-anchor-id="the-connectionist-alternative-representations-as-patterns">The connectionist alternative: representations as patterns</h2>
-<section id="a-minimal-neural-network-just-for-context" class="level3">
-<h3 class="anchored" data-anchor-id="a-minimal-neural-network-just-for-context">A minimal neural network, just for context</h3>
-<p>Before going further, it helps to have a very simple picture in mind of what people mean by a <em>neural network</em> in cognitive modeling.</p>
-<p>At its most basic, a neural network consists of simple units, artificial neurons, which aim to be a simplified version of real neurons. These units receive activation from other units. Each connection has a <strong>weight</strong> that determines how strongly activity is passed along. Units combine their inputs, apply a simple transformation (often a nonlinear one), and pass the result forward. Learning consists of gradually adjusting the weights so that the network produces better outputs for the task it is trained on.</p>
-<p><img src="artificial-neuron.svg" class="dark-invert img-fluid"></p>
-<p>These simple units can be organized in several layers, often labeled as:</p>
+<section id="over-mathbb-r" class="level3">
+<h3 class="anchored" data-anchor-id="over-mathbb-r">Over <span class="math inline">\(\mathbb R\)</span></h3>
+<p>Over the reals, the picture is only partly split. Real roots contribute one-dimensional real factors, while nonreal roots occur in complex-conjugate pairs and produce quadratic irreducible factors. As real algebras this gives</p>
 <ul>
-<li><strong>Input units</strong>, which receive information from the environment (for example, stimulus features or pixel values).</li>
-<li><strong>Hidden units</strong>, which transform that information through weighted connections.</li>
-<li><strong>Output units</strong>, which produce a response (for example, a decision or classification).</li>
+<li>if <span class="math inline">\(n\)</span> is odd, <span class="math display">\[
+\mathbb R[t]/(t^n-1)\cong \mathbb R\times \mathbb C^{(n-1)/2},
+\]</span></li>
+<li>if <span class="math inline">\(n\)</span> is even, <span class="math display">\[
+\mathbb R[t]/(t^n-1)\cong \mathbb R\times \mathbb R\times \mathbb C^{(n-2)/2}.
+\]</span></li>
 </ul>
-<p>You can think of this schematically as:</p>
+<p>So the perfectly real splitting into independent one-dimensional axes is a special luxury of the case <span class="math inline">\(n=2\)</span>.</p>
+</section>
+</section>
+<section id="the-higher-idempotents-and-the-fourier-change-of-basis" class="level2">
+<h2 class="anchored" data-anchor-id="the-higher-idempotents-and-the-fourier-change-of-basis">8. The higher idempotents and the Fourier change of basis</h2>
+<p>Over <span class="math inline">\(\mathbb C[t]/(t^n-1)\)</span> there is a direct analogue of the pair <span class="math inline">\(e_+,e_-\)</span>.</p>
+<p>Let <span class="math inline">\(\omega=e^{2\pi i/n}\)</span> and define, for <span class="math inline">\(j=0,1,\dots,n-1\)</span>,</p>
+<p><span class="math display">\[
+e_j=\frac1n\sum_{m=0}^{n-1} \omega^{-jm} t^m.
+\]</span></p>
+<p>These are the Fourier idempotents. They satisfy</p>
+<p><span class="math display">\[
+e_j^2=e_j,
+\qquad
+e_je_k=0 \text{ for } j\neq k,
+\qquad
+\sum_{j=0}^{n-1} e_j=1.
+\]</span></p>
+<p>So they form a complete set of orthogonal idempotents.</p>
+<p>Under the isomorphism with <span class="math inline">\(\mathbb C^n\)</span>, each <span class="math inline">\(e_j\)</span> becomes the function that is <span class="math inline">\(1\)</span> at <span class="math inline">\(\omega^j\)</span> and <span class="math inline">\(0\)</span> at all the other roots. In other words, each <span class="math inline">\(e_j\)</span> is just a singleton indicator in disguise. Once again the algebra has turned into a finite function algebra, and once again the distinguished basis is the atomic one.</p>
+<p>But now there is an extra layer of structure. The change of basis is explicit in both directions:</p>
+<p><span class="math display">\[
+e_j=\frac1n\sum_{m=0}^{n-1} \omega^{-jm} t^m,
+\]</span></p>
+<p>and conversely,</p>
+<p><span class="math display">\[
+t^m=\sum_{j=0}^{n-1}\omega^{jm} e_j.
+\]</span></p>
+<p>So if <span class="math inline">\(u=(u_0,\dots,u_{n-1})^\top\)</span> is the coordinate vector in the power basis <span class="math inline">\(\{1,t,\dots,t^{n-1}\}\)</span> and <span class="math inline">\(a=(a_0,\dots,a_{n-1})^\top\)</span> is the coordinate vector in the idempotent basis <span class="math inline">\(\{e_0,\dots,e_{n-1}\}\)</span>, then</p>
+<p><span class="math display">\[
+u = Wa,
+\qquad
+a=\frac1n\overline{W}\,u,
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+W_{mj}=\omega^{mj}.
+\]</span></p>
+<p>That is exactly the discrete Fourier transform matrix and its inverse, up to the usual normalization. If one rescales by <span class="math inline">\(1/\sqrt n\)</span>, one gets the standard unitary DFT matrix.</p>
+<p>This was one of my favorite moments in the whole exploration. I had not just rediscovered a family of orthogonal idempotents. I had backed into the DFT itself: it is the linear change of coordinates between the basis coming from the cyclic group elements and the basis coming from point masses on the corresponding finite function algebra.</p>
+<p>There is also a clean group-theoretic way to say the same thing. The powers <span class="math inline">\(t^m\)</span> are indexed by the cyclic group <span class="math inline">\(C_n\cong \mathbb Z/n\mathbb Z\)</span>. The functions</p>
+<p><span class="math display">\[
+\chi_m(k)=\omega^{mk}
+\]</span></p>
+<p>are its characters. The formulas above are precisely the Fourier transform and Fourier inversion for that finite abelian group.</p>
+</section>
+<section id="one-last-extension-infinite-sets" class="level2">
+<h2 class="anchored" data-anchor-id="one-last-extension-infinite-sets">9. One last extension: infinite sets</h2>
+<p>The same picture survives for an arbitrary, potentially infinite, set <span class="math inline">\(S\)</span>, but now one has to distinguish between a pointwise decomposition and a genuine Hamel-basis expansion. We now ignore the original motivation for <span class="math inline">\(t^n = 1\)</span> and work directly with the indicators.</p>
+<p>Consider the algebra</p>
+<p><span class="math display">\[
+F^S
+\]</span></p>
+<p>of all functions <span class="math inline">\(f:S\to F\)</span>.</p>
+<p>The singleton indicators still exist:</p>
+<p><span class="math display">\[
+\delta_s := \mathbf 1_{\{s\}}, \qquad s\in S.
+\]</span></p>
+<p>They still satisfy</p>
+<p><span class="math display">\[
+\delta_s^2=\delta_s,
+\qquad
+\delta_s\delta_t=0 \text{ for } s\neq t.
+\]</span></p>
+<p>And every function still has the pointwise decomposition</p>
+<p><span class="math display">\[
+f(u)=\sum_{s\in S} f(s)\,\delta_s(u)
+\qquad (u\in S),
+\]</span></p>
+<p>because at a given point <span class="math inline">\(u\)</span>, exactly one term survives: the one with <span class="math inline">\(s=u\)</span>.</p>
+<p>But if <span class="math inline">\(S\)</span> is infinite, that does <strong>not</strong> make the family <span class="math inline">\(\{\delta_s\}_{s\in S}\)</span> a Hamel basis of all of <span class="math inline">\(F^S\)</span>, because Hamel bases allow only finite linear combinations. What we really have is an atomic product decomposition</p>
+<p><span class="math display">\[
+F^S \cong \prod_{s\in S} F,
+\]</span></p>
+<p>and the indicator family records those coordinates pointwise.</p>
+<p>For the subspace of finitely supported functions,</p>
+<p><span class="math display">\[
+F^{(S)},
+\]</span></p>
+<p>the story does become literally basis-theoretic: the singleton indicators are a genuine basis.</p>
+<p>If <span class="math inline">\(|S|=|\mathbb R| = |\mathbb C| = 2^{\aleph_0}\)</span>, one may also choose a bijection</p>
+<p><span class="math display">\[
+T:\mathbb R \to S
+\]</span></p>
+<p>and relabel the singleton indicators by real or complex numbers:</p>
+<p><span class="math display">\[
+\delta_x := \mathbf 1_{\{T(x)\}}, \qquad x\in\mathbb R \text{ or } \mathbb C.
+\]</span></p>
+<p>That changes only the labels, not the structure. At that stage the role of <span class="math inline">\(\mathbb R\)</span> is purely as an index set; no topology, order, or measure has entered yet.</p>
+</section>
+<section id="under-square-summability-an-honest-orthonormal-basis" class="level2">
+<h2 class="anchored" data-anchor-id="under-square-summability-an-honest-orthonormal-basis">10. Under square summability, an honest orthonormal basis</h2>
+<p>The final refinement appears when one passes from all functions on <span class="math inline">\(S\)</span> to square-summable ones. With counting measure, this gives the Hilbert space</p>
+<p><span class="math display">\[
+\ell^2(S).
+\]</span></p>
+<p>Now the singleton indicators really do form an orthonormal basis:</p>
+<p><span class="math display">\[
+\langle \delta_s,\delta_t\rangle = \delta_{s,t},
+\]</span></p>
+<p>with <span class="math inline">\(\delta_{s,t}\)</span> the usual Kronecker delta. And every <span class="math inline">\(f\in \ell^2(S)\)</span> has the expansion</p>
+<p><span class="math display">\[
+f = \sum_{s\in S} f(s) \, \delta_s
+\]</span></p>
+<p>with convergence in the <span class="math inline">\(\ell^2\)</span> norm.</p>
+<p>So in this setting the analogy becomes exact. The same family that serves as multiplicative atoms in the algebra <span class="math inline">\(F^S\)</span> also serves as orthonormal coordinates in the Hilbert space <span class="math inline">\(\ell^2(S)\)</span>.</p>
+<p>I liked that as an ending to the exploration. The basis first appeared as an algebraic curiosity inside the split-complex numbers, and only later revealed itself as something that also belongs naturally to Hilbert-space geometry.</p>
+</section>
+<section id="looking-back" class="level2">
+<h2 class="anchored" data-anchor-id="looking-back">11. Looking back</h2>
+<p>Seen from the end, the thread is surprisingly clean. A single sign flip produced zero divisors; the zero divisors suggested the factors <span class="math inline">\(1+t\)</span> and <span class="math inline">\(1-t\)</span>; those suggested idempotents; the idempotents diagonalized multiplication; diagonalized multiplication exposed a direct product; and the direct product turned out to be the function algebra on a two-point set. From there the finite-set picture, the cyclic-group generalization, and the Fourier change of basis follow almost inevitably. The infinite case then appears as a final extension, with the same indicator family surviving pointwise and becoming a genuine orthonormal basis once one passes to <span class="math inline">\(\ell^2(S)\)</span>.</p>
+<p>So the deeper principle hiding inside the experiment seems to be this:</p>
 <blockquote class="blockquote">
-<p>inputs → hidden units → outputs</p>
+<p>Whenever an algebra splits into orthogonal idempotent pieces, it begins to behave like a function algebra on a set of mutually independent points.</p>
 </blockquote>
-<p><img src="nn-layers.svg" class="dark-invert img-fluid"></p>
-<p>Nothing in this basic setup specifies symbols, rules, or explicit features. Those, if they appear at all, arise from how the network is trained and what problem it is asked to solve.</p>
-<p>With that minimal picture in mind, we can return to the representational questions.</p>
-<p>Connectionist models, often called neural networks, approach the problem from a very different angle. Rather than assuming a particular representational format, they specify:</p>
-<ul>
-<li>a set of simple processing units,</li>
-<li>weighted connections between them,</li>
-<li>a learning rule,</li>
-<li>and a task or environment.</li>
-</ul>
-<p>What they <em>do not</em> specify in advance is the representational vocabulary.</p>
-<p>Instead, representations <strong>emerge</strong> through learning as patterns of activation across units. These patterns are typically:</p>
-<ul>
-<li>distributed (many units participate),</li>
-<li>graded (activation varies continuously),</li>
-<li>and context sensitive.</li>
-</ul>
-</section>
-<section id="a-concrete-example-category-learning" class="level3">
-<h3 class="anchored" data-anchor-id="a-concrete-example-category-learning">A concrete example: category learning</h3>
-<p>Imagine training a network to categorize animals as <em>birds</em> or <em>not birds</em> based on features such as wings, beaks, feathers, and flight.</p>
-<p>Early in training, the network may respond inconsistently. Over time, it develops internal activation patterns that reliably separate birds from non birds. Importantly, there may be no single unit that represents “bird.” Instead, <em>birdness</em> is encoded as a pattern across many units.</p>
-<p>From the connectionist perspective, asking whether representations are “propositional” or “analog” is often the wrong question. The more relevant question is: <em>What patterns are useful for solving the task, given the constraints of the system and its learning history?</em></p>
-</section>
-</section>
-<section id="where-is-knowledge-stored-weights-or-activations" class="level2">
-<h2 class="anchored" data-anchor-id="where-is-knowledge-stored-weights-or-activations">Where is knowledge stored: weights or activations?</h2>
-<p>A common confusion concerns where “knowledge” resides in a neural network. The answer is: <strong>in both weights and activations, but in different ways</strong>.</p>
-<ul>
-<li><strong>Weights</strong> encode <strong>persistent</strong> knowledge. They determine the space of possible representations and transformations the network can produce. One helpful way to think about weights is as storing <em>dispositions</em> or <em>potentials</em>, what the system is capable of representing.</li>
-<li><strong>Activations</strong> encode <strong>momentary representations</strong>. At any given moment, the current pattern of activity across units reflects what the system is representing or processing right now.</li>
-</ul>
-<p>An analogy: weights define the grammar of a language; activations are the sentences currently being spoken.</p>
-<p>So knowledge is not “only in the weights,” nor are activations meaningless without them. Representation arises from their interaction.</p>
-</section>
-<section id="what-do-different-layers-represent" class="level2">
-<h2 class="anchored" data-anchor-id="what-do-different-layers-represent">What do different layers represent?</h2>
-<p>Although details vary across architectures, it is useful to distinguish roles typically played by different layers:</p>
-<ul>
-<li><strong>Input units</strong> represent task relevant information from the environment. These might correspond to sensory features, stimulus dimensions, or structured encodings supplied by the modeler.</li>
-<li><strong>Hidden units</strong> develop internal representations shaped by learning. These are often the most theoretically interesting part of the network. They may reflect abstract dimensions, latent variables, or compressed structure in the task.</li>
-<li><strong>Output units</strong> represent the system’s response, choices, classifications, actions, predictions.</li>
-</ul>
-<section id="a-concrete-example-perception-to-action" class="level3">
-<h3 class="anchored" data-anchor-id="a-concrete-example-perception-to-action">A concrete example: perception to action</h3>
-<p>In a simple vision to action network, input units might encode pixel intensities, hidden units might come to represent edges or object parts, and output units might encode motor responses such as <em>grasp</em> or <em>avoid</em>. None of these representations is explicitly symbolic, but they can still support behavior that looks rule governed.</p>
-<p>None of these layers is intrinsically symbolic or analog. A network trained on logical inference may develop symbol like internal states; one trained on perception may develop smooth, metric representations. The architecture does not dictate the representational format. The task does.</p>
-</section>
-</section>
-<section id="a-crucial-unifying-insight" class="level2">
-<h2 class="anchored" data-anchor-id="a-crucial-unifying-insight">A crucial unifying insight</h2>
-<p>Modern neural networks are <strong>universal function approximators</strong>. In principle, they can implement symbolic computations just as well as continuous mappings.</p>
-<p>What distinguishes connectionist models is not what they <em>can</em> compute, but <strong>how the computations are specified</strong>:</p>
-<ul>
-<li><strong>Symbolic models</strong> rely on <strong>hand crafted representations and rules</strong> supplied by the theorist.</li>
-<li><strong>Connectionist models</strong> rely on <strong>learning</strong>, allowing representations and transformations to be discovered rather than prescribed.</li>
-</ul>
-<p>This shifts the theoretical focus. Instead of asking <em>What is the right representational format?</em>, cognitive science increasingly asks:</p>
-<blockquote class="blockquote">
-<p>How do structured representations arise from learning, constraints, and interaction with the environment?</p>
-</blockquote>
-<p>That question, rather than a strict symbolic vs.&nbsp;analog dichotomy, captures much of what is at stake in contemporary theories of cognition.</p>
-</section>
-<section id="why-this-distinction-matters" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-distinction-matters">Why this distinction matters</h2>
-<p>At an introductory level, it might seem like this debate is mostly philosophical. But it has very practical consequences.</p>
-<ul>
-<li>It affects <strong>how we design experiments</strong>. Are we testing explicit rules, similarity spaces, or learned representations?</li>
-<li>It affects <strong>how we interpret behavior</strong>. Is an error a failure of a rule, a noisy comparison, or a learned bias?</li>
-<li>It affects <strong>how we think about artificial intelligence</strong>. Modern AI systems succeed largely by learning representations rather than being given them, which brings connectionist ideas back to center stage.</li>
-</ul>
-<p>Most importantly, it affects how we think about explanation in psychology. A good cognitive theory does not just reproduce behavior. It tells us <em>what kind of internal structure</em> could plausibly give rise to that behavior.</p>
-<p>Understanding the representational commitments of different models is the first step toward making sense of that structure.</p>
+<p>That is why the basis felt so natural. It was not merely convenient. It was the algebraic analogue of decomposing a space into disjoint atoms.</p>
+<p>And that, for me, is one of the pleasures of returning to old mathematics seriously: not just remembering the answer, but watching the answer reveal the structure that was already waiting inside the first small question.</p>
+<p>None of this is new mathematics. But starting from the tiny prompt “what if <span class="math inline">\(t^2=1\)</span>?” and following the consequences by hand made the web of ideas feel unusually vivid to me. That was reason enough to keep going.</p>
 
 
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></div></div></section><section class="quarto-appendix-contents" id="quarto-citation"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{popov2026,
   author = {Popov, Vencislav},
-  title = {Are {Cognitive} {Representations} {Propositional,} {Analog,}
-    or {Something} {Else?}},
-  date = {2026-02-20},
-  url = {https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/},
+  title = {What {Happens} {If} {I} {Flip} the {Sign?} {An} {Exploration}
+    from {First-principles} of {Split-complex} {Numbers}},
+  date = {2026-04-08},
+  url = {https://venpopov.com/posts/2026/what-happens-if-i-flip-the-sign-an-exploration-from-firstprinciples-of-splitcomplex-numbers/},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-popov2026" class="csl-entry quarto-appendix-citeas" role="listitem">
-Popov, Vencislav. 2026. <span>“Are Cognitive Representations
-Propositional, Analog, or Something Else?”</span> February 20. <a href="https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/">https://venpopov.com/posts/2026/are-cognitive-representations-propositional-analog-or-something-else/</a>.
+Popov, Vencislav. 2026. <span>“What Happens If I Flip the Sign? An
+Exploration from First-Principles of Split-Complex Numbers.”</span>
+April 8. <a href="https://venpopov.com/posts/2026/what-happens-if-i-flip-the-sign-an-exploration-from-firstprinciples-of-splitcomplex-numbers/">https://venpopov.com/posts/2026/what-happens-if-i-flip-the-sign-an-exploration-from-firstprinciples-of-splitcomplex-numbers/</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
