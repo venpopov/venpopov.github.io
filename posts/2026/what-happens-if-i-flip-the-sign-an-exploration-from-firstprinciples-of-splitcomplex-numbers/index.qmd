@@ -4,8 +4,111 @@ subtitle: ""
 categories: [math,  exploration,  2026]
 date: "2026-04-08"
 draft: true
+execute:
+  echo: false
 ---
 
+<style>
+.cell-output-display,
+.cell,
+div.sourceCode,
+div.column {
+  overflow: visible !important;
+}
+.viz-wrap {
+  margin: 1.8em 0;
+}
+.dual-panel {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.dual-panel > div {
+  flex: 1 1 340px;
+  max-width: 460px;
+}
+.viz-label {
+  font-size: 0.85em;
+  color: #6b7280;
+  text-align: center;
+  margin-top: 4px;
+}
+.foil-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+.foil-cell {
+  text-align: center;
+  padding: 8px;
+  border-radius: 6px;
+  font-family: 'KaTeX_Math', serif;
+  font-size: 1.05em;
+}
+@media (max-width: 750px) {
+  .dual-panel { flex-direction: column; align-items: center; }
+  .dual-panel > div { max-width: 100%; }
+}
+</style>
+
+```{ojs}
+// ── Shared utility functions ──────────────────────────────────────────────
+toAB = (u, v) => ({a: u + v, b: u - v})
+toUV = (a, b) => ({u: (a + b) / 2, v: (a - b) / 2})
+normSC = (u, v) => u * u - v * v
+scMul = (x, y) => ({
+  u: x.u * y.u + x.v * y.v,
+  v: x.u * y.v + x.v * y.u
+})
+
+COL = ({
+  ePlus: "#10b981",
+  eMinus: "#8b5cf6",
+  complex: "#3b82f6",
+  hyper: "#ef4444",
+  zd: "#9ca3af"
+})
+
+// Reusable: snap a value to one decimal place within bounds
+snap = (val, lo, hi) => Math.max(lo, Math.min(hi, Math.round(val * 10) / 10))
+
+// Reusable: extract pixel↔data scales from an Observable Plot
+plotScales = (plot) => {
+  const sx = plot.scale("x"), sy = plot.scale("y");
+  return {
+    xScale: d3.scaleLinear().domain(sx.domain).range(sx.range),
+    yScale: d3.scaleLinear().domain(sy.domain).range(sy.range)
+  };
+}
+
+// Reusable: attach drag to all circles in a plot, calling onDrag(u,v) and onEnd(u,v)
+attachDrag = (plot, {onDrag, onEnd, domain: [lo, hi]}) => {
+  const {xScale, yScale} = plotScales(plot);
+  d3.select(plot).selectAll("circle")
+    .style("cursor", "grab")
+    .call(d3.drag()
+      .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+      .on("drag", function(event) {
+        const [px, py] = d3.pointer(event, plot);
+        const u = snap(xScale.invert(px), lo, hi);
+        const v = snap(yScale.invert(py), lo, hi);
+        d3.select(this).attr("cx", xScale(u)).attr("cy", yScale(v));
+        if (onDrag) onDrag.call(this, u, v, plot);
+      })
+      .on("end", function(event) {
+        d3.select(this).style("cursor", "grab");
+        const [px, py] = d3.pointer(event, plot);
+        const u = snap(xScale.invert(px), lo, hi);
+        const v = snap(yScale.invert(py), lo, hi);
+        if (onEnd) onEnd(u, v);
+      })
+    );
+  return plot;
+}
+```
 
 I have been brushing up on my abstract algebra lately. At the moment I am reading *Linear Algebra Done Right* and Aluffi’s *Algebra: Notes from the Underground*. To practice the ideas, I decided, at least for a while, not to do the book exercises. Instead, I wanted to experiment on my own—not to discover anything new, but to make the discovery myself, slowly enough to get to know the resulting structure from the inside.
 
@@ -60,6 +163,144 @@ So this gives a $2$-dimensional real algebra. It looks suspiciously like the com
 
 That tiny formal change turns out to alter the structure completely.
 
+::: {.viz-wrap}
+
+**Explore: what does the algebra look like for different signs?** The rule $t^2 = c$ defines a whole family of algebras, parametrized by $c$. Drag the slider to watch the geometry morph. At $c=-1$ you get the familiar complex numbers (circle); at $c=0$, the degenerate dual numbers; at $c=1$, the split-complex numbers (hyperbola). The dashed lines are the **zero divisor set** $u^2 = cv^2$ — notice how they exist only for $c > 0$, and disappear entirely for $c < 0$. Drag the black point to read off the norm $N = u^2 - cv^2$.
+
+```{ojs}
+viewof cParam = Inputs.range([-1.5, 1.5], {
+  value: -1, step: 0.01, width: 500,
+  label: "c  (defining  t² = c)"
+})
+```
+
+```{ojs}
+mutable pt1_1 = ({u: 1.5, v: 0.5})
+```
+
+```{ojs}
+viz1_1 = {
+  const c = cParam;
+  const D = 5;
+  const sRange = Array.from({length: 401}, (_, i) => -3.5 + i * 0.0175);
+  const thetaRange = Array.from({length: 401}, (_, i) => i * 2 * Math.PI / 400);
+
+  // ── Background heatmap (norm = u² - cv²) ─────────────────────────────
+  const step = 0.2;
+  const heatData = [];
+  for (let u = -D; u <= D; u += step)
+    for (let v = -D; v <= D; v += step)
+      heatData.push({u, v, norm: u * u - c * v * v});
+
+  // ── Unit curve  u² − cv² = 1 ──────────────────────────────────────────
+  let unitRight = [], unitLeft = [];
+  if (c < -0.001) {
+    const ac = -c;
+    unitRight = thetaRange.map(th => ({u: Math.cos(th), v: Math.sin(th) / Math.sqrt(ac)}));
+  } else if (c > 0.001) {
+    unitRight = sRange.map(s => ({u:  Math.cosh(s), v: Math.sinh(s) / Math.sqrt(c)}));
+    unitLeft  = sRange.map(s => ({u: -Math.cosh(s), v: Math.sinh(s) / Math.sqrt(c)}));
+  }
+
+  // ── Anti-unit curve  u² − cv² = −1 ────────────────────────────────────
+  let antiTop = [], antiBot = [];
+  if (c > 0.001) {
+    antiTop = sRange.map(s => ({u: Math.sinh(s), v:  Math.cosh(s) / Math.sqrt(c)}));
+    antiBot = sRange.map(s => ({u: Math.sinh(s), v: -Math.cosh(s) / Math.sqrt(c)}));
+  }
+
+  // ── Zero-divisor lines  u = ±√c · v ───────────────────────────────────
+  const zdSlope = c > 0.001 ? Math.sqrt(c) : null;
+
+  // ── Annotation ─────────────────────────────────────────────────────────
+  let anno = "";
+  if (Math.abs(c - 1) < 0.06) anno = "Split-complex  (t² = 1)";
+  else if (Math.abs(c) < 0.06) anno = "Dual numbers  (ε² = 0)";
+  else if (Math.abs(c + 1) < 0.06) anno = "Complex  (i² = −1)";
+
+  // ── Assemble marks ────────────────────────────────────────────────────
+  const marks = [
+    // heatmap
+    Plot.rect(heatData, {
+      x1: d => d.u - step / 2, x2: d => d.u + step / 2,
+      y1: d => d.v - step / 2, y2: d => d.v + step / 2,
+      fill: "norm", stroke: null, tip: false
+    }),
+    Plot.ruleY([0], {stroke: "#bbb"}),
+    Plot.ruleX([0], {stroke: "#bbb"}),
+  ];
+
+  // c ≈ 0 degenerate: two vertical lines u = ±1
+  if (Math.abs(c) <= 0.05) {
+    marks.push(Plot.ruleX([1, -1], {stroke: COL.complex, strokeWidth: 2.5}));
+  }
+
+  // unit curve
+  if (unitRight.length)
+    marks.push(Plot.line(unitRight, {x: "u", y: "v", stroke: COL.complex, strokeWidth: 2.5}));
+  if (unitLeft.length)
+    marks.push(Plot.line(unitLeft,  {x: "u", y: "v", stroke: COL.complex, strokeWidth: 2.5}));
+
+  // anti-unit curve
+  if (antiTop.length)
+    marks.push(Plot.line(antiTop, {x: "u", y: "v", stroke: COL.hyper, strokeWidth: 2.5}));
+  if (antiBot.length)
+    marks.push(Plot.line(antiBot, {x: "u", y: "v", stroke: COL.hyper, strokeWidth: 2.5}));
+
+  // zero-divisor lines
+  if (zdSlope !== null) {
+    marks.push(
+      Plot.line([[-D, -D / zdSlope], [D, D / zdSlope]], {
+        stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
+      Plot.line([[-D, D / zdSlope], [D, -D / zdSlope]], {
+        stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5})
+    );
+  } else if (Math.abs(c) < 0.06) {
+    marks.push(Plot.ruleX([0], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}));
+  }
+
+  // annotation
+  if (anno)
+    marks.push(Plot.text([{x: 0, y: D - 0.4}], {
+      x: "x", y: "y", text: [anno], fontSize: 13, fontWeight: "bold", fill: "#374151"
+    }));
+
+  // draggable point
+  const p = pt1_1;
+  marks.push(
+    Plot.dot([p], {x: "u", y: "v", fill: "black", r: 6, stroke: "white", strokeWidth: 1.5}),
+    Plot.text([p], {
+      x: "u", y: "v",
+      text: d => `(${d.u.toFixed(1)}, ${d.v.toFixed(1)})  N = ${(d.u*d.u - c*d.v*d.v).toFixed(2)}`,
+      dx: 12, dy: -14, textAnchor: "start", fontSize: 12, fontWeight: 600
+    })
+  );
+
+  const plot = Plot.plot({
+    width: 560, height: 560,
+    grid: true,
+    aspectRatio: 1,
+    x: {domain: [-D, D], label: "u  (real part)"},
+    y: {domain: [-D, D], label: "v  (t-part)"},
+    color: {type: "diverging", scheme: "RdBu", domain: [-12, 12], legend: false},
+    marks
+  });
+
+  return attachDrag(plot, {
+    domain: [-D, D],
+    onDrag(u, v, plt) {
+      // Update text on drag
+      const textEl = d3.select(plt).select("[aria-label='text'] text");
+      if (!textEl.empty())
+        textEl.text(`(${u.toFixed(1)}, ${v.toFixed(1)})  N = ${(u*u - c*v*v).toFixed(2)}`);
+    },
+    onEnd(u, v) { mutable pt1_1 = {u, v}; }
+  });
+}
+```
+
+:::
+
 ## 2. Zero divisors appear immediately
 
 The first test multiplication is the obvious one:
@@ -113,6 +354,155 @@ This is the moment when the algebra suddenly becomes transparent. The new basis 
 - and they sum to the identity: $e_++e_-=1$.
 
 I had started with a naive sign-flip experiment, and now a remarkably rigid structure had appeared almost uninvited.
+
+::: {.viz-wrap}
+
+**Explore: multiplication and the collapse to zero.** Drag the two factors $x$ (blue) and $y$ (red) on the split-complex plane. Their product $xy$ is shown in black. Try placing $x$ near the line $u = v$ and $y$ near $u = -v$. Watch the product shrink toward the origin — two perfectly nonzero elements annihilating each other. The norm bars below show how each element's norm $u^2 - v^2$ determines invertibility: when a norm crosses zero, you're on a zero-divisor line.
+
+```{ojs}
+mutable ptX = ({u: 1.8, v: 0.6})
+mutable ptY = ({u: 0.5, v: -1.2})
+```
+
+```{ojs}
+viz1_2 = {
+  const D = 4;
+  const x = ptX, y = ptY;
+  const prod = scMul(x, y);
+  const nX = normSC(x.u, x.v), nY = normSC(y.u, y.v), nP = normSC(prod.u, prod.v);
+
+  // ── Build plot ────────────────────────────────────────────────────────
+  const plot = Plot.plot({
+    width: 540, height: 540,
+    grid: true, aspectRatio: 1,
+    x: {domain: [-D, D], label: "u"},
+    y: {domain: [-D, D], label: "v"},
+    marks: [
+      // Norm-sign background: four quadrants
+      Plot.rect([{x1: -D, x2: 0, y1: 0, y2: D}],
+        {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.hyper, opacity: 0.06}),
+      Plot.rect([{x1: 0, x2: D, y1: -D, y2: 0}],
+        {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.hyper, opacity: 0.06}),
+      Plot.rect([{x1: 0, x2: D, y1: 0, y2: D}],
+        {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.complex, opacity: 0.06}),
+      Plot.rect([{x1: -D, x2: 0, y1: -D, y2: 0}],
+        {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.complex, opacity: 0.06}),
+
+      // Zero-divisor diagonals
+      Plot.line([[-D, -D], [D, D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
+      Plot.line([[-D, D], [D, -D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
+
+      Plot.ruleY([0], {stroke: "#ccc"}),
+      Plot.ruleX([0], {stroke: "#ccc"}),
+
+      // Product vector (line from origin to product)
+      Plot.arrow([{x1: 0, y1: 0, x2: prod.u, y2: prod.v}], {
+        x1: "x1", y1: "y1", x2: "x2", y2: "y2",
+        stroke: "#111", strokeWidth: 2
+      }),
+
+      // Factor arrows from origin
+      Plot.arrow([{x1: 0, y1: 0, x2: x.u, y2: x.v}], {
+        x1: "x1", y1: "y1", x2: "x2", y2: "y2",
+        stroke: COL.complex, strokeWidth: 1.5, strokeDasharray: "4"
+      }),
+      Plot.arrow([{x1: 0, y1: 0, x2: y.u, y2: y.v}], {
+        x1: "x1", y1: "y1", x2: "x2", y2: "y2",
+        stroke: COL.hyper, strokeWidth: 1.5, strokeDasharray: "4"
+      }),
+
+      // Points
+      Plot.dot([x], {x: "u", y: "v", fill: COL.complex, r: 7, stroke: "white", strokeWidth: 1.5}),
+      Plot.dot([y], {x: "u", y: "v", fill: COL.hyper,   r: 7, stroke: "white", strokeWidth: 1.5}),
+      Plot.dot([prod], {x: "u", y: "v", fill: "#111",    r: 6, stroke: "white", strokeWidth: 1.5}),
+
+      // Labels
+      Plot.text([x], {x: "u", y: "v", text: d => `x = ${d.u.toFixed(1)} + ${d.v.toFixed(1)}t`,
+        dx: 12, dy: -12, fill: COL.complex, fontWeight: "bold", fontSize: 12}),
+      Plot.text([y], {x: "u", y: "v", text: d => `y = ${d.u.toFixed(1)} + ${d.v.toFixed(1)}t`,
+        dx: 12, dy: -12, fill: COL.hyper, fontWeight: "bold", fontSize: 12}),
+      Plot.text([prod], {x: "u", y: "v",
+        text: d => `xy = ${d.u.toFixed(2)} + ${d.v.toFixed(2)}t`,
+        dx: 12, dy: 14, fill: "#111", fontWeight: "bold", fontSize: 12}),
+    ]
+  });
+
+  // Attach drag to circles (x is first, y is second, prod is third)
+  const {xScale, yScale} = plotScales(plot);
+  const circles = d3.select(plot).selectAll("circle");
+  const allCircles = circles.nodes();
+
+  // Drag for x (first circle)
+  d3.select(allCircles[0]).style("cursor", "grab")
+    .call(d3.drag()
+      .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+      .on("drag", function(event) {
+        const [px, py] = d3.pointer(event, plot);
+        d3.select(this).attr("cx", px).attr("cy", py);
+      })
+      .on("end", function(event) {
+        d3.select(this).style("cursor", "grab");
+        const [px, py] = d3.pointer(event, plot);
+        mutable ptX = {
+          u: snap(xScale.invert(px), -D, D),
+          v: snap(yScale.invert(py), -D, D)
+        };
+      })
+    );
+
+  // Drag for y (second circle)
+  d3.select(allCircles[1]).style("cursor", "grab")
+    .call(d3.drag()
+      .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+      .on("drag", function(event) {
+        const [px, py] = d3.pointer(event, plot);
+        d3.select(this).attr("cx", px).attr("cy", py);
+      })
+      .on("end", function(event) {
+        d3.select(this).style("cursor", "grab");
+        const [px, py] = d3.pointer(event, plot);
+        mutable ptY = {
+          u: snap(xScale.invert(px), -D, D),
+          v: snap(yScale.invert(py), -D, D)
+        };
+      })
+    );
+
+  // ── Norm bars ─────────────────────────────────────────────────────────
+  const barW = 520, barH = 28, maxN = 12;
+  const normBar = (label, val, color) => {
+    const frac = Math.max(-1, Math.min(1, val / maxN));
+    const mid = barW / 2;
+    const x = frac >= 0 ? mid : mid + frac * mid;
+    const w = Math.abs(frac) * mid;
+    return html`<div style="margin:4px 0;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="width:90px;font-size:0.85em;font-weight:600;color:${color}">${label}</span>
+        <svg width="${barW}" height="${barH}">
+          <rect x="0" y="0" width="${barW}" height="${barH}" fill="#f3f4f6" rx="4"/>
+          <line x1="${mid}" y1="0" x2="${mid}" y2="${barH}" stroke="#9ca3af" stroke-dasharray="3"/>
+          <rect x="${x}" y="3" width="${w}" height="${barH - 6}" fill="${color}" opacity="0.6" rx="3"/>
+          <text x="${mid + frac * mid + (frac >= 0 ? 4 : -4)}" y="${barH / 2 + 4}" 
+                font-size="11" fill="#374151" text-anchor="${frac >= 0 ? 'start' : 'end'}">
+            ${val.toFixed(2)}
+          </text>
+        </svg>
+      </div>
+    </div>`;
+  };
+
+  return html`<div>
+    ${plot}
+    <div style="max-width:620px;margin-top:8px;">
+      ${normBar("N(x) =", nX, COL.complex)}
+      ${normBar("N(y) =", nY, COL.hyper)}
+      ${normBar("N(xy) =", nP, "#111")}
+    </div>
+  </div>`;
+}
+```
+
+:::
 
 ## 3. Every element rewrites naturally in the idempotent basis
 
@@ -190,6 +580,85 @@ $$
 $$
 
 The algebra has diagonalized itself. That was the first moment it stopped feeling like a slightly odd cousin of $\mathbb C$ and started feeling like something built to split cleanly into independent parts.
+
+::: {.viz-wrap}
+
+**Explore: the multiplication machine.** Adjust $x$ and $y$ to see how multiplication works in both bases. On the left, the standard-basis multiplication has **four** terms — the cross terms entangle the two components. On the right, the idempotent-basis multiplication has only **two** independent channel multiplications; the cross terms are exactly zero. Both sides compute the same result.
+
+```{ojs}
+viewof mulInputs = Inputs.form({
+  a1: Inputs.range([-3, 3], {value: 2, step: 0.1, label: "a₁  (e₊ coeff of x)"}),
+  b1: Inputs.range([-3, 3], {value: 1, step: 0.1, label: "b₁  (e₋ coeff of x)"}),
+  a2: Inputs.range([-3, 3], {value: 1.5, step: 0.1, label: "a₂  (e₊ coeff of y)"}),
+  b2: Inputs.range([-3, 3], {value: -0.5, step: 0.1, label: "b₂  (e₋ coeff of y)"}),
+})
+```
+
+```{ojs}
+viz2_2 = {
+  const {a1, b1, a2, b2} = mulInputs;
+  // Convert to (u,v) coords
+  const {u: u1, v: v1} = toUV(a1, b1);
+  const {u: u2, v: v2} = toUV(a2, b2);
+
+  // Standard basis: (u1+v1t)(u2+v2t) = (u1u2+v1v2) + (u1v2+v1u2)t
+  const s_uu = u1 * u2, s_vv = v1 * v2, s_uv = u1 * v2, s_vu = v1 * u2;
+  const res_u = s_uu + s_vv, res_v = s_uv + s_vu;
+
+  // Idempotent basis: (a1 e+)(a2 e+) = a1a2 e+,  (b1 e-)(b2 e-) = b1b2 e-
+  const res_a = a1 * a2, res_b = b1 * b2;
+
+  const cell = (val, bg, label, gray) => html`<div class="foil-cell" style="background:${gray ? '#f3f4f6' : bg};opacity:${gray ? 0.4 : 1}">
+    <div style="font-size:0.75em;color:#6b7280">${label}</div>
+    <div style="font-size:1.1em;font-weight:600">${gray ? '0' : val.toFixed(2)}</div>
+  </div>`;
+
+  const panel = (title, color, grid, result) => html`<div style="flex:1;min-width:280px">
+    <div style="text-align:center;font-weight:700;margin-bottom:6px;color:${color}">${title}</div>
+    <div class="foil-grid">${grid}</div>
+    <div style="text-align:center;margin-top:10px;padding:8px;background:#f9fafb;border-radius:6px;font-weight:600">
+      ${result}
+    </div>
+  </div>`;
+
+  const stdGrid = html`
+    ${cell(s_uu, '#dbeafe', 'u₁u₂', false)}
+    ${cell(s_uv, '#fef3c7', 'u₁v₂ · t', false)}
+    ${cell(s_vu, '#fef3c7', 'v₁u₂ · t', false)}
+    ${cell(s_vv, '#dbeafe', 'v₁v₂ · t² = v₁v₂', false)}
+  `;
+
+  const idGrid = html`
+    ${cell(res_a, '#d1fae5', 'a₁a₂ · e₊', false)}
+    ${cell(0, '', 'a₁b₂ · e₊e₋', true)}
+    ${cell(0, '', 'b₁a₂ · e₋e₊', true)}
+    ${cell(res_b, '#ede9fe', 'b₁b₂ · e₋', false)}
+  `;
+
+  const fmtSgn = (v) => v >= 0 ? `+ ${Math.abs(v).toFixed(2)}` : `− ${Math.abs(v).toFixed(2)}`;
+
+  return html`<div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;">
+    ${panel(
+      "Standard basis",
+      "#374151",
+      stdGrid,
+      html`= ${res_u.toFixed(2)} ${fmtSgn(res_v)}<i>t</i>`
+    )}
+    ${panel(
+      "Idempotent basis",
+      "#374151",
+      idGrid,
+      html`= <span style="color:${COL.ePlus}">${res_a.toFixed(2)} e₊</span> ${res_b >= 0 ? '+' : '−'} <span style="color:${COL.eMinus}">${Math.abs(res_b).toFixed(2)} e₋</span>`
+    )}
+  </div>
+  <div style="text-align:center;margin-top:12px;font-size:0.9em;color:#6b7280">
+    Cross-talk in standard basis: <strong>${Math.abs(s_uv + s_vu).toFixed(2)}</strong> &nbsp;|&nbsp;
+    Cross-talk in idempotent basis: <strong style="color:${COL.ePlus}">0.00</strong> (always)
+  </div>`;
+}
+```
+
+:::
 
 ## 4. What the algebra actually is
 
@@ -271,6 +740,169 @@ $$
 
 This is one of the places where the familiar hyperbolic geometry of the split-complex numbers begins to peek through.
 
+::: {.viz-wrap}
+
+**Explore: the isomorphism in action.** These two planes are linked by the map $u + vt \mapsto (a,b) = (u+v, \, u-v)$. Drag the point in **either** plane and watch the other update. In the left plane, the zero-divisor lines $u = \pm v$ look like mysterious diagonals. In the right plane, they are simply **the coordinate axes** $a = 0$ and $b = 0$. The norm $N = u^2 - v^2$ in the left plane equals $ab$ in the right. What looks singular on the left is entirely ordinary on the right.
+
+```{ojs}
+mutable splitPt = ({u: 1.8, v: 0.6})
+```
+
+```{ojs}
+viz2_1 = {
+  const D = 4;
+  const p = splitPt;
+  const {a, b} = toAB(p.u, p.v);
+  const N = normSC(p.u, p.v);
+
+  // ── Generate a few norm level curves in both coordinate systems ──────
+  const sRange = Array.from({length: 301}, (_, i) => -3 + i * 0.02);
+  const levels = [0.5, 1, 2, 4];
+
+  // (u,v) plane: u²-v² = k → u = ±cosh(s)√k, v = sinh(s)√k for k>0
+  //              u²-v² = -k → u = sinh(s)√k, v = ±cosh(s)√k
+  const uvCurves = [];
+  for (const k of levels) {
+    const sk = Math.sqrt(k);
+    uvCurves.push({pts: sRange.map(s => ({x: sk*Math.cosh(s), y: sk*Math.sinh(s)})), stroke: COL.complex, k});
+    uvCurves.push({pts: sRange.map(s => ({x:-sk*Math.cosh(s), y: sk*Math.sinh(s)})), stroke: COL.complex, k});
+    uvCurves.push({pts: sRange.map(s => ({x: sk*Math.sinh(s), y: sk*Math.cosh(s)})), stroke: COL.hyper, k});
+    uvCurves.push({pts: sRange.map(s => ({x: sk*Math.sinh(s), y:-sk*Math.cosh(s)})), stroke: COL.hyper, k});
+  }
+
+  // (a,b) plane: ab = k → b = k/a  (rectangular hyperbola)
+  const abCurves = [];
+  const aRange = Array.from({length: 601}, (_, i) => -D + i * (2*D)/600).filter(x => Math.abs(x) > 0.05);
+  for (const k of levels) {
+    abCurves.push({pts: aRange.filter(aa => Math.abs(k/aa) < D).map(aa => ({x: aa, y: k/aa})), k, sign: "+"});
+    abCurves.push({pts: aRange.filter(aa => Math.abs(k/aa) < D).map(aa => ({x: aa, y: -k/aa})), k, sign: "-"});
+  }
+
+  // ── Left plane: (u,v) ─────────────────────────────────────────────────
+  const leftMarks = [
+    Plot.ruleY([0], {stroke: "#ccc"}),
+    Plot.ruleX([0], {stroke: "#ccc"}),
+    // Zero-divisor diagonals
+    Plot.line([[-D,-D],[D,D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
+    Plot.line([[-D,D],[D,-D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
+  ];
+
+  // Level curves (faint)
+  for (const c of uvCurves) {
+    const visible = c.pts.filter(d => Math.abs(d.x) <= D && Math.abs(d.y) <= D);
+    if (visible.length > 2)
+      leftMarks.push(Plot.line(visible, {x: "x", y: "y", stroke: c.stroke, strokeWidth: 1, opacity: 0.25}));
+  }
+
+  // e+ and e- basis vectors
+  leftMarks.push(
+    Plot.arrow([{x1:0,y1:0,x2:0.5,y2:0.5}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.ePlus, strokeWidth: 2}),
+    Plot.arrow([{x1:0,y1:0,x2:0.5,y2:-0.5}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.eMinus, strokeWidth: 2}),
+    Plot.text([{x:0.65,y:0.65}], {x:"x",y:"y",text:["e₊"],fill:COL.ePlus,fontWeight:"bold",fontSize:13}),
+    Plot.text([{x:0.65,y:-0.65}], {x:"x",y:"y",text:["e₋"],fill:COL.eMinus,fontWeight:"bold",fontSize:13}),
+  );
+
+  // Point + projections onto diagonals
+  const projPlus  = {x: (p.u+p.v)/2, y: (p.u+p.v)/2};   // a/2 on the e+ diagonal
+  const projMinus = {x: (p.u-p.v)/2, y: -(p.u-p.v)/2};   // b/2 on the e- diagonal
+  leftMarks.push(
+    Plot.line([[projPlus.x, projPlus.y], [p.u, p.v]], {stroke: COL.ePlus, strokeDasharray: "3", opacity: 0.5}),
+    Plot.line([[projMinus.x, projMinus.y], [p.u, p.v]], {stroke: COL.eMinus, strokeDasharray: "3", opacity: 0.5}),
+    Plot.dot([p], {x: "u", y: "v", fill: "#111", r: 6, stroke: "white", strokeWidth: 1.5}),
+    Plot.text([p], {x: "u", y: "v",
+      text: [`(${p.u.toFixed(1)}, ${p.v.toFixed(1)})  N=${N.toFixed(2)}`],
+      dx: 10, dy: -12, fontSize: 11, fontWeight: 600}),
+  );
+
+  const leftPlot = Plot.plot({
+    width: 380, height: 380, grid: true, aspectRatio: 1,
+    x: {domain: [-D, D], label: "u"},
+    y: {domain: [-D, D], label: "v"},
+    marks: leftMarks
+  });
+
+  // ── Right plane: (a,b) ────────────────────────────────────────────────
+  const rightMarks = [
+    // Highlight axes as "zero-divisor loci" (they ARE the zero divisors here)
+    Plot.ruleY([0], {stroke: COL.zd, strokeWidth: 2}),
+    Plot.ruleX([0], {stroke: COL.zd, strokeWidth: 2}),
+  ];
+
+  // Level curves ab = ±k (rectangular hyperbolas)
+  for (const c of abCurves) {
+    // Split into two branches (a>0 and a<0) to avoid connecting across asymptote
+    const pos = c.pts.filter(d => d.x > 0);
+    const neg = c.pts.filter(d => d.x < 0);
+    const color = c.sign === "+" ? COL.complex : COL.hyper;
+    if (pos.length > 2)
+      rightMarks.push(Plot.line(pos, {x: "x", y: "y", stroke: color, strokeWidth: 1, opacity: 0.25}));
+    if (neg.length > 2)
+      rightMarks.push(Plot.line(neg, {x: "x", y: "y", stroke: color, strokeWidth: 1, opacity: 0.25}));
+  }
+
+  // Standard basis vectors in (a,b) space: 1 maps to (1,1), t maps to (1,-1)
+  rightMarks.push(
+    Plot.line([[-D,-D],[D,D]], {stroke: "#bbb", strokeDasharray: "2", strokeWidth: 0.8}),
+    Plot.text([{x:D-0.5,y:D-0.3}], {x:"x",y:"y",text:["a=b (real axis)"],fill:"#999",fontSize:10}),
+  );
+
+  rightMarks.push(
+    Plot.dot([{x: a, y: b}], {x: "x", y: "y", fill: "#111", r: 6, stroke: "white", strokeWidth: 1.5}),
+    Plot.text([{x: a, y: b}], {x: "x", y: "y",
+      text: [`(${a.toFixed(1)}, ${b.toFixed(1)})  ab=${(a*b).toFixed(2)}`],
+      dx: 10, dy: -12, fontSize: 11, fontWeight: 600}),
+    // Projections onto axes
+    Plot.line([[a, b], [a, 0]], {stroke: COL.ePlus, strokeDasharray: "3", opacity: 0.6}),
+    Plot.line([[a, b], [0, b]], {stroke: COL.eMinus, strokeDasharray: "3", opacity: 0.6}),
+    Plot.dot([{x: a, y: 0}], {x: "x", y: "y", fill: COL.ePlus, r: 4}),
+    Plot.dot([{x: 0, y: b}], {x: "x", y: "y", fill: COL.eMinus, r: 4}),
+    Plot.text([{x: a, y: 0}], {x: "x", y: "y", text: [`a=${a.toFixed(1)}`],
+      dy: 14, fill: COL.ePlus, fontWeight: "bold", fontSize: 11}),
+    Plot.text([{x: 0, y: b}], {x: "x", y: "y", text: [`b=${b.toFixed(1)}`],
+      dx: -14, fill: COL.eMinus, fontWeight: "bold", fontSize: 11, textAnchor: "end"}),
+  );
+
+  const rightPlot = Plot.plot({
+    width: 380, height: 380, grid: true, aspectRatio: 1,
+    x: {domain: [-D, D], label: "a  (= u + v)"},
+    y: {domain: [-D, D], label: "b  (= u − v)"},
+    marks: rightMarks
+  });
+
+  // ── Attach drag to BOTH planes ────────────────────────────────────────
+  // Left plane: drag updates (u,v) directly
+  attachDrag(leftPlot, {
+    domain: [-D, D],
+    onEnd(u, v) { mutable splitPt = {u, v}; }
+  });
+
+  // Right plane: drag updates (a,b), convert back to (u,v)
+  attachDrag(rightPlot, {
+    domain: [-D, D],
+    onEnd(newA, newB) {
+      const {u, v} = toUV(newA, newB);
+      mutable splitPt = {u, v};
+    }
+  });
+
+  return html`<div class="dual-panel">
+    <div>
+      <div class="viz-label">Standard coordinates  (u, v)</div>
+      ${leftPlot}
+    </div>
+    <div>
+      <div class="viz-label">Idempotent coordinates  (a, b) = (u+v, u−v)</div>
+      ${rightPlot}
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:6px;font-size:0.9em">
+    ${tex`\color{${COL.ePlus}}{a = ${a.toFixed(2)}} \quad \color{${COL.eMinus}}{b = ${b.toFixed(2)}} \quad N = u^2 - v^2 = ab = ${N.toFixed(2)}`}
+  </div>`;
+}
+```
+
+:::
+
 ### Functions act coordinatewise
 
 Once the idempotent basis is in place, another pleasant fact becomes almost automatic. For any polynomial $p$, one has
@@ -309,6 +941,126 @@ This is the hyperbolic analogue of the familiar complex formula
 $$
 e^{x+yi}=e^x(\cos y + i\sin y).
 $$
+
+::: {.viz-wrap}
+
+**Explore: circle vs. hyperbola.** These two panels are controlled by the same parameter. On the left, the complex exponential $e^{i\theta}$ traces a **circle** — rotation. On the right, the split-complex exponential $e^{vt}$ traces a **hyperbola** — hyperbolic rotation. Toggle "Show trails" to see the full trajectory at once, abstracting over the parameter. Below each panel, the idempotent decomposition shows what's happening to each channel: in the split-complex case, the channels are simply $e^v$ and $e^{-v}$ — one grows, the other shrinks.
+
+```{ojs}
+viewof eulerParam = Inputs.range([-3, 3], {value: 1, step: 0.02, label: "Parameter  θ / v", width: 480})
+viewof showTrails = Inputs.toggle({label: "Show trails", value: false})
+```
+
+```{ojs}
+viz4_2 = {
+  const th = eulerParam;
+
+  // Complex: e^{iθ} = cos θ + i sin θ
+  const cx = Math.cos(th), cy = Math.sin(th);
+
+  // Split-complex: e^{vt} = cosh v + t sinh v
+  const su = Math.cosh(th), sv = Math.sinh(th);
+  // In idempotent coords: a = e^v, b = e^{-v}
+  const sa = Math.exp(th), sb = Math.exp(-th);
+
+  // Trail data
+  const trail = Array.from({length: 301}, (_, i) => {
+    const t = -3 + i * 0.02;
+    return {
+      cx: Math.cos(t), cy: Math.sin(t),
+      su: Math.cosh(t), sv: Math.sinh(t),
+      t
+    };
+  });
+
+  const D_c = 1.6, D_s = 12;
+
+  const leftMarks = [
+    Plot.ruleY([0], {stroke: "#ccc"}), Plot.ruleX([0], {stroke: "#ccc"}),
+  ];
+  if (showTrails)
+    leftMarks.push(Plot.line(trail, {x: "cx", y: "cy", stroke: "#ddd", strokeWidth: 2}));
+  leftMarks.push(
+    // Unit circle
+    Plot.line(trail, {x: "cx", y: "cy", stroke: COL.complex, strokeWidth: 1.5, opacity: 0.4}),
+    // Current point
+    Plot.dot([{x: cx, y: cy}], {x: "x", y: "y", fill: COL.complex, r: 7, stroke: "white", strokeWidth: 1.5}),
+    // Projections
+    Plot.line([[cx, cy], [cx, 0]], {stroke: COL.complex, strokeDasharray: "3", opacity: 0.5}),
+    Plot.line([[cx, cy], [0, cy]], {stroke: COL.complex, strokeDasharray: "3", opacity: 0.5}),
+    Plot.text([{x: cx, y: cy}], {x: "x", y: "y",
+      text: [`(${cx.toFixed(2)}, ${cy.toFixed(2)})`], dx: 10, dy: -10, fontSize: 11, fontWeight: 600}),
+  );
+
+  const leftPlot = Plot.plot({
+    width: 320, height: 320, grid: true, aspectRatio: 1,
+    x: {domain: [-D_c, D_c], label: "cos θ"},
+    y: {domain: [-D_c, D_c], label: "sin θ"},
+    marks: leftMarks
+  });
+
+  const rightMarks = [
+    Plot.ruleY([0], {stroke: "#ccc"}), Plot.ruleX([0], {stroke: "#ccc"}),
+  ];
+  if (showTrails) {
+    const trailPos = trail.filter(d => d.su <= D_s && Math.abs(d.sv) <= D_s);
+    rightMarks.push(Plot.line(trailPos, {x: "su", y: "sv", stroke: "#ddd", strokeWidth: 2}));
+  }
+  rightMarks.push(
+    // Right branch of hyperbola
+    Plot.line(trail.filter(d => d.su <= D_s), {x: "su", y: "sv", stroke: COL.hyper, strokeWidth: 1.5, opacity: 0.4}),
+    Plot.dot([{x: su, y: sv}], {x: "x", y: "y", fill: COL.hyper, r: 7, stroke: "white", strokeWidth: 1.5}),
+    Plot.line([[su, sv], [su, 0]], {stroke: COL.hyper, strokeDasharray: "3", opacity: 0.5}),
+    Plot.line([[su, sv], [0, sv]], {stroke: COL.hyper, strokeDasharray: "3", opacity: 0.5}),
+    Plot.text([{x: su, y: sv}], {x: "x", y: "y",
+      text: [`(${su.toFixed(2)}, ${sv.toFixed(2)})`], dx: 10, dy: -10, fontSize: 11, fontWeight: 600}),
+  );
+
+  const rightPlot = Plot.plot({
+    width: 320, height: 320, grid: true, aspectRatio: 1,
+    x: {domain: [-D_s, D_s], label: "cosh v  (= 1 part)"},
+    y: {domain: [-D_s, D_s], label: "sinh v  (= t part)"},
+    marks: rightMarks
+  });
+
+  // Channel decomposition bars
+  const channelBar = (label, val, color, max) => {
+    const W = 180, H = 18;
+    const frac = Math.min(Math.abs(val) / max, 1);
+    const x = val >= 0 ? W/2 : W/2 - frac * W/2;
+    const w = frac * W/2;
+    return html`<div style="display:flex;align-items:center;gap:6px;margin:2px 0">
+      <span style="width:40px;font-size:0.78em;color:${color};font-weight:600">${label}</span>
+      <svg width="${W}" height="${H}">
+        <rect width="${W}" height="${H}" fill="#f5f5f5" rx="3"/>
+        <line x1="${W/2}" y1="0" x2="${W/2}" y2="${H}" stroke="#ccc"/>
+        <rect x="${x}" y="2" width="${w}" height="${H-4}" fill="${color}" opacity="0.6" rx="2"/>
+      </svg>
+      <span style="font-size:0.78em;width:50px">${val.toFixed(2)}</span>
+    </div>`;
+  };
+
+  return html`<div class="dual-panel">
+    <div>
+      <div class="viz-label">Complex: ${tex`e^{i\theta} = \cos\theta + i\sin\theta`}</div>
+      ${leftPlot}
+    </div>
+    <div>
+      <div class="viz-label">Split-complex: ${tex`e^{vt} = \cosh v + t\sinh v`}</div>
+      ${rightPlot}
+      <div style="margin-top:8px">
+        ${channelBar("e₊", sa, COL.ePlus, 20)}
+        ${channelBar("e₋", sb, COL.eMinus, 20)}
+        <div style="font-size:0.75em;color:#999;margin-top:2px">
+          Channels: (e<sup>v</sup>, e<sup>−v</sup>) = (${sa.toFixed(2)}, ${sb.toFixed(2)})
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+```
+
+:::
 
 And the idempotents do something else neat as well: they isolate the two coordinates. If
 
@@ -462,6 +1214,184 @@ So the same objects play two roles at once: they are the atomic basis vectors, a
 
 In retrospect that makes the original split-complex discovery feel even cleaner. The elements $e_+$ and $e_-$ were not merely a convenient change of basis. They were the two point-masses on a two-point space, and multiplication had become pointwise multiplication because the algebra had quietly turned into the algebra of functions on that space.
 
+::: {.viz-wrap}
+
+**Explore: the function algebra in action.** A split-complex number is secretly a function on the two-point set $\{+, -\}$. Adjust the sliders to set $f(+)$ and $f(-)$ for two functions, or equivalently their $e_+$ and $e_-$ coordinates. Multiplication is **pointwise**: each bar is multiplied independently, with zero cross-talk. The indicator functions $\delta_+$ and $\delta_-$ are exactly the idempotents $e_+$ and $e_-$ — each "lights up" exactly one point.
+
+```{ojs}
+viewof fnInputs = Inputs.form({
+  fp: Inputs.range([-3, 3], {value: 2.0, step: 0.1, label: "f(+)  =  a"}),
+  fm: Inputs.range([-3, 3], {value: -1.0, step: 0.1, label: "f(−)  =  b"}),
+  gp: Inputs.range([-3, 3], {value: 1.5, step: 0.1, label: "g(+)  =  c"}),
+  gm: Inputs.range([-3, 3], {value: 0.8, step: 0.1, label: "g(−)  =  d"}),
+})
+```
+
+```{ojs}
+viz3_1 = {
+  const {fp, fm, gp, gm} = fnInputs;
+  const hp = fp * gp, hm = fm * gm;   // pointwise product
+  const maxH = 3.5;
+
+  const barChart = (vals, labels, colors, title) => {
+    const W = 160, H = 180, pad = 30, barW = 40, mid = H / 2 + 10;
+    const scale = (H - 2 * pad) / (2 * maxH);
+    return html`<div style="text-align:center">
+      <div style="font-weight:600;font-size:0.85em;margin-bottom:4px">${title}</div>
+      <svg width="${W}" height="${H}">
+        <line x1="0" y1="${mid}" x2="${W}" y2="${mid}" stroke="#ccc"/>
+        ${vals.map((v, i) => {
+          const x = 20 + i * (barW + 30);
+          const h = Math.abs(v) * scale;
+          const y = v >= 0 ? mid - h : mid;
+          return html`<g>
+            <rect x="${x}" y="${y}" width="${barW}" height="${Math.max(h, 1)}"
+                  fill="${colors[i]}" opacity="0.7" rx="3"/>
+            <text x="${x + barW/2}" y="${v >= 0 ? y - 4 : y + h + 13}"
+                  text-anchor="middle" font-size="12" font-weight="600"
+                  fill="${colors[i]}">${v.toFixed(1)}</text>
+            <text x="${x + barW/2}" y="${H - 2}"
+                  text-anchor="middle" font-size="11" fill="#6b7280">${labels[i]}</text>
+          </g>`;
+        })}
+      </svg>
+    </div>`;
+  };
+
+  const colP = COL.ePlus, colM = COL.eMinus;
+
+  const fChart = barChart([fp, fm], ["+", "−"], [colP, colM], "f");
+  const gChart = barChart([gp, gm], ["+", "−"], [colP, colM], "g");
+  const hChart = barChart([hp, hm], ["+", "−"], [colP, colM], "f · g");
+
+  // Indicator functions
+  const d1 = barChart([1, 0], ["+", "−"], [colP, "#ddd"], "δ₊ = e₊");
+  const d2 = barChart([0, 1], ["+", "−"], ["#ddd", colM], "δ₋ = e₋");
+
+  return html`<div>
+    <div style="display:flex;gap:10px;align-items:end;justify-content:center;flex-wrap:wrap">
+      ${fChart}
+      <div style="font-size:1.5em;padding-bottom:60px">×</div>
+      ${gChart}
+      <div style="font-size:1.5em;padding-bottom:60px">=</div>
+      ${hChart}
+    </div>
+    <div style="text-align:center;margin:12px 0 4px;font-size:0.9em;color:#6b7280">
+      Each bar is multiplied <strong>independently</strong>.
+      <span style="color:${colP}">f(+)·g(+) = ${fp.toFixed(1)}·${gp.toFixed(1)} = ${hp.toFixed(2)}</span> &nbsp;|&nbsp;
+      <span style="color:${colM}">f(−)·g(−) = ${fm.toFixed(1)}·${gm.toFixed(1)} = ${hm.toFixed(2)}</span>
+    </div>
+    <details style="margin-top:16px">
+      <summary style="cursor:pointer;font-size:0.9em;color:#6b7280">Show indicator functions (the atomic basis)</summary>
+      <div style="display:flex;gap:24px;justify-content:center;margin-top:8px">
+        ${d1} ${d2}
+      </div>
+      <div style="text-align:center;margin-top:8px;font-size:0.9em">
+        ${tex`f = \color{${colP}}{${fp.toFixed(1)}} \cdot \delta_+ \;+\; \color{${colM}}{${fm.toFixed(1)}} \cdot \delta_- \;=\; \color{${colP}}{${fp.toFixed(1)}} \cdot e_+ \;+\; \color{${colM}}{${fm.toFixed(1)}} \cdot e_-`}
+      </div>
+    </details>
+  </div>`;
+}
+```
+
+:::
+
+::: {.viz-wrap}
+
+**Explore: projection as filtering.** Multiplying by $e_+$ kills the $e_-$ channel and vice versa — exactly like an indicator function picking out a single evaluation point. Drag the point and watch the projections update. The green arrow is $e_+ \cdot x$ (only the $a$-component survives), and the purple arrow is $e_- \cdot x$ (only $b$ survives). Together they reconstruct $x$.
+
+```{ojs}
+mutable projPt = ({u: 2.0, v: 0.8})
+```
+
+```{ojs}
+viz3_2 = {
+  const D = 4;
+  const p = projPt;
+  const {a, b} = toAB(p.u, p.v);
+
+  // Projections: e+ · x = a · e+ → point at (a/2, a/2) in (u,v)
+  //              e- · x = b · e- → point at (b/2, -b/2) in (u,v)
+  const projP = {u: a/2, v: a/2};
+  const projM = {u: b/2, v: -b/2};
+
+  const barH = 140, barW = 50, maxV = D;
+  const makeBar = (val, color, label) => {
+    const scale = (barH - 20) / (2 * maxV);
+    const mid = barH / 2;
+    const h = Math.abs(val) * scale;
+    const y = val >= 0 ? mid - h : mid;
+    return html`<div style="text-align:center;width:70px">
+      <svg width="70" height="${barH}">
+        <line x1="0" y1="${mid}" x2="70" y2="${mid}" stroke="#ccc"/>
+        <rect x="15" y="${y}" width="${barW}" height="${Math.max(h,1)}"
+              fill="${color}" opacity="0.7" rx="3"/>
+        <text x="40" y="${val >= 0 ? y - 3 : y + h + 12}"
+              text-anchor="middle" font-size="11" font-weight="600" fill="${color}">
+          ${val.toFixed(1)}
+        </text>
+      </svg>
+      <div style="font-size:0.8em;color:#6b7280">${label}</div>
+    </div>`;
+  };
+
+  const plot = Plot.plot({
+    width: 360, height: 360, grid: true, aspectRatio: 1,
+    x: {domain: [-D, D], label: "u"},
+    y: {domain: [-D, D], label: "v"},
+    marks: [
+      Plot.ruleY([0], {stroke: "#ccc"}), Plot.ruleX([0], {stroke: "#ccc"}),
+      Plot.line([[-D,-D],[D,D]], {stroke: COL.ePlus, strokeWidth: 1, opacity: 0.3}),
+      Plot.line([[-D,D],[D,-D]], {stroke: COL.eMinus, strokeWidth: 1, opacity: 0.3}),
+
+      // Projection arrows from origin
+      Plot.arrow([{x1:0,y1:0,x2:projP.u,y2:projP.v}], {
+        x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.ePlus, strokeWidth: 3}),
+      Plot.arrow([{x1:0,y1:0,x2:projM.u,y2:projM.v}], {
+        x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.eMinus, strokeWidth: 3}),
+
+      // Dashed lines showing parallelogram reconstruction
+      Plot.line([[projP.u, projP.v], [p.u, p.v]], {stroke: COL.eMinus, strokeDasharray: "4", opacity: 0.5}),
+      Plot.line([[projM.u, projM.v], [p.u, p.v]], {stroke: COL.ePlus, strokeDasharray: "4", opacity: 0.5}),
+
+      // The point x
+      Plot.arrow([{x1:0,y1:0,x2:p.u,y2:p.v}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: "#111", strokeWidth: 2}),
+      Plot.dot([p], {x: "u", y: "v", fill: "#111", r: 6, stroke: "white", strokeWidth: 1.5}),
+      Plot.text([p], {x: "u", y: "v", text: ["x"], dx: 10, dy: -10, fontWeight: "bold", fontSize: 13}),
+
+      // Labels on projections
+      Plot.text([projP], {x: "u", y: "v", text: [`e₊·x`], dx: -14, dy: -8,
+        fill: COL.ePlus, fontWeight: "bold", fontSize: 12, textAnchor: "end"}),
+      Plot.text([projM], {x: "u", y: "v", text: [`e₋·x`], dx: 14, dy: 8,
+        fill: COL.eMinus, fontWeight: "bold", fontSize: 12}),
+    ]
+  });
+
+  attachDrag(plot, {
+    domain: [-D, D],
+    onEnd(u, v) { mutable projPt = {u, v}; }
+  });
+
+  return html`<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">
+    ${plot}
+    <div>
+      <div style="font-size:0.85em;font-weight:600;margin-bottom:8px;text-align:center">Channel values</div>
+      <div style="display:flex;gap:8px;align-items:end">
+        ${makeBar(a, COL.ePlus, "a (e₊)")}
+        ${makeBar(b, COL.eMinus, "b (e₋)")}
+      </div>
+      <div style="margin-top:12px;font-size:0.85em;text-align:center;color:#6b7280">
+        <div><span style="color:${COL.ePlus}">e₊ · x</span> keeps only <span style="color:${COL.ePlus}">a = ${a.toFixed(1)}</span></div>
+        <div><span style="color:${COL.eMinus}">e₋ · x</span> keeps only <span style="color:${COL.eMinus}">b = ${b.toFixed(1)}</span></div>
+        <div style="margin-top:4px;font-weight:600">e₊·x + e₋·x = x  ✓</div>
+      </div>
+    </div>
+  </div>`;
+}
+```
+
+:::
+
 ## 7. Pushing the original experiment: what if $t^n=1$?
 
 At that point it was irresistible to ask for the next step. If adjoining $t$ with $t^2=1$ produces a two-point function algebra, what happens if one adjoins a formal symbol satisfying
@@ -600,6 +1530,284 @@ $$
 $$
 
 are its characters. The formulas above are precisely the Fourier transform and Fourier inversion for that finite abelian group.
+
+::: {.viz-wrap}
+
+**Explore: roots of unity and their indicator idempotents.** Adjust $n$ to see the $n$th roots of unity on the complex unit circle (left). Each root $\omega^j$ indexes one idempotent $e_j$ — a function that evaluates to $1$ at that root and $0$ everywhere else (right). Click a root to highlight its idempotent. For $n = 2$, the two roots are $1$ and $-1$, and the idempotents are exactly $e_+$ and $e_-$ from our original discovery.
+
+```{ojs}
+viewof nRoots = Inputs.range([2, 8], {value: 5, step: 1, label: "n  (order of  tⁿ = 1)"})
+viewof selectedRoot = Inputs.range([0, 7], {value: 0, step: 1, label: "Highlight idempotent  eⱼ"})
+```
+
+```{ojs}
+viz5_1 = {
+  const n = nRoots;
+  const j = Math.min(selectedRoot, n - 1);  // clamp
+  const omega = (k) => ({re: Math.cos(2*Math.PI*k/n), im: Math.sin(2*Math.PI*k/n)});
+
+  // Color palette for roots
+  const rootColors = d3.schemeTableau10;
+
+  // ── Left: roots on unit circle ────────────────────────────────────────
+  const circleData = Array.from({length: 201}, (_, i) => {
+    const t = i * 2 * Math.PI / 200;
+    return {x: Math.cos(t), y: Math.sin(t)};
+  });
+
+  const roots = Array.from({length: n}, (_, k) => {
+    const w = omega(k);
+    return {x: w.re, y: w.im, k, label: k === 0 ? "1" : k === 1 ? "ω" : `ω${superscript(k)}`};
+  });
+
+  const leftMarks = [
+    Plot.ruleY([0], {stroke: "#ddd"}), Plot.ruleX([0], {stroke: "#ddd"}),
+    Plot.line(circleData, {x: "x", y: "y", stroke: "#e5e7eb", strokeWidth: 1.5}),
+    Plot.dot(roots, {x: "x", y: "y",
+      fill: d => d.k === j ? rootColors[d.k % 10] : "#ccc",
+      r: d => d.k === j ? 9 : 6,
+      stroke: "white", strokeWidth: 1.5}),
+    Plot.text(roots, {x: "x", y: "y", text: "label",
+      dx: d => d.x >= 0 ? 14 : -14,
+      dy: d => d.y >= 0 ? -10 : 10,
+      textAnchor: d => d.x >= 0 ? "start" : "end",
+      fontSize: 12, fontWeight: d => d.k === j ? "bold" : "normal",
+      fill: d => d.k === j ? rootColors[d.k % 10] : "#999"}),
+  ];
+
+  const leftPlot = Plot.plot({
+    width: 300, height: 300, aspectRatio: 1,
+    x: {domain: [-1.5, 1.5]}, y: {domain: [-1.5, 1.5]},
+    marks: leftMarks
+  });
+
+  // ── Right: indicator bar chart for e_j ────────────────────────────────
+  const barData = Array.from({length: n}, (_, k) => ({
+    k,
+    val: k === j ? 1 : 0,
+    label: k === 0 ? "1" : k === 1 ? "ω" : `ω${superscript(k)}`
+  }));
+
+  const rightPlot = Plot.plot({
+    width: 300, height: 280,
+    x: {domain: barData.map(d => d.label), label: "Evaluation point", padding: 0.3},
+    y: {domain: [-0.2, 1.3], label: "Value", grid: true},
+    marks: [
+      Plot.ruleY([0]),
+      Plot.barY(barData, {x: "label", y: "val",
+        fill: d => d.k === j ? rootColors[d.k % 10] : "#e5e7eb",
+        stroke: d => d.k === j ? rootColors[d.k % 10] : "#ccc",
+      }),
+      Plot.text(barData.filter(d => d.val > 0), {x: "label", y: "val",
+        text: ["1"], dy: -8, fontWeight: "bold", fontSize: 13,
+        fill: rootColors[j % 10]
+      }),
+    ]
+  });
+
+  return html`<div class="dual-panel">
+    <div>
+      <div class="viz-label">Roots of unity (n = ${n})</div>
+      ${leftPlot}
+    </div>
+    <div>
+      <div class="viz-label">${tex`e_{${j}}`}: indicator at ${tex`\omega^{${j}}`}</div>
+      ${rightPlot}
+      <div style="font-size:0.8em;color:#6b7280;text-align:center;margin-top:4px">
+        ${tex`e_{${j}} = \tfrac{1}{${n}}\sum_{m=0}^{${n-1}} \omega^{-${j}m}\,t^m`}
+      </div>
+    </div>
+  </div>`;
+}
+
+// Helper for Unicode superscripts
+superscript = (n) => String(n).split('').map(d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[+d]).join('')
+```
+
+:::
+
+::: {.viz-wrap}
+
+**Explore: the DFT matrix as a grid of phasors.** Each cell shows the complex number $\omega^{mj}$ as a small arrow. Row $m$ is the power-basis index; column $j$ is the idempotent index. This matrix IS the change-of-basis between $\{1, t, \dots, t^{n-1}\}$ and $\{e_0, \dots, e_{n-1}\}$. For $n = 2$, it's just $\begin{pmatrix}1 & 1 \\ 1 & -1\end{pmatrix}$ — the very same matrix we saw earlier.
+
+```{ojs}
+viz5_2 = {
+  const n = nRoots;
+  const cellSize = Math.min(60, 320 / n);
+  const pad = 40;
+  const W = n * cellSize + pad, H = n * cellSize + pad;
+  const arrowLen = cellSize * 0.35;
+
+  const svg = d3.create("svg").attr("width", W + 30).attr("height", H + 10);
+
+  // Column headers (j)
+  for (let j = 0; j < n; j++) {
+    svg.append("text")
+      .attr("x", pad + j * cellSize + cellSize / 2)
+      .attr("y", 12)
+      .attr("text-anchor", "middle")
+      .attr("font-size", 11)
+      .attr("fill", "#6b7280")
+      .text(`e${superscript(j)}`);
+  }
+
+  // Row headers (m)
+  for (let m = 0; m < n; m++) {
+    svg.append("text")
+      .attr("x", pad - 8)
+      .attr("y", pad/2 + 6 + m * cellSize + cellSize / 2)
+      .attr("text-anchor", "end")
+      .attr("font-size", 11)
+      .attr("fill", "#6b7280")
+      .text(m === 0 ? "1" : m === 1 ? "t" : `t${superscript(m)}`);
+  }
+
+  for (let m = 0; m < n; m++) {
+    for (let j = 0; j < n; j++) {
+      const angle = 2 * Math.PI * m * j / n;
+      const cx = pad + j * cellSize + cellSize / 2;
+      const cy = pad/2 + m * cellSize + cellSize / 2;
+
+      // Background cell
+      svg.append("rect")
+        .attr("x", cx - cellSize / 2 + 1)
+        .attr("y", cy - cellSize / 2 + 1)
+        .attr("width", cellSize - 2)
+        .attr("height", cellSize - 2)
+        .attr("fill", d3.interpolateRdYlBu(0.5 - angle / (2 * Math.PI) * 0.4))
+        .attr("opacity", 0.15)
+        .attr("rx", 3);
+
+      // Arrow (phasor)
+      const dx = arrowLen * Math.cos(angle);
+      const dy = -arrowLen * Math.sin(angle);  // SVG y is flipped
+      svg.append("line")
+        .attr("x1", cx).attr("y1", cy)
+        .attr("x2", cx + dx).attr("y2", cy + dy)
+        .attr("stroke", "#374151")
+        .attr("stroke-width", 1.5)
+        .attr("marker-end", "url(#arrow5_2)");
+
+      // Dot at center
+      svg.append("circle")
+        .attr("cx", cx).attr("cy", cy).attr("r", 2).attr("fill", "#9ca3af");
+    }
+  }
+
+  // Arrow marker
+  svg.append("defs").append("marker")
+    .attr("id", "arrow5_2")
+    .attr("viewBox", "0 0 10 10")
+    .attr("refX", 10).attr("refY", 5)
+    .attr("markerWidth", 5).attr("markerHeight", 5)
+    .attr("orient", "auto-start-reverse")
+    .append("path").attr("d", "M 0 2 L 10 5 L 0 8 z").attr("fill", "#374151");
+
+  return html`<div style="text-align:center">
+    <div style="font-size:0.85em;color:#6b7280;margin-bottom:4px">DFT matrix ${tex`W_{mj} = \omega^{mj}`} for n = ${n}</div>
+    ${svg.node()}
+    ${n === 2 ? html`<div style="font-size:0.85em;color:#6b7280;margin-top:8px">
+      ${tex`W = \begin{pmatrix} 1 & 1 \\ 1 & -1 \end{pmatrix}`} — exactly the ${tex`e_+, e_-`} change of basis!
+    </div>` : html``}
+  </div>`;
+}
+```
+
+:::
+
+::: {.viz-wrap}
+
+**Explore: constructive and destructive interference.** This shows the term-by-term vector addition that builds the idempotent $e_j$ evaluated at $\omega^k$. Each arrow is one term $\frac{1}{n}\omega^{(k-j)m}$. When $j = k$, all arrows point right and **add up to 1** (constructive interference). When $j \neq k$, the arrows fan into a closed polygon and **cancel to exactly 0** (destructive interference). This is *why* $e_j$ is an indicator function.
+
+```{ojs}
+viewof interParams = Inputs.form({
+  j_int: Inputs.range([0, 7], {value: 0, step: 1, label: "Target idempotent  j"}),
+  k_int: Inputs.range([0, 7], {value: 0, step: 1, label: "Evaluation point  k"}),
+})
+```
+
+```{ojs}
+viz5_3 = {
+  const n = nRoots;
+  const j = Math.min(interParams.j_int, n - 1);
+  const k = Math.min(interParams.k_int, n - 1);
+
+  // Vectors: (1/n) * ω^{(k-j)m} for m = 0..n-1
+  const vectors = Array.from({length: n}, (_, m) => {
+    const angle = (k - j) * m * 2 * Math.PI / n;
+    return {dx: Math.cos(angle) / n, dy: Math.sin(angle) / n, m};
+  });
+
+  // Cumulative endpoints
+  const cumul = [];
+  let cx = 0, cy = 0;
+  for (const v of vectors) {
+    const start = {x: cx, y: cy};
+    cx += v.dx; cy += v.dy;
+    cumul.push({start, end: {x: cx, y: cy}, m: v.m});
+  }
+  const sumX = cx, sumY = cy;
+
+  // Build marks
+  const colors = d3.schemeTableau10;
+  const D = 0.7;
+
+  const marks = [
+    Plot.ruleY([0], {stroke: "#ddd"}), Plot.ruleX([0], {stroke: "#ddd"}),
+  ];
+
+  // Individual vectors
+  for (const seg of cumul) {
+    marks.push(Plot.arrow([seg], {
+      x1: d => d.start.x, y1: d => d.start.y,
+      x2: d => d.end.x, y2: d => d.end.y,
+      stroke: colors[seg.m % 10], strokeWidth: 2.5
+    }));
+    marks.push(Plot.dot([seg.end], {x: "x", y: "y", fill: colors[seg.m % 10], r: 3}));
+  }
+
+  // Closing line back to origin (for j ≠ k, shows the polygon)
+  if (Math.abs(sumX) + Math.abs(sumY) < 0.01 && j !== k) {
+    marks.push(Plot.line([[cumul[cumul.length-1].end.x, cumul[cumul.length-1].end.y], [0, 0]], {
+      stroke: "#ef4444", strokeDasharray: "4", strokeWidth: 1.5}));
+  }
+
+  // Sum indicator
+  marks.push(
+    Plot.dot([{x: 1, y: 0}], {x: "x", y: "y", fill: "#ef4444", r: 5, symbol: "diamond"}),
+    Plot.text([{x: 1, y: 0}], {x: "x", y: "y", text: ["1"], dx: 10, fontSize: 12, fill: "#ef4444", fontWeight: "bold"}),
+    Plot.dot([{x: sumX, y: sumY}], {x: "x", y: "y", fill: "#111", r: 5, stroke: "white", strokeWidth: 1.5}),
+    Plot.text([{x: sumX, y: sumY}], {x: "x", y: "y",
+      text: [`Σ = ${sumX.toFixed(3)} + ${sumY.toFixed(3)}i`],
+      dx: 10, dy: -10, fontSize: 11, fontWeight: 600}),
+  );
+
+  const plot = Plot.plot({
+    width: 450, height: 450,
+    aspectRatio: 1,
+    x: {domain: [-D, 1.3], label: "Real"},
+    y: {domain: [-D, D], label: "Imaginary"},
+    marks
+  });
+
+  const outcome = Math.abs(sumX - 1) + Math.abs(sumY) < 0.01 ? "= 1  ✓  (constructive)" :
+                   Math.abs(sumX) + Math.abs(sumY) < 0.01 ? "= 0  ✓  (destructive)" :
+                   `≈ ${sumX.toFixed(3)}`;
+
+  return html`<div style="text-align:center">
+    ${plot}
+    <div style="margin-top:8px;font-size:1em">
+      ${tex`e_{${j}}(\omega^{${k}})`} <strong>${outcome}</strong>
+      ${j === k
+        ? html`<div style="color:${COL.ePlus};font-size:0.88em;margin-top:4px">All arrows point right → perfect alignment</div>`
+        : html`<div style="color:${COL.hyper};font-size:0.88em;margin-top:4px">Arrows fan into a closed polygon → perfect cancellation</div>`
+      }
+    </div>
+  </div>`;
+}
+```
+
+:::
 
 ## 9. One last extension: infinite sets
 
