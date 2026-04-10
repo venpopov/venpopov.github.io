@@ -265,17 +265,6 @@ viz1_1 = {
       x: "x", y: "y", text: [anno], fontSize: 13, fontWeight: "bold", fill: "#374151"
     }));
 
-  // draggable point
-  const p = pt1_1;
-  marks.push(
-    Plot.dot([p], {x: "u", y: "v", fill: "black", r: 6, stroke: "white", strokeWidth: 1.5}),
-    Plot.text([p], {
-      x: "u", y: "v",
-      text: d => `(${d.u.toFixed(1)}, ${d.v.toFixed(1)})  N = ${(d.u*d.u - c*d.v*d.v).toFixed(2)}`,
-      dx: 12, dy: -14, textAnchor: "start", fontSize: 12, fontWeight: 600
-    })
-  );
-
   const plot = Plot.plot({
     width: 560, height: 560,
     grid: true,
@@ -286,16 +275,38 @@ viz1_1 = {
     marks
   });
 
-  return attachDrag(plot, {
-    domain: [-D, D],
-    onDrag(u, v, plt) {
-      // Update text on drag
-      const textEl = d3.select(plt).select("[aria-label='text'] text");
-      if (!textEl.empty())
-        textEl.text(`(${u.toFixed(1)}, ${v.toFixed(1)})  N = ${(u*u - c*v*v).toFixed(2)}`);
-    },
-    onEnd(u, v) { mutable pt1_1 = {u, v}; }
-  });
+  // ── D3 overlay for draggable point ──────────────────────────────────
+  const {xScale, yScale} = plotScales(plot);
+  const g = d3.select(plot).append("g");
+  let cur = {u: pt1_1.u, v: pt1_1.v};
+
+  const dot = g.append("circle").attr("r", 6)
+    .attr("fill", "black").attr("stroke", "white").attr("stroke-width", 1.5)
+    .style("cursor", "grab");
+  const label = g.append("text")
+    .attr("font-size", 12).attr("font-weight", 600).attr("text-anchor", "start");
+
+  function update() {
+    dot.attr("cx", xScale(cur.u)).attr("cy", yScale(cur.v));
+    label.attr("x", xScale(cur.u) + 12).attr("y", yScale(cur.v) - 14)
+      .text(`(${cur.u.toFixed(1)}, ${cur.v.toFixed(1)})  N = ${(cur.u*cur.u - c*cur.v*cur.v).toFixed(2)}`);
+  }
+
+  dot.call(d3.drag()
+    .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+    .on("drag", function(event) {
+      const [px, py] = d3.pointer(event, plot);
+      cur = {u: snap(xScale.invert(px), -D, D), v: snap(yScale.invert(py), -D, D)};
+      update();
+    })
+    .on("end", function() {
+      d3.select(this).style("cursor", "grab");
+      mutable pt1_1 = {...cur};
+    })
+  );
+
+  update();
+  return plot;
 }
 ```
 
@@ -367,18 +378,16 @@ mutable ptY = ({u: 0.5, v: -1.2})
 ```{ojs}
 viz1_2 = {
   const D = 4;
-  const x = ptX, y = ptY;
-  const prod = scMul(x, y);
-  const nX = normSC(x.u, x.v), nY = normSC(y.u, y.v), nP = normSC(prod.u, prod.v);
+  let curX = {u: ptX.u, v: ptX.v};
+  let curY = {u: ptY.u, v: ptY.v};
 
-  // ── Build plot ────────────────────────────────────────────────────────
+  // ── Static background plot ──────────────────────────────────────────
   const plot = Plot.plot({
     width: 540, height: 540,
     grid: true, aspectRatio: 1,
     x: {domain: [-D, D], label: "u"},
     y: {domain: [-D, D], label: "v"},
     marks: [
-      // Norm-sign background: four quadrants
       Plot.rect([{x1: -D, x2: 0, y1: 0, y2: D}],
         {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.hyper, opacity: 0.06}),
       Plot.rect([{x1: 0, x2: D, y1: -D, y2: 0}],
@@ -387,118 +396,180 @@ viz1_2 = {
         {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.complex, opacity: 0.06}),
       Plot.rect([{x1: -D, x2: 0, y1: -D, y2: 0}],
         {x1: "x1", x2: "x2", y1: "y1", y2: "y2", fill: COL.complex, opacity: 0.06}),
-
-      // Zero-divisor diagonals
       Plot.line([[-D, -D], [D, D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
       Plot.line([[-D, D], [D, -D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
-
       Plot.ruleY([0], {stroke: "#ccc"}),
       Plot.ruleX([0], {stroke: "#ccc"}),
-
-      // Product vector (line from origin to product)
-      Plot.arrow([{x1: 0, y1: 0, x2: prod.u, y2: prod.v}], {
-        x1: "x1", y1: "y1", x2: "x2", y2: "y2",
-        stroke: "#111", strokeWidth: 2
-      }),
-
-      // Factor arrows from origin
-      Plot.arrow([{x1: 0, y1: 0, x2: x.u, y2: x.v}], {
-        x1: "x1", y1: "y1", x2: "x2", y2: "y2",
-        stroke: COL.complex, strokeWidth: 1.5, strokeDasharray: "4"
-      }),
-      Plot.arrow([{x1: 0, y1: 0, x2: y.u, y2: y.v}], {
-        x1: "x1", y1: "y1", x2: "x2", y2: "y2",
-        stroke: COL.hyper, strokeWidth: 1.5, strokeDasharray: "4"
-      }),
-
-      // Points
-      Plot.dot([x], {x: "u", y: "v", fill: COL.complex, r: 7, stroke: "white", strokeWidth: 1.5}),
-      Plot.dot([y], {x: "u", y: "v", fill: COL.hyper,   r: 7, stroke: "white", strokeWidth: 1.5}),
-      Plot.dot([prod], {x: "u", y: "v", fill: "#111",    r: 6, stroke: "white", strokeWidth: 1.5}),
-
-      // Labels
-      Plot.text([x], {x: "u", y: "v", text: d => `x = ${d.u.toFixed(1)} + ${d.v.toFixed(1)}t`,
-        dx: 12, dy: -12, fill: COL.complex, fontWeight: "bold", fontSize: 12}),
-      Plot.text([y], {x: "u", y: "v", text: d => `y = ${d.u.toFixed(1)} + ${d.v.toFixed(1)}t`,
-        dx: 12, dy: -12, fill: COL.hyper, fontWeight: "bold", fontSize: 12}),
-      Plot.text([prod], {x: "u", y: "v",
-        text: d => `xy = ${d.u.toFixed(2)} + ${d.v.toFixed(2)}t`,
-        dx: 12, dy: 14, fill: "#111", fontWeight: "bold", fontSize: 12}),
     ]
   });
 
-  // Attach drag to circles (x is first, y is second, prod is third)
   const {xScale, yScale} = plotScales(plot);
-  const circles = d3.select(plot).selectAll("circle");
-  const allCircles = circles.nodes();
+  const svg = d3.select(plot);
+  const ox = xScale(0), oy = yScale(0);
 
-  // Drag for x (first circle)
-  d3.select(allCircles[0]).style("cursor", "grab")
-    .call(d3.drag()
-      .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
-      .on("drag", function(event) {
-        const [px, py] = d3.pointer(event, plot);
-        d3.select(this).attr("cx", px).attr("cy", py);
-      })
-      .on("end", function(event) {
-        d3.select(this).style("cursor", "grab");
-        const [px, py] = d3.pointer(event, plot);
-        mutable ptX = {
-          u: snap(xScale.invert(px), -D, D),
-          v: snap(yScale.invert(py), -D, D)
-        };
-      })
-    );
-
-  // Drag for y (second circle)
-  d3.select(allCircles[1]).style("cursor", "grab")
-    .call(d3.drag()
-      .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
-      .on("drag", function(event) {
-        const [px, py] = d3.pointer(event, plot);
-        d3.select(this).attr("cx", px).attr("cy", py);
-      })
-      .on("end", function(event) {
-        d3.select(this).style("cursor", "grab");
-        const [px, py] = d3.pointer(event, plot);
-        mutable ptY = {
-          u: snap(xScale.invert(px), -D, D),
-          v: snap(yScale.invert(py), -D, D)
-        };
-      })
-    );
-
-  // ── Norm bars ─────────────────────────────────────────────────────────
-  const barW = 520, barH = 28, maxN = 12;
-  const normBar = (label, val, color) => {
-    const frac = Math.max(-1, Math.min(1, val / maxN));
-    const mid = barW / 2;
-    const x = frac >= 0 ? mid : mid + frac * mid;
-    const w = Math.abs(frac) * mid;
-    return html`<div style="margin:4px 0;">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <span style="width:90px;font-size:0.85em;font-weight:600;color:${color}">${label}</span>
-        <svg width="${barW}" height="${barH}">
-          <rect x="0" y="0" width="${barW}" height="${barH}" fill="#f3f4f6" rx="4"/>
-          <line x1="${mid}" y1="0" x2="${mid}" y2="${barH}" stroke="#9ca3af" stroke-dasharray="3"/>
-          <rect x="${x}" y="3" width="${w}" height="${barH - 6}" fill="${color}" opacity="0.6" rx="3"/>
-          <text x="${mid + frac * mid + (frac >= 0 ? 4 : -4)}" y="${barH / 2 + 4}" 
-                font-size="11" fill="#374151" text-anchor="${frac >= 0 ? 'start' : 'end'}">
-            ${val.toFixed(2)}
-          </text>
-        </svg>
-      </div>
-    </div>`;
+  // ── Arrowhead markers ───────────────────────────────────────────────
+  const defs = svg.append("defs");
+  const addMarker = (id, color) => {
+    defs.append("marker").attr("id", id)
+      .attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+      .attr("markerWidth", 6).attr("markerHeight", 6)
+      .attr("orient", "auto-start-reverse")
+      .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", color);
   };
+  addMarker("arr12-prod", "#111");
+  addMarker("arr12-x", COL.complex);
+  addMarker("arr12-y", COL.hyper);
 
-  return html`<div>
-    ${plot}
-    <div style="max-width:620px;margin-top:8px;">
-      ${normBar("N(x) =", nX, COL.complex)}
-      ${normBar("N(y) =", nY, COL.hyper)}
-      ${normBar("N(xy) =", nP, "#111")}
-    </div>
-  </div>`;
+  // ── Dynamic overlay ─────────────────────────────────────────────────
+  const g = svg.append("g");
+
+  const arrowProd = g.append("line")
+    .attr("stroke", "#111").attr("stroke-width", 2)
+    .attr("marker-end", "url(#arr12-prod)");
+  const arrowX = g.append("line")
+    .attr("stroke", COL.complex).attr("stroke-width", 1.5)
+    .attr("stroke-dasharray", "4")
+    .attr("marker-end", "url(#arr12-x)");
+  const arrowY = g.append("line")
+    .attr("stroke", COL.hyper).attr("stroke-width", 1.5)
+    .attr("stroke-dasharray", "4")
+    .attr("marker-end", "url(#arr12-y)");
+
+  const dotX = g.append("circle").attr("r", 7)
+    .attr("fill", COL.complex).attr("stroke", "white").attr("stroke-width", 1.5)
+    .style("cursor", "grab");
+  const dotY = g.append("circle").attr("r", 7)
+    .attr("fill", COL.hyper).attr("stroke", "white").attr("stroke-width", 1.5)
+    .style("cursor", "grab");
+  const dotP = g.append("circle").attr("r", 2)
+    .attr("fill", "#111").attr("stroke", "white").attr("stroke-width", 1.5);
+
+  const lblX = g.append("text")
+    .attr("fill", COL.complex).attr("font-weight", "bold").attr("font-size", 12);
+  const lblY = g.append("text")
+    .attr("fill", COL.hyper).attr("font-weight", "bold").attr("font-size", 12);
+  const lblP = g.append("text")
+    .attr("fill", "#111").attr("font-weight", "bold").attr("font-size", 12);
+
+  // ── Norm bars (persistent DOM for live updates) ─────────────────────
+  const barW = 520, barH = 28, maxN = 12, mid = barW / 2;
+
+  function makeBar(label, color) {
+    const div = document.createElement("div");
+    div.style.margin = "4px 0";
+    div.innerHTML = `<div style="display:flex;align-items:center;gap:8px;">
+      <span style="width:90px;font-size:0.85em;font-weight:600;color:${color}">${label}</span>
+      <svg width="${barW}" height="${barH}">
+        <rect x="0" y="0" width="${barW}" height="${barH}" fill="#f3f4f6" rx="4"/>
+        <line x1="${mid}" y1="0" x2="${mid}" y2="${barH}" stroke="#9ca3af" stroke-dasharray="3"/>
+        <rect class="fill" x="${mid}" y="3" width="0" height="${barH-6}" fill="${color}" opacity="0.6" rx="3"/>
+        <text class="val" x="${mid}" y="${barH/2+4}" font-size="11" fill="#374151">0</text>
+      </svg></div>`;
+    return div;
+  }
+
+  function setBar(bar, val) {
+    const frac = Math.max(-1, Math.min(1, val / maxN));
+    const bx = frac >= 0 ? mid : mid + frac * mid;
+    const bw = Math.abs(frac) * mid;
+    const fill = bar.querySelector(".fill");
+    const txt  = bar.querySelector(".val");
+    fill.setAttribute("x", bx);
+    fill.setAttribute("width", bw);
+    txt.setAttribute("x", mid + frac * mid + (frac >= 0 ? 4 : -4));
+    txt.setAttribute("text-anchor", frac >= 0 ? "start" : "end");
+    txt.textContent = val.toFixed(2);
+  }
+
+  const barX = makeBar("N(x) =", COL.complex);
+  const barY = makeBar("N(y) =", COL.hyper);
+  const barP = makeBar("N(xy) =", "#111");
+
+  // ── Label offset: perpendicular to the vector from origin ───────────
+  function labelPos(sx, sy) {
+    const dx = sx - ox, dy = sy - oy;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    if (len < 1) return {x: sx + 12, y: sy - 12, anchor: "start"};
+    // Two perpendicular candidates (CCW and CW rotations)
+    const p1x = -dy / len, p1y = dx / len;
+    const p2x = dy / len, p2y = -dx / len;
+    // Prefer the perpendicular pointing more rightward; tiebreak: more upward
+    const pick1 = p1x > p2x || (p1x === p2x && p1y < p2y);
+    const nx = pick1 ? p1x : p2x, ny = pick1 ? p1y : p2y;
+    const off = 18;
+    return {
+      x: sx + nx * off,
+      y: sy + ny * off + 4,
+      anchor: nx > 0.1 ? "start" : nx < -0.1 ? "end" : "middle"
+    };
+  }
+
+  // ── Live update ─────────────────────────────────────────────────────
+  function update() {
+    const prod = scMul(curX, curY);
+
+    arrowProd.attr("x1", ox).attr("y1", oy)
+      .attr("x2", xScale(prod.u)).attr("y2", yScale(prod.v));
+    arrowX.attr("x1", ox).attr("y1", oy)
+      .attr("x2", xScale(curX.u)).attr("y2", yScale(curX.v));
+    arrowY.attr("x1", ox).attr("y1", oy)
+      .attr("x2", xScale(curY.u)).attr("y2", yScale(curY.v));
+
+    dotX.attr("cx", xScale(curX.u)).attr("cy", yScale(curX.v));
+    dotY.attr("cx", xScale(curY.u)).attr("cy", yScale(curY.v));
+    dotP.attr("cx", xScale(prod.u)).attr("cy", yScale(prod.v));
+
+    const posX = labelPos(xScale(curX.u), yScale(curX.v));
+    lblX.attr("x", posX.x).attr("y", posX.y).attr("text-anchor", posX.anchor)
+      .text(`x = ${curX.u.toFixed(1)} + ${curX.v.toFixed(1)}t`);
+    const posY = labelPos(xScale(curY.u), yScale(curY.v));
+    lblY.attr("x", posY.x).attr("y", posY.y).attr("text-anchor", posY.anchor)
+      .text(`y = ${curY.u.toFixed(1)} + ${curY.v.toFixed(1)}t`);
+    const posP = labelPos(xScale(prod.u), yScale(prod.v));
+    lblP.attr("x", posP.x).attr("y", posP.y).attr("text-anchor", posP.anchor)
+      .text(`xy = ${prod.u.toFixed(2)} + ${prod.v.toFixed(2)}t`);
+
+    setBar(barX, normSC(curX.u, curX.v));
+    setBar(barY, normSC(curY.u, curY.v));
+    setBar(barP, normSC(prod.u, prod.v));
+  }
+
+  // ── Drag handlers ──────────────────────────────────────────────────
+  dotX.call(d3.drag()
+    .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+    .on("drag", function(event) {
+      const [px, py] = d3.pointer(event, plot);
+      curX = {u: snap(xScale.invert(px), -D, D), v: snap(yScale.invert(py), -D, D)};
+      update();
+    })
+    .on("end", function() {
+      d3.select(this).style("cursor", "grab");
+      mutable ptX = {...curX};
+    })
+  );
+
+  dotY.call(d3.drag()
+    .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+    .on("drag", function(event) {
+      const [px, py] = d3.pointer(event, plot);
+      curY = {u: snap(xScale.invert(px), -D, D), v: snap(yScale.invert(py), -D, D)};
+      update();
+    })
+    .on("end", function() {
+      d3.select(this).style("cursor", "grab");
+      mutable ptY = {...curY};
+    })
+  );
+
+  update();
+
+  // ── Assemble ────────────────────────────────────────────────────────
+  const barsDiv = document.createElement("div");
+  barsDiv.style.cssText = "max-width:620px;margin-top:8px;";
+  barsDiv.append(barX, barY, barP);
+  const out = document.createElement("div");
+  out.append(plot, barsDiv);
+  return out;
 }
 ```
 
@@ -751,16 +822,12 @@ mutable splitPt = ({u: 1.8, v: 0.6})
 ```{ojs}
 viz2_1 = {
   const D = 4;
-  const p = splitPt;
-  const {a, b} = toAB(p.u, p.v);
-  const N = normSC(p.u, p.v);
+  let cur = {u: splitPt.u, v: splitPt.v};
 
-  // ── Generate a few norm level curves in both coordinate systems ──────
+  // ── Generate level curves (static background) ────────────────────────
   const sRange = Array.from({length: 301}, (_, i) => -3 + i * 0.02);
   const levels = [0.5, 1, 2, 4];
 
-  // (u,v) plane: u²-v² = k → u = ±cosh(s)√k, v = sinh(s)√k for k>0
-  //              u²-v² = -k → u = sinh(s)√k, v = ±cosh(s)√k
   const uvCurves = [];
   for (const k of levels) {
     const sk = Math.sqrt(k);
@@ -770,7 +837,6 @@ viz2_1 = {
     uvCurves.push({pts: sRange.map(s => ({x: sk*Math.sinh(s), y:-sk*Math.cosh(s)})), stroke: COL.hyper, k});
   }
 
-  // (a,b) plane: ab = k → b = k/a  (rectangular hyperbola)
   const abCurves = [];
   const aRange = Array.from({length: 601}, (_, i) => -D + i * (2*D)/600).filter(x => Math.abs(x) > 0.05);
   for (const k of levels) {
@@ -778,42 +844,24 @@ viz2_1 = {
     abCurves.push({pts: aRange.filter(aa => Math.abs(k/aa) < D).map(aa => ({x: aa, y: -k/aa})), k, sign: "-"});
   }
 
-  // ── Left plane: (u,v) ─────────────────────────────────────────────────
+  // ── Left plot (static marks only) ─────────────────────────────────────
   const leftMarks = [
     Plot.ruleY([0], {stroke: "#ccc"}),
     Plot.ruleX([0], {stroke: "#ccc"}),
-    // Zero-divisor diagonals
     Plot.line([[-D,-D],[D,D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
     Plot.line([[-D,D],[D,-D]], {stroke: COL.zd, strokeDasharray: "6,3", strokeWidth: 1.5}),
   ];
-
-  // Level curves (faint)
   for (const c of uvCurves) {
     const visible = c.pts.filter(d => Math.abs(d.x) <= D && Math.abs(d.y) <= D);
     if (visible.length > 2)
       leftMarks.push(Plot.line(visible, {x: "x", y: "y", stroke: c.stroke, strokeWidth: 1, opacity: 0.25}));
   }
-
-  // e+ and e- basis vectors
   leftMarks.push(
     Plot.arrow([{x1:0,y1:0,x2:0.5,y2:0.5}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.ePlus, strokeWidth: 2}),
     Plot.arrow([{x1:0,y1:0,x2:0.5,y2:-0.5}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.eMinus, strokeWidth: 2}),
     Plot.text([{x:0.65,y:0.65}], {x:"x",y:"y",text:["e₊"],fill:COL.ePlus,fontWeight:"bold",fontSize:13}),
     Plot.text([{x:0.65,y:-0.65}], {x:"x",y:"y",text:["e₋"],fill:COL.eMinus,fontWeight:"bold",fontSize:13}),
   );
-
-  // Point + projections onto diagonals
-  const projPlus  = {x: (p.u+p.v)/2, y: (p.u+p.v)/2};   // a/2 on the e+ diagonal
-  const projMinus = {x: (p.u-p.v)/2, y: -(p.u-p.v)/2};   // b/2 on the e- diagonal
-  leftMarks.push(
-    Plot.line([[projPlus.x, projPlus.y], [p.u, p.v]], {stroke: COL.ePlus, strokeDasharray: "3", opacity: 0.5}),
-    Plot.line([[projMinus.x, projMinus.y], [p.u, p.v]], {stroke: COL.eMinus, strokeDasharray: "3", opacity: 0.5}),
-    Plot.dot([p], {x: "u", y: "v", fill: "#111", r: 6, stroke: "white", strokeWidth: 1.5}),
-    Plot.text([p], {x: "u", y: "v",
-      text: [`(${p.u.toFixed(1)}, ${p.v.toFixed(1)})  N=${N.toFixed(2)}`],
-      dx: 10, dy: -12, fontSize: 11, fontWeight: 600}),
-  );
-
   const leftPlot = Plot.plot({
     width: 380, height: 380, grid: true, aspectRatio: 1,
     x: {domain: [-D, D], label: "u"},
@@ -821,16 +869,12 @@ viz2_1 = {
     marks: leftMarks
   });
 
-  // ── Right plane: (a,b) ────────────────────────────────────────────────
+  // ── Right plot (static marks only) ────────────────────────────────────
   const rightMarks = [
-    // Highlight axes as "zero-divisor loci" (they ARE the zero divisors here)
     Plot.ruleY([0], {stroke: COL.zd, strokeWidth: 2}),
     Plot.ruleX([0], {stroke: COL.zd, strokeWidth: 2}),
   ];
-
-  // Level curves ab = ±k (rectangular hyperbolas)
   for (const c of abCurves) {
-    // Split into two branches (a>0 and a<0) to avoid connecting across asymptote
     const pos = c.pts.filter(d => d.x > 0);
     const neg = c.pts.filter(d => d.x < 0);
     const color = c.sign === "+" ? COL.complex : COL.hyper;
@@ -839,29 +883,14 @@ viz2_1 = {
     if (neg.length > 2)
       rightMarks.push(Plot.line(neg, {x: "x", y: "y", stroke: color, strokeWidth: 1, opacity: 0.25}));
   }
-
-  // Standard basis vectors in (a,b) space: 1 maps to (1,1), t maps to (1,-1)
   rightMarks.push(
     Plot.line([[-D,-D],[D,D]], {stroke: "#bbb", strokeDasharray: "2", strokeWidth: 0.8}),
     Plot.text([{x:D-0.5,y:D-0.3}], {x:"x",y:"y",text:["a=b (real axis)"],fill:"#999",fontSize:10}),
+    Plot.arrow([{x1:0,y1:0,x2:1,y2:1}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: "#555", strokeWidth: 2}),
+    Plot.arrow([{x1:0,y1:0,x2:1,y2:-1}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: "#555", strokeWidth: 2}),
+    Plot.text([{x:1.25,y:1.25}], {x:"x",y:"y",text:["1"],fill:"#555",fontWeight:"bold",fontSize:13}),
+    Plot.text([{x:1.25,y:-1.25}], {x:"x",y:"y",text:["t"],fill:"#555",fontWeight:"bold",fontSize:13}),
   );
-
-  rightMarks.push(
-    Plot.dot([{x: a, y: b}], {x: "x", y: "y", fill: "#111", r: 6, stroke: "white", strokeWidth: 1.5}),
-    Plot.text([{x: a, y: b}], {x: "x", y: "y",
-      text: [`(${a.toFixed(1)}, ${b.toFixed(1)})  ab=${(a*b).toFixed(2)}`],
-      dx: 10, dy: -12, fontSize: 11, fontWeight: 600}),
-    // Projections onto axes
-    Plot.line([[a, b], [a, 0]], {stroke: COL.ePlus, strokeDasharray: "3", opacity: 0.6}),
-    Plot.line([[a, b], [0, b]], {stroke: COL.eMinus, strokeDasharray: "3", opacity: 0.6}),
-    Plot.dot([{x: a, y: 0}], {x: "x", y: "y", fill: COL.ePlus, r: 4}),
-    Plot.dot([{x: 0, y: b}], {x: "x", y: "y", fill: COL.eMinus, r: 4}),
-    Plot.text([{x: a, y: 0}], {x: "x", y: "y", text: [`a=${a.toFixed(1)}`],
-      dy: 14, fill: COL.ePlus, fontWeight: "bold", fontSize: 11}),
-    Plot.text([{x: 0, y: b}], {x: "x", y: "y", text: [`b=${b.toFixed(1)}`],
-      dx: -14, fill: COL.eMinus, fontWeight: "bold", fontSize: 11, textAnchor: "end"}),
-  );
-
   const rightPlot = Plot.plot({
     width: 380, height: 380, grid: true, aspectRatio: 1,
     x: {domain: [-D, D], label: "a  (= u + v)"},
@@ -869,35 +898,128 @@ viz2_1 = {
     marks: rightMarks
   });
 
-  // ── Attach drag to BOTH planes ────────────────────────────────────────
-  // Left plane: drag updates (u,v) directly
-  attachDrag(leftPlot, {
-    domain: [-D, D],
-    onEnd(u, v) { mutable splitPt = {u, v}; }
-  });
+  // ── D3 overlays for both panels ───────────────────────────────────────
+  const lS = plotScales(leftPlot), rS = plotScales(rightPlot);
+  const lG = d3.select(leftPlot).append("g");
+  const rG = d3.select(rightPlot).append("g");
 
-  // Right plane: drag updates (a,b), convert back to (u,v)
-  attachDrag(rightPlot, {
-    domain: [-D, D],
-    onEnd(newA, newB) {
-      const {u, v} = toUV(newA, newB);
-      mutable splitPt = {u, v};
-    }
-  });
+  // Left overlay: projection lines, axis projections, dot, label
+  const lProjPlusLine = lG.append("line").attr("stroke", COL.ePlus).attr("stroke-dasharray", "3").attr("opacity", 0.5);
+  const lProjMinusLine = lG.append("line").attr("stroke", COL.eMinus).attr("stroke-dasharray", "3").attr("opacity", 0.5);
+  const lProjULine = lG.append("line").attr("stroke", "#888").attr("stroke-dasharray", "3").attr("opacity", 0.5);
+  const lProjVLine = lG.append("line").attr("stroke", "#888").attr("stroke-dasharray", "3").attr("opacity", 0.5);
+  const lDotU = lG.append("circle").attr("r", 4).attr("fill", "#555");
+  const lDotV = lG.append("circle").attr("r", 4).attr("fill", "#555");
+  const lDot = lG.append("circle").attr("r", 6).attr("fill", "#111").attr("stroke", "white").attr("stroke-width", 1.5).style("cursor", "grab");
+  const lLabel = lG.append("text").attr("font-size", 11).attr("font-weight", 600);
+  const lLabelU = lG.append("text").attr("fill", "#555").attr("font-weight", "bold").attr("font-size", 11);
+  const lLabelV = lG.append("text").attr("fill", "#555").attr("font-weight", "bold").attr("font-size", 11).attr("text-anchor", "end");
 
-  return html`<div class="dual-panel">
-    <div>
-      <div class="viz-label">Standard coordinates  (u, v)</div>
-      ${leftPlot}
-    </div>
-    <div>
-      <div class="viz-label">Idempotent coordinates  (a, b) = (u+v, u−v)</div>
-      ${rightPlot}
-    </div>
-  </div>
-  <div style="text-align:center;margin-top:6px;font-size:0.9em">
-    ${tex`\color{${COL.ePlus}}{a = ${a.toFixed(2)}} \quad \color{${COL.eMinus}}{b = ${b.toFixed(2)}} \quad N = u^2 - v^2 = ab = ${N.toFixed(2)}`}
-  </div>`;
+  // Right overlay: projection lines, axis dots, dot, labels
+  const rProjALine = rG.append("line").attr("stroke", COL.ePlus).attr("stroke-dasharray", "3").attr("opacity", 0.6);
+  const rProjBLine = rG.append("line").attr("stroke", COL.eMinus).attr("stroke-dasharray", "3").attr("opacity", 0.6);
+  const rDotA = rG.append("circle").attr("r", 4).attr("fill", COL.ePlus);
+  const rDotB = rG.append("circle").attr("r", 4).attr("fill", COL.eMinus);
+  const rDot = rG.append("circle").attr("r", 6).attr("fill", "#111").attr("stroke", "white").attr("stroke-width", 1.5).style("cursor", "grab");
+  const rLabel = rG.append("text").attr("font-size", 11).attr("font-weight", 600);
+  const rLabelA = rG.append("text").attr("fill", COL.ePlus).attr("font-weight", "bold").attr("font-size", 11);
+  const rLabelB = rG.append("text").attr("fill", COL.eMinus).attr("font-weight", "bold").attr("font-size", 11).attr("text-anchor", "end");
+
+  // Bottom annotation
+  const annoDiv = document.createElement("div");
+  annoDiv.style.cssText = "text-align:center;margin-top:6px;font-size:0.9em";
+
+  // ── Shared update function ────────────────────────────────────────────
+  function update() {
+    const {a, b} = toAB(cur.u, cur.v);
+    const N = normSC(cur.u, cur.v);
+    const projPlus  = {x: (cur.u+cur.v)/2, y: (cur.u+cur.v)/2};
+    const projMinus = {x: (cur.u-cur.v)/2, y: -(cur.u-cur.v)/2};
+
+    // Left panel
+    const lx = lS.xScale, ly = lS.yScale;
+    lProjPlusLine.attr("x1", lx(projPlus.x)).attr("y1", ly(projPlus.y))
+      .attr("x2", lx(cur.u)).attr("y2", ly(cur.v));
+    lProjMinusLine.attr("x1", lx(projMinus.x)).attr("y1", ly(projMinus.y))
+      .attr("x2", lx(cur.u)).attr("y2", ly(cur.v));
+    lProjULine.attr("x1", lx(cur.u)).attr("y1", ly(cur.v)).attr("x2", lx(cur.u)).attr("y2", ly(0));
+    lProjVLine.attr("x1", lx(cur.u)).attr("y1", ly(cur.v)).attr("x2", lx(0)).attr("y2", ly(cur.v));
+    lDotU.attr("cx", lx(cur.u)).attr("cy", ly(0));
+    lDotV.attr("cx", lx(0)).attr("cy", ly(cur.v));
+    lDot.attr("cx", lx(cur.u)).attr("cy", ly(cur.v));
+    lLabel.attr("x", lx(cur.u) + 10).attr("y", ly(cur.v) - 12)
+      .text(`N=${N.toFixed(2)}`);
+    lLabelU.attr("x", lx(cur.u)).attr("y", ly(0) + 14).text(`u=${cur.u.toFixed(1)}`);
+    lLabelV.attr("x", lx(0) - 14).attr("y", ly(cur.v)).text(`v=${cur.v.toFixed(1)}`);
+
+    // Right panel
+    const rx = rS.xScale, ry = rS.yScale;
+    rProjALine.attr("x1", rx(a)).attr("y1", ry(b)).attr("x2", rx(a)).attr("y2", ry(0));
+    rProjBLine.attr("x1", rx(a)).attr("y1", ry(b)).attr("x2", rx(0)).attr("y2", ry(b));
+    rDotA.attr("cx", rx(a)).attr("cy", ry(0));
+    rDotB.attr("cx", rx(0)).attr("cy", ry(b));
+    rDot.attr("cx", rx(a)).attr("cy", ry(b));
+    rLabel.attr("x", rx(a) + 10).attr("y", ry(b) - 12)
+      .text(`ab=${(a*b).toFixed(2)}`);
+    rLabelA.attr("x", rx(a)).attr("y", ry(0) + 14).text(`a=${a.toFixed(1)}`);
+    rLabelB.attr("x", rx(0) - 14).attr("y", ry(b)).text(`b=${b.toFixed(1)}`);
+
+    // Annotation
+    annoDiv.innerHTML = `<span style="color:${COL.ePlus};font-weight:bold">a = ${a.toFixed(2)}</span> &nbsp;&nbsp; <span style="color:${COL.eMinus};font-weight:bold">b = ${b.toFixed(2)}</span> &nbsp;&nbsp; N = u² − v² = ab = <b>${N.toFixed(2)}</b>`;
+  }
+
+  // ── Drag handlers for both panels ─────────────────────────────────────
+  lDot.call(d3.drag()
+    .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+    .on("drag", function(event) {
+      const [px, py] = d3.pointer(event, leftPlot);
+      cur = {u: snap(lS.xScale.invert(px), -D, D), v: snap(lS.yScale.invert(py), -D, D)};
+      update();
+    })
+    .on("end", function() {
+      d3.select(this).style("cursor", "grab");
+      mutable splitPt = {...cur};
+    })
+  );
+
+  rDot.call(d3.drag()
+    .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+    .on("drag", function(event) {
+      const [px, py] = d3.pointer(event, rightPlot);
+      const newA = snap(rS.xScale.invert(px), -D, D);
+      const newB = snap(rS.yScale.invert(py), -D, D);
+      const uv = toUV(newA, newB);
+      cur = {u: uv.u, v: uv.v};
+      update();
+    })
+    .on("end", function() {
+      d3.select(this).style("cursor", "grab");
+      mutable splitPt = {...cur};
+    })
+  );
+
+  update();
+
+  // ── Assemble layout ──────────────────────────────────────────────────
+  const leftDiv = document.createElement("div");
+  const leftTitle = document.createElement("div");
+  leftTitle.className = "viz-label";
+  leftTitle.textContent = "Standard coordinates  (u, v)";
+  leftDiv.append(leftTitle, leftPlot);
+
+  const rightDiv = document.createElement("div");
+  const rightTitle = document.createElement("div");
+  rightTitle.className = "viz-label";
+  rightTitle.textContent = "Idempotent coordinates  (a, b) = (u+v, u−v)";
+  rightDiv.append(rightTitle, rightPlot);
+
+  const panel = document.createElement("div");
+  panel.className = "dual-panel";
+  panel.append(leftDiv, rightDiv);
+
+  const out = document.createElement("div");
+  out.append(panel, annoDiv);
+  return out;
 }
 ```
 
@@ -1307,34 +1429,10 @@ mutable projPt = ({u: 2.0, v: 0.8})
 ```{ojs}
 viz3_2 = {
   const D = 4;
-  const p = projPt;
-  const {a, b} = toAB(p.u, p.v);
-
-  // Projections: e+ · x = a · e+ → point at (a/2, a/2) in (u,v)
-  //              e- · x = b · e- → point at (b/2, -b/2) in (u,v)
-  const projP = {u: a/2, v: a/2};
-  const projM = {u: b/2, v: -b/2};
-
+  let cur = {u: projPt.u, v: projPt.v};
   const barH = 140, barW = 50, maxV = D;
-  const makeBar = (val, color, label) => {
-    const scale = (barH - 20) / (2 * maxV);
-    const mid = barH / 2;
-    const h = Math.abs(val) * scale;
-    const y = val >= 0 ? mid - h : mid;
-    return html`<div style="text-align:center;width:70px">
-      <svg width="70" height="${barH}">
-        <line x1="0" y1="${mid}" x2="70" y2="${mid}" stroke="#ccc"/>
-        <rect x="15" y="${y}" width="${barW}" height="${Math.max(h,1)}"
-              fill="${color}" opacity="0.7" rx="3"/>
-        <text x="40" y="${val >= 0 ? y - 3 : y + h + 12}"
-              text-anchor="middle" font-size="11" font-weight="600" fill="${color}">
-          ${val.toFixed(1)}
-        </text>
-      </svg>
-      <div style="font-size:0.8em;color:#6b7280">${label}</div>
-    </div>`;
-  };
 
+  // ── Static plot ───────────────────────────────────────────────────────
   const plot = Plot.plot({
     width: 360, height: 360, grid: true, aspectRatio: 1,
     x: {domain: [-D, D], label: "u"},
@@ -1343,50 +1441,143 @@ viz3_2 = {
       Plot.ruleY([0], {stroke: "#ccc"}), Plot.ruleX([0], {stroke: "#ccc"}),
       Plot.line([[-D,-D],[D,D]], {stroke: COL.ePlus, strokeWidth: 1, opacity: 0.3}),
       Plot.line([[-D,D],[D,-D]], {stroke: COL.eMinus, strokeWidth: 1, opacity: 0.3}),
-
-      // Projection arrows from origin
-      Plot.arrow([{x1:0,y1:0,x2:projP.u,y2:projP.v}], {
-        x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.ePlus, strokeWidth: 3}),
-      Plot.arrow([{x1:0,y1:0,x2:projM.u,y2:projM.v}], {
-        x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: COL.eMinus, strokeWidth: 3}),
-
-      // Dashed lines showing parallelogram reconstruction
-      Plot.line([[projP.u, projP.v], [p.u, p.v]], {stroke: COL.eMinus, strokeDasharray: "4", opacity: 0.5}),
-      Plot.line([[projM.u, projM.v], [p.u, p.v]], {stroke: COL.ePlus, strokeDasharray: "4", opacity: 0.5}),
-
-      // The point x
-      Plot.arrow([{x1:0,y1:0,x2:p.u,y2:p.v}], {x1:"x1",y1:"y1",x2:"x2",y2:"y2", stroke: "#111", strokeWidth: 2}),
-      Plot.dot([p], {x: "u", y: "v", fill: "#111", r: 6, stroke: "white", strokeWidth: 1.5}),
-      Plot.text([p], {x: "u", y: "v", text: ["x"], dx: 10, dy: -10, fontWeight: "bold", fontSize: 13}),
-
-      // Labels on projections
-      Plot.text([projP], {x: "u", y: "v", text: [`e₊·x`], dx: -14, dy: -8,
-        fill: COL.ePlus, fontWeight: "bold", fontSize: 12, textAnchor: "end"}),
-      Plot.text([projM], {x: "u", y: "v", text: [`e₋·x`], dx: 14, dy: 8,
-        fill: COL.eMinus, fontWeight: "bold", fontSize: 12}),
     ]
   });
 
-  attachDrag(plot, {
-    domain: [-D, D],
-    onEnd(u, v) { mutable projPt = {u, v}; }
-  });
+  const {xScale, yScale} = plotScales(plot);
+  const svg = d3.select(plot);
+  const ox = xScale(0), oy = yScale(0);
 
-  return html`<div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center">
-    ${plot}
-    <div>
-      <div style="font-size:0.85em;font-weight:600;margin-bottom:8px;text-align:center">Channel values</div>
-      <div style="display:flex;gap:8px;align-items:end">
-        ${makeBar(a, COL.ePlus, "a (e₊)")}
-        ${makeBar(b, COL.eMinus, "b (e₋)")}
-      </div>
-      <div style="margin-top:12px;font-size:0.85em;text-align:center;color:#6b7280">
-        <div><span style="color:${COL.ePlus}">e₊ · x</span> keeps only <span style="color:${COL.ePlus}">a = ${a.toFixed(1)}</span></div>
-        <div><span style="color:${COL.eMinus}">e₋ · x</span> keeps only <span style="color:${COL.eMinus}">b = ${b.toFixed(1)}</span></div>
-        <div style="margin-top:4px;font-weight:600">e₊·x + e₋·x = x  ✓</div>
-      </div>
-    </div>
-  </div>`;
+  // ── Arrowhead markers ─────────────────────────────────────────────────
+  const defs = svg.append("defs");
+  const addMarker = (id, color) => {
+    defs.append("marker").attr("id", id)
+      .attr("viewBox", "0 0 10 10").attr("refX", 8).attr("refY", 5)
+      .attr("markerWidth", 6).attr("markerHeight", 6)
+      .attr("orient", "auto-start-reverse")
+      .append("path").attr("d", "M0,0 L10,5 L0,10 z").attr("fill", color);
+  };
+  addMarker("arr32-eplus", COL.ePlus);
+  addMarker("arr32-eminus", COL.eMinus);
+  addMarker("arr32-main", "#111");
+
+  // ── D3 overlay ────────────────────────────────────────────────────────
+  const g = svg.append("g");
+
+  const arrowPlus = g.append("line").attr("stroke", COL.ePlus).attr("stroke-width", 3)
+    .attr("marker-end", "url(#arr32-eplus)");
+  const arrowMinus = g.append("line").attr("stroke", COL.eMinus).attr("stroke-width", 3)
+    .attr("marker-end", "url(#arr32-eminus)");
+  const dashPlus = g.append("line").attr("stroke", COL.eMinus).attr("stroke-dasharray", "4").attr("opacity", 0.5);
+  const dashMinus = g.append("line").attr("stroke", COL.ePlus).attr("stroke-dasharray", "4").attr("opacity", 0.5);
+  const arrowMain = g.append("line").attr("stroke", "#111").attr("stroke-width", 2)
+    .attr("marker-end", "url(#arr32-main)");
+
+  const dot = g.append("circle").attr("r", 6)
+    .attr("fill", "#111").attr("stroke", "white").attr("stroke-width", 1.5)
+    .style("cursor", "grab");
+  const lblX = g.append("text").attr("font-weight", "bold").attr("font-size", 13);
+  const lblPlus = g.append("text").attr("fill", COL.ePlus).attr("font-weight", "bold")
+    .attr("font-size", 12).attr("text-anchor", "end");
+  const lblMinus = g.append("text").attr("fill", COL.eMinus).attr("font-weight", "bold")
+    .attr("font-size", 12);
+
+  // ── Bars (persistent DOM) ─────────────────────────────────────────────
+  const mid = barH / 2;
+  function makeBar(color, label) {
+    const div = document.createElement("div");
+    div.style.cssText = "text-align:center;width:70px";
+    div.innerHTML = `<svg width="70" height="${barH}">
+      <line x1="0" y1="${mid}" x2="70" y2="${mid}" stroke="#ccc"/>
+      <rect class="fill" x="15" y="${mid}" width="${barW}" height="1"
+            fill="${color}" opacity="0.7" rx="3"/>
+      <text class="val" x="40" y="${mid}" text-anchor="middle"
+            font-size="11" font-weight="600" fill="${color}"></text>
+    </svg>
+    <div style="font-size:0.8em;color:#6b7280">${label}</div>`;
+    return div;
+  }
+
+  function setBar(barDiv, val) {
+    const scale = (barH - 20) / (2 * maxV);
+    const h = Math.abs(val) * scale;
+    const y = val >= 0 ? mid - h : mid;
+    const fill = barDiv.querySelector(".fill");
+    const txt  = barDiv.querySelector(".val");
+    fill.setAttribute("y", y);
+    fill.setAttribute("height", Math.max(h, 1));
+    txt.setAttribute("y", val >= 0 ? y - 3 : y + h + 12);
+    txt.textContent = val.toFixed(1);
+  }
+
+  const barA = makeBar(COL.ePlus, "a (e₊)");
+  const barB = makeBar(COL.eMinus, "b (e₋)");
+
+  // Info text
+  const infoDiv = document.createElement("div");
+  infoDiv.style.cssText = "margin-top:12px;font-size:0.85em;text-align:center;color:#6b7280";
+
+  // ── Update ────────────────────────────────────────────────────────────
+  function update() {
+    const {a, b} = toAB(cur.u, cur.v);
+    const projP = {u: a/2, v: a/2};
+    const projM = {u: b/2, v: -b/2};
+
+    arrowPlus.attr("x1", ox).attr("y1", oy)
+      .attr("x2", xScale(projP.u)).attr("y2", yScale(projP.v));
+    arrowMinus.attr("x1", ox).attr("y1", oy)
+      .attr("x2", xScale(projM.u)).attr("y2", yScale(projM.v));
+    dashPlus.attr("x1", xScale(projP.u)).attr("y1", yScale(projP.v))
+      .attr("x2", xScale(cur.u)).attr("y2", yScale(cur.v));
+    dashMinus.attr("x1", xScale(projM.u)).attr("y1", yScale(projM.v))
+      .attr("x2", xScale(cur.u)).attr("y2", yScale(cur.v));
+    arrowMain.attr("x1", ox).attr("y1", oy)
+      .attr("x2", xScale(cur.u)).attr("y2", yScale(cur.v));
+
+    dot.attr("cx", xScale(cur.u)).attr("cy", yScale(cur.v));
+    lblX.attr("x", xScale(cur.u) + 10).attr("y", yScale(cur.v) - 10).text("x");
+    lblPlus.attr("x", xScale(projP.u) - 14).attr("y", yScale(projP.v) - 8).text("e₊·x");
+    lblMinus.attr("x", xScale(projM.u) + 14).attr("y", yScale(projM.v) + 8).text("e₋·x");
+
+    setBar(barA, a);
+    setBar(barB, b);
+
+    infoDiv.innerHTML = `<div><span style="color:${COL.ePlus}">e₊ · x</span> keeps only <span style="color:${COL.ePlus}">a = ${a.toFixed(1)}</span></div>
+      <div><span style="color:${COL.eMinus}">e₋ · x</span> keeps only <span style="color:${COL.eMinus}">b = ${b.toFixed(1)}</span></div>
+      <div style="margin-top:4px;font-weight:600">e₊·x + e₋·x = x  ✓</div>`;
+  }
+
+  // ── Drag ──────────────────────────────────────────────────────────────
+  dot.call(d3.drag()
+    .on("start", function() { d3.select(this).style("cursor", "grabbing"); })
+    .on("drag", function(event) {
+      const [px, py] = d3.pointer(event, plot);
+      cur = {u: snap(xScale.invert(px), -D, D), v: snap(yScale.invert(py), -D, D)};
+      update();
+    })
+    .on("end", function() {
+      d3.select(this).style("cursor", "grab");
+      mutable projPt = {...cur};
+    })
+  );
+
+  update();
+
+  // ── Assemble ──────────────────────────────────────────────────────────
+  const barsRow = document.createElement("div");
+  barsRow.style.cssText = "display:flex;gap:8px;align-items:end";
+  barsRow.append(barA, barB);
+
+  const sideDiv = document.createElement("div");
+  const sideTitle = document.createElement("div");
+  sideTitle.style.cssText = "font-size:0.85em;font-weight:600;margin-bottom:8px;text-align:center";
+  sideTitle.textContent = "Channel values";
+  sideDiv.append(sideTitle, barsRow, infoDiv);
+
+  const out = document.createElement("div");
+  out.style.cssText = "display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center";
+  out.append(plot, sideDiv);
+  return out;
 }
 ```
 
@@ -1536,20 +1727,66 @@ are its characters. The formulas above are precisely the Fourier transform and F
 **Explore: roots of unity and their indicator idempotents.** Adjust $n$ to see the $n$th roots of unity on the complex unit circle (left). Each root $\omega^j$ indexes one idempotent $e_j$ — a function that evaluates to $1$ at that root and $0$ everywhere else (right). Click a root to highlight its idempotent. For $n = 2$, the two roots are $1$ and $-1$, and the idempotents are exactly $e_+$ and $e_-$ from our original discovery.
 
 ```{ojs}
-viewof nRoots = Inputs.range([2, 8], {value: 5, step: 1, label: "n  (order of  tⁿ = 1)"})
-viewof selectedRoot = Inputs.range([0, 7], {value: 0, step: 1, label: "Highlight idempotent  eⱼ"})
+viewof nRoots = Inputs.range([2, 128], {value: 5, step: 1, label: "n  (order of  tⁿ = 1)"})
+mutable selectedJ = 0
+```
+
+```{ojs}
+// Slider synced to mutable — click on a root or bar to update
+viz5_slider = {
+  const max = nRoots - 1;
+  const clamped = Math.min(selectedJ, max);
+  const inp = Inputs.range([0, max], {value: clamped, step: 1, label: "Highlight idempotent  eⱼ"});
+  inp.addEventListener("input", () => { mutable selectedJ = +inp.value; });
+  return inp;
+}
 ```
 
 ```{ojs}
 viz5_1 = {
   const n = nRoots;
-  const j = Math.min(selectedRoot, n - 1);  // clamp
+  const j = Math.min(selectedJ, n - 1);  // clamp
   const omega = (k) => ({re: Math.cos(2*Math.PI*k/n), im: Math.sin(2*Math.PI*k/n)});
 
-  // Color palette for roots
-  const rootColors = d3.schemeTableau10;
+  // Phase → color function (same as DFT grid)
+  function phaseColor(angle) {
+    const cosA = Math.cos(angle);
+    const sinA = Math.sin(angle);
+    const hueT = (1 + cosA) / 2;
+    const hue = hueT * 180;
+    const c = d3.hsl(hue, 0.75, 0.55);
+    const blend = Math.abs(sinA);
+    if (sinA >= 0) {
+      c.l *= (1 - blend * 0.5);
+      c.s += (1 - c.s) * blend;
+    } else {
+      c.l += (1 - c.l) * blend * 0.8;
+      c.s *= (1 - blend * 0.7);
+    }
+    return c.formatHex();
+  }
+
+  // Phase color blended with white at the same opacity used by ring/grid
+  function phaseColorBlended(angle) {
+    const raw = d3.hsl(phaseColor(angle));
+    const alpha = 0.45;
+    raw.l = raw.l * alpha + 1.0 * (1 - alpha);  // blend lightness toward white
+    raw.s = raw.s * alpha;                        // reduce saturation proportionally
+    return raw.formatHex();
+  }
 
   // ── Left: roots on unit circle ────────────────────────────────────────
+  // Phase-colored ring segments
+  const nSegs = 360;
+  const ringData = Array.from({length: nSegs}, (_, i) => {
+    const a0 = i * 2 * Math.PI / nSegs;
+    const a1 = (i + 1) * 2 * Math.PI / nSegs;
+    const amid = (a0 + a1) / 2;
+    return {x1: Math.cos(a0) * 0.85, y1: Math.sin(a0) * 0.85,
+            x2: Math.cos(a1) * 0.85, y2: Math.sin(a1) * 0.85,
+            color: phaseColor(amid)};
+  });
+
   const circleData = Array.from({length: 201}, (_, i) => {
     const t = i * 2 * Math.PI / 200;
     return {x: Math.cos(t), y: Math.sin(t)};
@@ -1560,26 +1797,85 @@ viz5_1 = {
     return {x: w.re, y: w.im, k, label: k === 0 ? "1" : k === 1 ? "ω" : `ω${superscript(k)}`};
   });
 
-  const leftMarks = [
-    Plot.ruleY([0], {stroke: "#ddd"}), Plot.ruleX([0], {stroke: "#ddd"}),
-    Plot.line(circleData, {x: "x", y: "y", stroke: "#e5e7eb", strokeWidth: 1.5}),
-    Plot.dot(roots, {x: "x", y: "y",
-      fill: d => d.k === j ? rootColors[d.k % 10] : "#ccc",
-      r: d => d.k === j ? 9 : 6,
-      stroke: "white", strokeWidth: 1.5}),
-    Plot.text(roots, {x: "x", y: "y", text: "label",
-      dx: d => d.x >= 0 ? 14 : -14,
-      dy: d => d.y >= 0 ? -10 : 10,
-      textAnchor: d => d.x >= 0 ? "start" : "end",
-      fontSize: 12, fontWeight: d => d.k === j ? "bold" : "normal",
-      fill: d => d.k === j ? rootColors[d.k % 10] : "#999"}),
-  ];
+  // Build left plot as SVG to support thick colored ring
+  const LW = 300, LH = 300;
+  const lsvg = d3.create("svg").attr("width", LW).attr("height", LH)
+    .attr("viewBox", "-1.6 -1.6 3.2 3.2")
+    .style("overflow", "visible");
 
-  const leftPlot = Plot.plot({
-    width: 300, height: 300, aspectRatio: 1,
-    x: {domain: [-1.5, 1.5]}, y: {domain: [-1.5, 1.5]},
-    marks: leftMarks
-  });
+  // Axes
+  lsvg.append("line").attr("x1",-1.5).attr("x2",1.5).attr("y1",0).attr("y2",0).attr("stroke","#ddd").attr("stroke-width",0.01);
+  lsvg.append("line").attr("x1",0).attr("x2",0).attr("y1",-1.5).attr("y2",1.5).attr("stroke","#ddd").attr("stroke-width",0.01);
+
+  // Colored ring segments
+  const ringWidth = 0.18;
+  for (const seg of ringData) {
+    const a0 = Math.atan2(seg.y1, seg.x1);
+    const a1 = Math.atan2(seg.y2, seg.x2);
+    const r1 = 1 - ringWidth / 2, r2 = 1 + ringWidth / 2;
+    const x1o = r2 * Math.cos(a0), y1o = -r2 * Math.sin(a0);
+    const x2o = r2 * Math.cos(a1), y2o = -r2 * Math.sin(a1);
+    const x1i = r1 * Math.cos(a1), y1i = -r1 * Math.sin(a1);
+    const x2i = r1 * Math.cos(a0), y2i = -r1 * Math.sin(a0);
+    lsvg.append("path")
+      .attr("d", `M${x1o},${y1o} A${r2},${r2} 0 0,0 ${x2o},${y2o} L${x1i},${y1i} A${r1},${r1} 0 0,1 ${x2i},${y2i} Z`)
+      .attr("fill", seg.color)
+      .attr("opacity", 0.45)
+      .attr("stroke", "none");
+  }
+
+  // Clickable arc sectors — one per root, covering the full ring width
+  const halfArc = Math.PI / n;  // half the angular distance between adjacent roots
+  const r1hit = 1 - ringWidth / 2, r2hit = 1 + ringWidth / 2;
+  for (let k = 0; k < n; k++) {
+    const centerAngle = 2 * Math.PI * k / n;
+    const a0 = centerAngle - halfArc, a1 = centerAngle + halfArc;
+    const x1o = r2hit * Math.cos(a0), y1o = -r2hit * Math.sin(a0);
+    const x2o = r2hit * Math.cos(a1), y2o = -r2hit * Math.sin(a1);
+    const x1i = r1hit * Math.cos(a1), y1i = -r1hit * Math.sin(a1);
+    const x2i = r1hit * Math.cos(a0), y2i = -r1hit * Math.sin(a0);
+    const largeArc = (a1 - a0) > Math.PI ? 1 : 0;
+    lsvg.append("path")
+      .attr("d", `M${x1o},${y1o} A${r2hit},${r2hit} 0 ${largeArc},0 ${x2o},${y2o} L${x1i},${y1i} A${r1hit},${r1hit} 0 ${largeArc},1 ${x2i},${y2i} Z`)
+      .attr("fill", "transparent")
+      .style("cursor", "pointer")
+      .on("click", () => { mutable selectedJ = k; });
+  }
+
+  // Root dots — use phase color matching ring/grid, clickable
+  for (const r of roots) {
+    const rootAngle = 2 * Math.PI * r.k / n;
+    const dot = lsvg.append("circle")
+      .attr("cx", r.x).attr("cy", -r.y)
+      .style("cursor", "pointer")
+      .on("click", () => { mutable selectedJ = r.k; });
+    if (r.k === j) {
+      dot.attr("r", 0.07)
+        .attr("fill", phaseColorBlended(rootAngle))
+        .attr("stroke", "white").attr("stroke-width", 0.015);
+    } else {
+      dot.attr("r", 0.04)
+        .attr("fill", "none")
+        .attr("stroke", "#999").attr("stroke-width", 0.012);
+    }
+  }
+
+  // Root labels — clickable
+  for (const r of roots) {
+    const rootAngle = 2 * Math.PI * r.k / n;
+    lsvg.append("text")
+      .attr("x", r.x + (r.x >= 0 ? 0.1 : -0.1))
+      .attr("y", -r.y + (r.y >= 0 ? -0.08 : 0.12))
+      .attr("text-anchor", r.x >= 0 ? "start" : "end")
+      .attr("font-size", 0.09)
+      .attr("font-weight", r.k === j ? "bold" : "normal")
+      .attr("fill", r.k === j ? phaseColorBlended(rootAngle) : "#999")
+      .style("cursor", "pointer")
+      .on("click", () => { mutable selectedJ = r.k; })
+      .text(r.label);
+  }
+
+  const leftPlot = lsvg.node();
 
   // ── Right: indicator bar chart for e_j ────────────────────────────────
   const barData = Array.from({length: n}, (_, k) => ({
@@ -1595,14 +1891,23 @@ viz5_1 = {
     marks: [
       Plot.ruleY([0]),
       Plot.barY(barData, {x: "label", y: "val",
-        fill: d => d.k === j ? rootColors[d.k % 10] : "#e5e7eb",
-        stroke: d => d.k === j ? rootColors[d.k % 10] : "#ccc",
+        fill: d => d.k === j ? phaseColorBlended(2 * Math.PI * d.k / n) : "#e5e7eb",
+        stroke: d => d.k === j ? phaseColorBlended(2 * Math.PI * d.k / n) : "#ccc",
       }),
       Plot.text(barData.filter(d => d.val > 0), {x: "label", y: "val",
         text: ["1"], dy: -8, fontWeight: "bold", fontSize: 13,
-        fill: rootColors[j % 10]
+        fill: phaseColorBlended(2 * Math.PI * j / n)
       }),
     ]
+  });
+
+  // Make bar chart x-axis ticks and bars clickable
+  const rp = d3.select(rightPlot);
+  rp.selectAll("[aria-label='x-axis'] .tick text").each(function(d, i) {
+    d3.select(this).style("cursor", "pointer").on("click", () => { mutable selectedJ = i; });
+  });
+  rp.selectAll("rect").each(function(d, i) {
+    d3.select(this).style("cursor", "pointer").on("click", () => { mutable selectedJ = i; });
   });
 
   return html`<div class="dual-panel">
@@ -1633,20 +1938,25 @@ superscript = (n) => String(n).split('').map(d => '⁰¹²³⁴⁵⁶⁷⁸⁹'[
 ```{ojs}
 viz5_2 = {
   const n = nRoots;
-  const cellSize = Math.min(60, 320 / n);
-  const pad = 40;
-  const W = n * cellSize + pad, H = n * cellSize + pad;
+  const maxWidth = width - 30;
+  const fixedCell = 60;
+  const fixedPad = 40;
+  const cellSize = Math.min(fixedCell, (maxWidth - fixedPad) / n);
+  const pad = fixedPad * (cellSize / fixedCell);
+  const labelPad = 18;
+  const W = n * cellSize + pad, H = n * cellSize + pad / 2 + labelPad;
   const arrowLen = cellSize * 0.35;
 
   const svg = d3.create("svg").attr("width", W + 30).attr("height", H + 10);
 
   // Column headers (j)
+  const headerFontSize = Math.max(7, Math.min(11, cellSize * 0.6));
   for (let j = 0; j < n; j++) {
     svg.append("text")
       .attr("x", pad + j * cellSize + cellSize / 2)
-      .attr("y", 12)
+      .attr("y", labelPad - 4)
       .attr("text-anchor", "middle")
-      .attr("font-size", 11)
+      .attr("font-size", headerFontSize)
       .attr("fill", "#6b7280")
       .text(`e${superscript(j)}`);
   }
@@ -1655,9 +1965,9 @@ viz5_2 = {
   for (let m = 0; m < n; m++) {
     svg.append("text")
       .attr("x", pad - 8)
-      .attr("y", pad/2 + 6 + m * cellSize + cellSize / 2)
+      .attr("y", labelPad + m * cellSize + cellSize / 2 + 4)
       .attr("text-anchor", "end")
-      .attr("font-size", 11)
+      .attr("font-size", headerFontSize)
       .attr("fill", "#6b7280")
       .text(m === 0 ? "1" : m === 1 ? "t" : `t${superscript(m)}`);
   }
@@ -1666,16 +1976,36 @@ viz5_2 = {
     for (let j = 0; j < n; j++) {
       const angle = 2 * Math.PI * m * j / n;
       const cx = pad + j * cellSize + cellSize / 2;
-      const cy = pad/2 + m * cellSize + cellSize / 2;
+      const cy = labelPad + m * cellSize + cellSize / 2;
 
-      // Background cell
+      // Background cell — circular phase color map:
+      //   cos(angle) → hue: continuous rotation, red(0°) at +1, blue(240°) at −1
+      //   sin(angle) → lightness: dark+vivid at +i, light+pale at −i
+      const cosA = Math.cos(angle);
+      const sinA = Math.sin(angle);
+      // Smooth hue: 180° (cyan) at +1, rotate through 90° to 0° (red) at −1
+      const hueT = (1 + cosA) / 2;          // 1 at +1, 0 at −1
+      const hue = hueT * 180;               // 180° → 0° (cyan → red, complementary)
+      const baseSat = 0.75;
+      const baseLight = 0.55;
+      const c = d3.hsl(hue, baseSat, baseLight);
+      const blend = Math.abs(sinA);
+      if (sinA >= 0) {
+        // Top half: darken + increase saturation toward vivid dark at +i
+        c.l *= (1 - blend * 0.5);
+        c.s += (1 - c.s) * blend;
+      } else {
+        // Bottom half: lighten + desaturate toward pale/white at −i
+        c.l += (1 - c.l) * blend * 0.8;
+        c.s *= (1 - blend * 0.7);
+      }
       svg.append("rect")
         .attr("x", cx - cellSize / 2 + 1)
         .attr("y", cy - cellSize / 2 + 1)
-        .attr("width", cellSize - 2)
-        .attr("height", cellSize - 2)
-        .attr("fill", d3.interpolateRdYlBu(0.5 - angle / (2 * Math.PI) * 0.4))
-        .attr("opacity", 0.15)
+        .attr("width", cellSize - cellSize/fixedCell)
+        .attr("height", cellSize - cellSize/fixedCell)
+        .attr("fill", c.formatHex())
+        .attr("opacity", 0.45)
         .attr("rx", 3);
 
       // Arrow (phasor)
@@ -1685,21 +2015,22 @@ viz5_2 = {
         .attr("x1", cx).attr("y1", cy)
         .attr("x2", cx + dx).attr("y2", cy + dy)
         .attr("stroke", "#374151")
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", Math.max(0.5, cellSize * 0.05))
         .attr("marker-end", "url(#arrow5_2)");
 
       // Dot at center
       svg.append("circle")
-        .attr("cx", cx).attr("cy", cy).attr("r", 2).attr("fill", "#9ca3af");
+        .attr("cx", cx).attr("cy", cy).attr("r", Math.max(1, cellSize * 0.033)).attr("fill", "#9ca3af");
     }
   }
 
   // Arrow marker
+  const markerSize = Math.min(5, Math.max(3, cellSize));
   svg.append("defs").append("marker")
     .attr("id", "arrow5_2")
     .attr("viewBox", "0 0 10 10")
-    .attr("refX", 10).attr("refY", 5)
-    .attr("markerWidth", 5).attr("markerHeight", 5)
+    .attr("refX", 7.5).attr("refY", 5)
+    .attr("markerWidth", markerSize).attr("markerHeight", markerSize)
     .attr("orient", "auto-start-reverse")
     .append("path").attr("d", "M 0 2 L 10 5 L 0 8 z").attr("fill", "#374151");
 
